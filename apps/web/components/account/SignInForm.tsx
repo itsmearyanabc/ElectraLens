@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 
 import {
   sendSignInCode,
@@ -27,6 +27,10 @@ export function SignInForm({
     message: initialError,
   });
 
+  // Turnstile tokens are single-use: every answer from the server gets a fresh widget.
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => setAttempt((n) => n + 1), [sent]);
+
   if (sent.status === 'ok' && sent.email && restart === 0) {
     return <CodeStep email={sent.email} onRestart={() => setRestart(1)} />;
   }
@@ -48,7 +52,7 @@ export function SignInForm({
             className="field"
           />
         </div>
-        <Turnstile siteKey={turnstileSiteKey} action="sign_in" locale={locale} />
+        <Turnstile key={attempt} siteKey={turnstileSiteKey} action="sign_in" locale={locale} />
         {sent.status === 'error' && sent.message && (
           <p role="alert" className="font-semibold text-danger">
             {t(sent.message)}

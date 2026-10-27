@@ -2,7 +2,7 @@
 
 import type { Claim } from '@electralens/claims';
 import { useLocale, useTranslations } from 'next-intl';
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 
 import {
   checkClaim,
@@ -218,6 +218,9 @@ function SubmitForModeration({
   const [state, action, pending] = useActionState<SubmitState, FormData>(submitClaim, {
     status: 'idle',
   });
+  // Turnstile tokens are single-use: every answer from the server gets a fresh widget.
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => setAttempt((n) => n + 1), [state]);
   if (state.status === 'sent') {
     return (
       <p className="mt-5 rounded-2xl bg-white/70 p-4 font-semibold text-ink">{t('submitted')}</p>
@@ -242,7 +245,7 @@ function SubmitForModeration({
           required
           className="field"
         />
-        <Turnstile siteKey={turnstileSiteKey} action="claim_submit" locale={locale} />
+        <Turnstile key={attempt} siteKey={turnstileSiteKey} action="claim_submit" locale={locale} />
         <button type="submit" className="btn btn-blue btn-sm" disabled={pending}>
           {t('submit')}
         </button>

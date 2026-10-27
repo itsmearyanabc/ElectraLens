@@ -21,7 +21,7 @@ export async function turnstileOk(form: FormData, action: string): Promise<boole
       headers: { 'content-type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({ secret, response: token }),
       cache: 'no-store',
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(10_000),
     });
     const result = (await response.json()) as {
       success?: boolean;
