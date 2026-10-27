@@ -1,9 +1,15 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import type { Claim } from '@electralens/claims';
+import { useLocale, useTranslations } from 'next-intl';
 import { useActionState, useState } from 'react';
 
-import { checkClaim, type CheckState } from '@/app/[locale]/(site)/claims/actions';
+import {
+  checkClaim,
+  submitClaim,
+  type CheckState,
+  type SubmitState,
+} from '@/app/[locale]/(site)/claims/actions';
 import { Link } from '@/i18n/navigation';
 
 export interface AreaOption {
@@ -180,6 +186,7 @@ export function ClaimForm({ areas }: { areas: AreaOption[] }) {
                 →
               </Link>
             )}
+            <SubmitForModeration claim={state.claim} />
           </div>
         )}
         {state.status === 'idle' && (
@@ -189,5 +196,48 @@ export function ClaimForm({ areas }: { areas: AreaOption[] }) {
         )}
       </div>
     </div>
+  );
+}
+
+function SubmitForModeration({ claim }: { claim: Claim }) {
+  const t = useTranslations('claimForm');
+  const locale = useLocale();
+  const [state, action, pending] = useActionState<SubmitState, FormData>(submitClaim, {
+    status: 'idle',
+  });
+  if (state.status === 'sent') {
+    return (
+      <p className="mt-5 rounded-2xl bg-white/70 p-4 font-semibold text-ink">{t('submitted')}</p>
+    );
+  }
+  return (
+    <details className="mt-5 rounded-2xl bg-white/70 p-4">
+      <summary className="cursor-pointer font-bold text-blue">{t('submitTitle')}</summary>
+      <form action={action} className="mt-3 space-y-3">
+        <input type="hidden" name="claim" value={JSON.stringify(claim)} />
+        <input type="hidden" name="language" value={locale} />
+        <p className="text-sm text-muted">{t('submitText')}</p>
+        <label htmlFor="claim-text" className="label">
+          {t('textLabel')}
+        </label>
+        <textarea
+          id="claim-text"
+          name="text"
+          rows={3}
+          minLength={5}
+          maxLength={2000}
+          required
+          className="field"
+        />
+        <button type="submit" className="btn btn-blue btn-sm" disabled={pending}>
+          {t('submit')}
+        </button>
+        {state.status === 'error' && (
+          <p role="alert" className="text-sm font-semibold text-danger">
+            {t('submitFailed')}
+          </p>
+        )}
+      </form>
+    </details>
   );
 }

@@ -2,7 +2,6 @@ import { getTranslations } from 'next-intl/server';
 
 import { OpsHeader, Panel } from '@/components/ops/OpsUi';
 import { WorkflowForm } from '@/components/ops/WorkflowForm';
-import { Notice } from '@/components/ui/Page';
 import { requireStaff } from '@/lib/auth';
 import { getChildAreas, getTopAreas } from '@/lib/data/public';
 import { localName } from '@/lib/data/types';
@@ -23,7 +22,11 @@ export default async function NewDataset({ params }: PageProps<'/[locale]/ops/da
     <>
       <OpsHeader title={t('ops.datasets.new')} />
       <Panel>
-        <WorkflowForm op="create_dataset" submitLabel={t('ops.datasets.create')}>
+        <WorkflowForm
+          op="create_dataset"
+          submitLabel={t('ops.datasets.create')}
+          openPath="/ops/datasets/"
+        >
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="label" htmlFor="source_name">
@@ -97,11 +100,6 @@ export default async function NewDataset({ params }: PageProps<'/[locale]/ops/da
           </div>
         </WorkflowForm>
       </Panel>
-      <div className="mt-6">
-        <Notice tone="caution" title={t('ops.datasets.upload')}>
-          {t('ops.datasets.createdNote')} {t('ops.c.apiNeeded')}
-        </Notice>
-      </div>
     </>
   );
 }

@@ -8,6 +8,7 @@ import {
   type Claim,
   type ClaimResult,
 } from '@/lib/claims';
+import { callApi } from '@/lib/api';
 
 export type CheckState =
   | { status: 'idle' }
@@ -34,4 +35,36 @@ export async function checkClaim(_previous: CheckState, form: FormData): Promise
   }
   const claim: Claim = { areaCode, metric, comparator, value, claimType };
   return { status: 'done', claim, result: await evaluateClaim(claim) };
+}
+
+export type SubmitState = { status: 'idle' | 'sent' | 'error'; code?: string };
+
+/** B11.05: send a checked claim for moderation. It is never published automatically. */
+export async function submitClaim(_previous: SubmitState, form: FormData): Promise<SubmitState> {
+  const text = String(form.get('text') ?? '')
+    .trim()
+    .slice(0, 2000);
+  const language = form.get('language') === 'hi' ? 'hi' : 'en';
+  let claim: Claim;
+  try {
+    claim = JSON.parse(String(form.get('claim') ?? '')) as Claim;
+  } catch {
+    return { status: 'error', code: 'invalid' };
+  }
+  if (text.length < 5) return { status: 'error', code: 'too_short' };
+  const reply = await callApi('/claims', {
+    method: 'POST',
+    body: {
+      claim: {
+        area_code: claim.areaCode,
+        metric: claim.metric,
+        comparator: claim.comparator,
+        value: claim.value,
+        claim_type: claim.claimType,
+      },
+      text,
+      language,
+    },
+  });
+  return reply.ok ? { status: 'sent' } : { status: 'error', code: reply.code };
 }

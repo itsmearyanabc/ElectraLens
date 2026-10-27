@@ -92,6 +92,17 @@ export default async function OpsPublication({
               />
             </Panel>
           )}
+          {staff.has('publisher') && p.status === 'approved' && (
+            <Panel title={t('ops.publications.anchor')}>
+              <p className="mb-4 text-sm text-muted">{t('ops.publications.anchorNote')}</p>
+              <WorkflowForm
+                op="anchor_publication"
+                fields={{ id: p.id }}
+                submitLabel={t('ops.publications.anchor')}
+                tone="blue"
+              />
+            </Panel>
+          )}
           {staff.has('publisher') && p.status === 'published' && (
             <Panel title={t('ops.publications.retract')}>
               <p className="mb-4 text-sm text-muted">{t('ops.publications.retractNote')}</p>

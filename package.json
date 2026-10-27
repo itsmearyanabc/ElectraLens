@@ -22,7 +22,7 @@
     "db:start": "npx supabase start",
     "db:reset": "npx supabase db reset",
     "db:test": "npx supabase db lint --level warning --fail-on warning && npx supabase test db",
-    "db:types": "npx supabase gen types typescript --local --schema public > apps/web/lib/database.types.ts && prettier --write apps/web/lib/database.types.ts",
+    "db:types": "npx supabase gen types typescript --local --schema public > packages/schemas/src/database.types.ts && prettier --write packages/schemas/src/database.types.ts",
     "demo:reset": "node scripts/demo-reset.mjs"
   },
   "devDependencies": {

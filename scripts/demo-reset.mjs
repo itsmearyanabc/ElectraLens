@@ -113,4 +113,63 @@ for (const file of files(artifactsDir)) {
     throw new Error(`upload ${objectPath}: ${response.status} ${await response.text()}`);
   console.log(`  public-artifacts/${objectPath}`);
 }
+
+// 5. Publish publication #1 the real way: the anchor service anchors it on-chain and marks it
+// published. Without a running chain, publish it without an anchor (the verifier then shows
+// ANCHOR PENDING). Local chain: restart `hardhat node` and redeploy before each reset, because
+// the registry refuses a second DEMO-HR #1.
+const publicationId = '7bfdc8f3-47c2-5f86-b8fc-ab7de8fcfd02';
+let anchored = false;
+try {
+  const apiEnv = Object.fromEntries(
+    readFileSync(path.join(root, 'apps/api/.env.local'), 'utf8')
+      .split('\n')
+      .filter((line) => line.includes('=') && !line.startsWith('#'))
+      .map((line) => [line.slice(0, line.indexOf('=')), line.slice(line.indexOf('=') + 1)]),
+  );
+  const { signRequest } = await import(
+    new URL('../services/anchor/dist/hmac.js', import.meta.url).href
+  );
+  const body = JSON.stringify({ publication_id: publicationId });
+  const response = await fetch(`${apiEnv.ANCHOR_URL ?? 'http://127.0.0.1:4200'}/internal/anchor`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      ...signRequest(Buffer.from(apiEnv.ANCHOR_HMAC_KEY, 'utf8'), body),
+    },
+    body,
+    signal: AbortSignal.timeout(120_000),
+  });
+  const result = await response.json();
+  anchored = response.ok;
+  console.log(
+    anchored ? `5/5 anchored on-chain: tx ${result.txHash}` : `5/5 anchor refused: ${result.code}`,
+  );
+} catch {
+  console.log('5/5 anchor service not reachable');
+}
+if (!anchored) {
+  run(
+    'docker',
+    [
+      'exec',
+      '-i',
+      stack.dbContainer,
+      'psql',
+      '-U',
+      'postgres',
+      '-d',
+      'postgres',
+      '-v',
+      'ON_ERROR_STOP=1',
+      '-q',
+    ],
+    {
+      input: `update public.publications set status = 'published', published_at = now() where id = '${publicationId}';
+insert into public.blockchain_anchors (publication_id, anchor_type, network, chain_id, status)
+values ('${publicationId}', 'evm', 'hoodi', 560048, 'pending');`,
+    },
+  );
+  console.log('  published without an on-chain anchor (verifier shows ANCHOR PENDING)');
+}
 console.log('demo content loaded');

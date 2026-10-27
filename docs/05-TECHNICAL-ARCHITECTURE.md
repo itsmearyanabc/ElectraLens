@@ -299,16 +299,16 @@ Command: `el generate --seed 42 --state HR --acs 3 --out data/demo`. Version 2 i
 - [x] **B02.07** Every file and record carries `is_synthetic`. Names are random combinations from lists. [C2] P0
 
 ### B03 Ingestion · S2 / S5
-- [ ] **B03.01** API creates a dataset version with provenance: source, permission basis, retrieval URL and time, kind, schema version, area scope. [FR-ING-2] P0
-- [ ] **B03.02** Signed upload URL to `quarantine/{version}/original.{csv|parquet}`. Expires in 15 minutes, 50 MB limit, allowed content types only. [FR-ING-1] P0
-- [ ] **B03.03** Worker validation with Polars and explicit types: schema, ranges, enums, required fields, references to `jurisdictions`. No formula evaluation. [FR-ING-3, T03] P0
-- [ ] **B03.04** Column classification (direct / quasi / non-identifying) from schema metadata, recorded in the report. [FR-ING-5] P0
-- [ ] **B03.05** Ingestion report: counts and errors by type with row numbers **but no values**. Invalid → `quarantined`, file kept. [FR-ING-4] P0
-- [ ] **B03.06** Original kept with its SHA-256. Canonical Parquet and a 32-byte salt stored in `datasets-restricted`. Root and row count saved. [FR-ING-6, FR-ING-7] P0
-- [ ] **B03.07** Steward approval. Analysts can use only `approved` versions. [FR-ING-9] P1 (the demo script approves automatically)
+- [x] **B03.01** API creates a dataset version with provenance: source, permission basis, retrieval URL and time, kind, schema version, area scope. [FR-ING-2] P0
+- [x] **B03.02** Signed upload URL to `quarantine/{version}/original.{csv|parquet}`. Expires in 15 minutes, 50 MB limit, allowed content types only. [FR-ING-1] P0
+- [x] **B03.03** Worker validation with Polars and explicit types: schema, ranges, enums, required fields, references to `jurisdictions`. No formula evaluation. [FR-ING-3, T03] P0
+- [x] **B03.04** Column classification (direct / quasi / non-identifying) from schema metadata, recorded in the report. [FR-ING-5] P0
+- [x] **B03.05** Ingestion report: counts and errors by type with row numbers **but no values**. Invalid → `quarantined`, file kept. [FR-ING-4] P0
+- [x] **B03.06** Original kept with its SHA-256. Canonical Parquet and a 32-byte salt stored in `datasets-restricted`. Root and row count saved. [FR-ING-6, FR-ING-7] P0
+- [x] **B03.07** Steward approval. Analysts can use only `approved` versions. [FR-ING-9] P1 (the demo script approves automatically)
 - [ ] **B03.08** No URL-import route exists, and a test asserts it. [FR-ING-8, T08] P0
-- [ ] **B03.09** `el ingest` CLI uses the same code path, for demo seeding. [AC-1] P0
-- [ ] **B03.10** Unknown columns are rejected, so party or vote data can't enter. [NFR-3] P0
+- [x] **B03.09** `el ingest` CLI uses the same code path, for demo seeding. [AC-1] P0
+- [x] **B03.10** Unknown columns are rejected, so party or vote data can't enter. [NFR-3] P0
 
 ### B04 Audit engine · S2 · hours 3–8
 Each rule is a pure function `rule(ctx) -> list[Finding]`. The runner loads both canonical files, diffs them, builds aggregates, runs **all** rules on **all** parts, applies Benjamini–Hochberg per rule across the run, classifies signal strength, renders explanations, writes row-level evidence to restricted storage, and commits findings and aggregates in one transaction.
@@ -374,19 +374,19 @@ Each rule is a pure function `rule(ctx) -> list[Finding]`. The runner loads both
 | Jobs | `GET staff/jobs`, `POST staff/jobs/{id}/retry` | any staff role + aal2 |
 | Internal (anchor) | `POST /internal/anchor`, `GET /internal/health` | Docker network + HMAC |
 
-- [ ] **B07.01** Fastify skeleton: zod type provider, pino redaction (authorization, cookie, email, IP), problem+json handler, request IDs. [NFR-11] P0
-- [ ] **B07.02** Auth plugin: verify the Supabase JWT, read `aal`, load active roles, create a per-request Supabase client **with the user's token**. [FR-ACC-5] P0
-- [ ] **B07.03** Guards `requireUser`, `requireStaff(roles)`, `requireAal2`, with a route × role test for every route. [FR-ACC-4, AC-4] P0
-- [ ] **B07.04** Rate limits per IP and per user (public GET 120/min, claims 10/min, sign-in related 5/min). 429 as problem+json. Repeated hits create security events. [T10] P0
-- [ ] **B07.05** Turnstile service: `siteverify`, hostname and action checks, fails closed. [FR-CLM-5] P0
-- [ ] **B07.06** Public routes with `Cache-Control: s-maxage=60, stale-while-revalidate`. [FR-PUB-*] P0
-- [ ] **B07.07** Citizen routes. [FR-ACC-1–3] P1
-- [ ] **B07.08** Staff routes that call the database workflow functions with the user's JWT. [FR-GOV-*] P0
-- [ ] **B07.09** Signed URLs for uploads (quarantine) and restricted evidence (5 minutes, audit-logged). [FR-ING-1, T05] P0
-- [ ] **B07.10** Anchor client signing requests with HMAC over timestamp, nonce and body hash. [FR-INT-3] P0
+- [x] **B07.01** Fastify skeleton: zod type provider, pino redaction (authorization, cookie, email, IP), problem+json handler, request IDs. [NFR-11] P0
+- [x] **B07.02** Auth plugin: verify the Supabase JWT, read `aal`, load active roles, create a per-request Supabase client **with the user's token**. [FR-ACC-5] P0
+- [x] **B07.03** Guards `requireUser`, `requireStaff(roles)`, `requireAal2`, with a route × role test for every route. [FR-ACC-4, AC-4] P0
+- [x] **B07.04** Rate limits per IP and per user (public GET 120/min, claims 10/min, sign-in related 5/min). 429 as problem+json. Repeated hits create security events. [T10] P0
+- [x] **B07.05** Turnstile service: `siteverify`, hostname and action checks, fails closed. [FR-CLM-5] P0
+- [x] **B07.06** Public routes with `Cache-Control: s-maxage=60, stale-while-revalidate`. [FR-PUB-*] P0
+- [x] **B07.07** Citizen routes. [FR-ACC-1–3] P1
+- [x] **B07.08** Staff routes that call the database workflow functions with the user's JWT. [FR-GOV-*] P0
+- [x] **B07.09** Signed URLs for uploads (quarantine) and restricted evidence (5 minutes, audit-logged). [FR-ING-1, T05] P0
+- [x] **B07.10** Anchor client signing requests with HMAC over timestamp, nonce and body hash. [FR-INT-3] P0
 - [ ] **B07.11** Security events for 401/403 bursts, Turnstile failures, rate-limit hits and role changes. [FR-GOV-6, T09] P0
-- [ ] **B07.12** OpenAPI document generated from the zod schemas at `/api/v1/openapi.json`, for journalists. [FR-PUB-8] P1
-- [ ] **B07.13** `/health` (liveness) and `/ready` (database and storage reachable). [NFR-11] P0
+- [x] **B07.12** OpenAPI document generated from the zod schemas at `/api/v1/openapi.json`, for journalists. [FR-PUB-8] P1
+- [x] **B07.13** `/health` (liveness) and `/ready` (database and storage reachable). [NFR-11] P0
 
 ### B08 Integrity: contract, anchor service, OpenTimestamps · S4 · hours 3–8
 - [x] **B08.01** `ElectraLensRegistry.sol` (Solidity 0.8.x, OpenZeppelin `AccessControl`): `constructor(admin, publisher)`, `anchor`, `retract`, `latest`, `entry`, `count`, events `Anchored` and `Retracted`, custom errors. No upgradeability, no overwrite, no delete. [FR-INT-3] P0
@@ -401,9 +401,9 @@ Each rule is a pure function `rule(ctx) -> list[Finding]`. The runner loads both
   - The anchor service is safe to retry (it recovers a confirmed anchor instead of sending again); the retrying job and the one-hour alert come with the worker in S5.
 - [x] **B08.09** Reconciliation every 10 minutes: read `Anchored` and `Retracted` logs since the deploy block. Any event without a matching published publication → critical alert and security event. [T16, T17] P1
 - [x] **B08.10** Alert when the publisher wallet's balance runs low. [T17] P1
-- [ ] **B08.11** Worker job `ots_stamp`: stamp the JCS manifest bytes with OpenTimestamps (so the proof's digest is the manifest hash), store the pending `.ots` file in `public-artifacts`, add an `ots` anchor row. [FR-INT-4] P1
-- [ ] **B08.12** Job `ots_upgrade` runs hourly until complete, then marks the anchor `upgraded` with the Bitcoin block height. [FR-INT-4] P1
-  - `ots.stamp`, `ots.upgrade` and `ots.status` are built and tested (B08.11, B08.12); the worker jobs that call them come in S5.
+- [x] **B08.11** Worker job `ots_stamp`: stamp the JCS manifest bytes with OpenTimestamps (so the proof's digest is the manifest hash), store the pending `.ots` file in `public-artifacts`, add an `ots` anchor row. [FR-INT-4] P1
+- [x] **B08.12** Job `ots_upgrade` runs hourly until complete, then marks the anchor `upgraded` with the Bitcoin block height. [FR-INT-4] P1
+  - Built as worker sweeps (every 5 minutes for new publications, hourly for upgrades) rather than queued jobs.
 - [ ] **B08.13** The verifier shows OTS status and offers the `.ots` download with instructions for checking it with the official client. [FR-INT-5] P1
 
 ---

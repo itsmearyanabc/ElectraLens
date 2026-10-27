@@ -700,7 +700,13 @@
     "publishedFigure": "Published figure",
     "tolerance": "Tolerance",
     "method": "Method",
-    "source": "Source: publication {series} number {sequence}"
+    "source": "Source: publication {series} number {sequence}",
+    "submitTitle": "Send this claim for moderation",
+    "submitText": "A reviewer checks every submitted claim before anything is published. Write the claim as you heard it.",
+    "textLabel": "The claim, in your words",
+    "submit": "Send for moderation",
+    "submitted": "Sent. A reviewer will look at it before anything is published.",
+    "submitFailed": "It couldn’t be sent. Please try again later."
   },
   "assistantFlow": {
     "readAloud": "Read aloud",

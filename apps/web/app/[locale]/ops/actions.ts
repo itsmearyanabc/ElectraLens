@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { isLocale } from '@/i18n/routing';
 import type { Enums, Json } from '@/lib/data/types';
+import { callApi, type ApiResult } from '@/lib/api';
 import { sessionDb } from '@/lib/supabase/server';
 
 export type OpsState = { status: 'idle' | 'ok' | 'error'; message?: string; id?: string };
@@ -17,6 +18,13 @@ const text = (form: FormData, key: string, max = 2000) =>
   String(form.get(key) ?? '')
     .trim()
     .slice(0, max);
+
+/** An API reply in the same shape as a database call, so errors map to the same messages. */
+function fromApi(reply: ApiResult<unknown>): { data: unknown; error: { message: string } | null } {
+  return reply.ok
+    ? { data: reply.data, error: null }
+    : { data: null, error: { message: reply.code } };
+}
 
 /** "workflow.same_person" → the message key "workflow_same_person" (message keys can't contain dots). */
 function errorKey(message: string | undefined): string {
@@ -99,14 +107,37 @@ export async function runWorkflow(_previous: OpsState, form: FormData): Promise<
     case 'create_publication':
       result = await db.rpc('create_publication', { p_run: text(form, 'run', 64) });
       break;
+    // Through the API: once both approvals are in, it asks the anchor service to anchor.
     case 'approve_publication':
-      result = await db.rpc('approve_publication', {
-        p_id: id,
-        p_step: text(form, 'step', 20) as Enums['approval_step'],
-        p_manifest_hash: text(form, 'manifest_hash', 64),
-        p_decision: text(form, 'decision', 10) || 'approve',
-        p_reason: reason,
-      });
+      result = fromApi(
+        await callApi(`/staff/publications/${id}/approve`, {
+          method: 'POST',
+          body: {
+            step: text(form, 'step', 20) as Enums['approval_step'],
+            manifest_hash: text(form, 'manifest_hash', 64),
+            decision: text(form, 'decision', 10) || 'approve',
+            ...(reason ? { reason } : {}),
+          },
+        }),
+      );
+      break;
+    case 'anchor_publication':
+      result = fromApi(await callApi(`/staff/publications/${id}/anchor`, { method: 'POST' }));
+      break;
+    case 'invite_staff':
+      result = fromApi(
+        await callApi('/staff/users/invite', {
+          method: 'POST',
+          body: {
+            email: text(form, 'email', 254),
+            role: text(form, 'role', 40),
+            jurisdiction_id: text(form, 'area', 64) || null,
+          },
+        }),
+      );
+      break;
+    case 'retry_job':
+      result = fromApi(await callApi(`/staff/jobs/${id}/retry`, { method: 'POST' }));
       break;
     case 'retract_publication':
       result = await db.rpc('retract_publication', { p_id: id, p_reason: reason });

@@ -3,7 +3,7 @@ import 'server-only';
 import { createClient } from '@supabase/supabase-js';
 import { cache } from 'react';
 
-import type { Database } from '../database.types';
+import type { Database } from '@electralens/database';
 import { env } from '../env';
 
 /** Public pages may show data up to this old; it bounds the load on the free-tier database. */

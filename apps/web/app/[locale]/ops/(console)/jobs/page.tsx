@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
 import { OpsHeader, OpsTable, StatusChip } from '@/components/ops/OpsUi';
-import { Notice } from '@/components/ui/Page';
+import { WorkflowForm } from '@/components/ops/WorkflowForm';
 import { requireStaff } from '@/lib/auth';
 import { formatDateTime } from '@/lib/format';
 import { pageLocale } from '@/lib/locale';
@@ -43,12 +43,19 @@ export default async function OpsJobs({ params }: PageProps<'/[locale]/ops/jobs'
             </td>
             <td className="max-w-xs truncate text-sm text-muted">{j.last_error ?? ''}</td>
             <td className="whitespace-nowrap">{formatDateTime(locale, j.created_at)}</td>
+            <td>
+              {(j.status === 'failed' || j.status === 'dead') && (
+                <WorkflowForm
+                  op="retry_job"
+                  fields={{ id: j.id }}
+                  submitLabel={t('ops.jobs.retry')}
+                  tone="outline"
+                />
+              )}
+            </td>
           </tr>
         ))}
       </OpsTable>
-      <div className="mt-6">
-        <Notice tone="info">{t('ops.c.apiNeeded')}</Notice>
-      </div>
     </>
   );
 }

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@electralens/database": ["../../packages/schemas/src/database.types.ts"],
+      "@electralens/claims": ["../../packages/claims/src/index.ts"],
+      "@electralens/anchor/hmac": ["../../services/anchor/src/hmac.ts"]
+    }
+  },
+  "include": ["src", "test", "vitest.config.ts"]
+}

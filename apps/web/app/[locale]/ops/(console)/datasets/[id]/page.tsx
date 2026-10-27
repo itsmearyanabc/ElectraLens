@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { OpsHeader, Panel, StatusChip } from '@/components/ops/OpsUi';
+import { UploadForm } from '@/components/ops/UploadForm';
 import { WorkflowForm } from '@/components/ops/WorkflowForm';
 import { DefinitionList, Hash } from '@/components/ui/Page';
 import { requireStaff } from '@/lib/auth';
@@ -56,6 +57,17 @@ export default async function OpsDataset({ params }: PageProps<'/[locale]/ops/da
             ]}
           />
         </Panel>
+        {staff.has('data_steward') && row.status === 'uploading' && (
+          <Panel title={t('ops.datasets.upload')}>
+            <p className="mb-4 text-sm text-muted">{t('ops.datasets.createdNote')}</p>
+            <UploadForm versionId={row.id} />
+          </Panel>
+        )}
+        {row.status === 'validating' && (
+          <Panel>
+            <p className="font-semibold">{t('ops.datasets.validating')}</p>
+          </Panel>
+        )}
         {staff.has('data_steward') && row.status === 'validated' && (
           <Panel title={t('ops.datasets.approve')}>
             <WorkflowForm

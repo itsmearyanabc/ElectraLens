@@ -104,7 +104,14 @@
       "rows": "Rows",
       "root": "Merkle root",
       "upload": "Upload file",
-      "kinds": { "electoral_roll": "Electoral roll", "polling_stations": "Polling stations" }
+      "kinds": {
+        "electoral_roll": "Electoral roll",
+        "polling_stations": "Polling stations"
+      },
+      "validating": "The worker is checking this file. Refresh in a moment.",
+      "uploading": "Uploading…",
+      "uploaded": "Uploaded. The worker is checking it now.",
+      "uploadFailed": "Upload failed"
     },
     "runs": {
       "title": "Audit runs",
@@ -124,10 +131,15 @@
       "title": "Findings review",
       "lede": "Review each finding with the restricted evidence. You can’t review findings from a run you started.",
       "decision": "Decision",
-      "decisions": { "accepted": "Accept", "downgraded": "Downgrade", "rejected": "Reject" },
+      "decisions": {
+        "accepted": "Accept",
+        "downgraded": "Downgrade",
+        "rejected": "Reject"
+      },
       "evidence": "Restricted evidence",
       "evidenceNote": "Row-level evidence opens through a 5-minute signed link from the API, and every view is logged.",
-      "review": "Record review"
+      "review": "Record review",
+      "openEvidence": "Open the evidence (5-minute link)"
     },
     "publications": {
       "title": "Publications",
@@ -138,11 +150,16 @@
       "manifest": "Manifest",
       "manifestHash": "Manifest hash",
       "approveStep": "Approve the {step} step",
-      "steps": { "review": "review", "publish": "publish" },
+      "steps": {
+        "review": "review",
+        "publish": "publish"
+      },
       "approvals": "Approvals",
       "retract": "Retract",
       "retractNote": "A retraction is recorded and anchored; nothing is deleted.",
-      "noRuns": "No runs are ready for a publication."
+      "noRuns": "No runs are ready for a publication.",
+      "anchor": "Anchor now",
+      "anchorNote": "Both approvals are in. Anchoring writes the manifest hash to the registry and publishes."
     },
     "claims": {
       "title": "Claim moderation",
@@ -176,7 +193,8 @@
       "revoke": "Revoke",
       "inviteNote": "Invitations are sent by the API with the admin key. New staff must set up an authenticator on first sign-in.",
       "selfNote": "You can’t grant roles to yourself.",
-      "granted": "Granted"
+      "granted": "Granted",
+      "inviteSubmit": "Send invitation"
     },
     "audit": {
       "title": "Audit log",
@@ -185,7 +203,11 @@
       "actor": "Actor",
       "target": "Target"
     },
-    "security": { "title": "Security events", "event": "Event", "incidents": "Incidents" },
+    "security": {
+      "title": "Security events",
+      "event": "Event",
+      "incidents": "Incidents"
+    },
     "jobs": {
       "title": "Jobs",
       "kind": "Job",

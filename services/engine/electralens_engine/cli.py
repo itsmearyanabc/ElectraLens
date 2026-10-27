@@ -154,6 +154,31 @@ def _cmd_demo_sql(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_ingest(args: argparse.Namespace) -> int:
+    import json
+    import secrets
+
+    from electralens_engine.csv_io import read_rows
+    from electralens_engine.ingest import ingest_rows
+
+    result = ingest_rows(
+        read_rows(Path(args.file)), args.schema, secrets.token_bytes(32), args.scope
+    )
+    print(json.dumps(result.report, ensure_ascii=False, indent=2))
+    return 0 if result.valid else 1
+
+
+def _cmd_worker(args: argparse.Namespace) -> int:
+    import logging
+
+    from electralens_engine.worker.config import load_config
+    from electralens_engine.worker.loop import run_forever
+
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+    run_forever(load_config(), once=args.once)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="el",
@@ -218,6 +243,22 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--out", default="data/demo/publish", help="output directory")
     demo.add_argument("--engine-rev", help="engine revision for the manifest (default: git HEAD)")
     demo.set_defaults(handler=_cmd_demo_sql)
+
+    ing = sub.add_parser("ingest", help="validate a roll or booth CSV exactly as the worker does")
+    ing.add_argument("file", help="CSV file")
+    ing.add_argument(
+        "--schema",
+        default="electoral_roll_v1",
+        choices=["electoral_roll_v1", "polling_stations_v1"],
+    )
+    ing.add_argument("--scope", help="area code every row must fall within, e.g. DEMO-HR")
+    ing.set_defaults(handler=_cmd_ingest)
+
+    worker = sub.add_parser(
+        "worker", help="run the job worker (DATABASE_URL, SUPABASE_URL, SUPABASE_SECRET_KEY)"
+    )
+    worker.add_argument("--once", action="store_true", help="stop when the queue is empty")
+    worker.set_defaults(handler=_cmd_worker)
     return parser
 
 

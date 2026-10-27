@@ -10,6 +10,7 @@ export default defineConfig({
       '@electralens/canon': here('../../packages/canon/src/index.ts'),
       '@electralens/schemas': here('../../packages/schemas/src/index.ts'),
       '@electralens/i18n': here('../../packages/i18n/src/index.ts'),
+      '@electralens/claims': here('../../packages/claims/src/index.ts'),
     },
   },
   test: { include: ['test/**/*.test.ts'] },

@@ -1,9 +1,10 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { useActionState, type ReactNode } from 'react';
+import { useActionState, useEffect, type ReactNode } from 'react';
 
 import { runWorkflow, type OpsState } from '@/app/[locale]/ops/actions';
+import { useRouter } from '@/i18n/navigation';
 
 /**
  * One console action: hidden fields name the workflow function and its target, children add the
@@ -18,6 +19,7 @@ export function WorkflowForm({
   reasonRequired = false,
   children,
   className = '',
+  openPath,
 }: {
   op: string;
   fields?: Record<string, string>;
@@ -27,12 +29,18 @@ export function WorkflowForm({
   reasonRequired?: boolean;
   children?: ReactNode;
   className?: string;
+  /** After success, open `${openPath}${new id}` (for actions that create something). */
+  openPath?: string;
 }) {
   const t = useTranslations('ops');
   const locale = useLocale();
   const [state, action, pending] = useActionState<OpsState, FormData>(runWorkflow, {
     status: 'idle',
   });
+  const router = useRouter();
+  useEffect(() => {
+    if (state.status === 'ok' && openPath && state.id) router.push(`${openPath}${state.id}`);
+  }, [state, openPath, router]);
   const errorText =
     state.message === 'invalid_json'
       ? t('methodology.invalidJson')

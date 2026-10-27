@@ -19,8 +19,13 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from electralens_engine.hashing import hash_document, jcs_bytes
-from electralens_engine.manifest import manifest_hash, validate_manifest
+from electralens_engine.publish import (
+    aggregates_document,
+    manifest_document,
+    published_aggregates,
+    report_document,
+)
+from electralens_engine.publish import artifacts as publication_artifacts
 from electralens_engine.seed import (
     DEMO_SOURCE_NAME,
     NAMESPACE,
@@ -31,23 +36,7 @@ from electralens_engine.seed import (
 )
 
 SERIES = "DEMO-HR"
-PUBLISHER = "ElectraLens (independent, not affiliated with ECI)"
 CLAIM_METHOD = "claims-2026.1"
-SUPPRESS_BELOW = 10
-# Aggregates that are counts of people; net change is a difference and is not suppressed.
-COUNT_METRICS = {
-    "electors_baseline",
-    "electors_target",
-    "additions",
-    "additions_18_19",
-    "deletions",
-    "transfers_in",
-    "transfers_out",
-    "corrections",
-    "deletions_by_reason",
-    "electors_target_by_gender",
-    "electors_target_by_age_band",
-}
 CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 
 ACTORS = {
@@ -91,13 +80,6 @@ def review_for(finding: dict[str, Any], seen: dict[str, int]) -> Review:
             "The pairs are different family members with similar names at different house numbers.",
         )
     return Review("accepted", None)
-
-
-def suppress(row: dict[str, Any]) -> tuple[int | None, bool]:
-    value = int(row["value"])
-    if row["metric"] in COUNT_METRICS and 0 < value < SUPPRESS_BELOW:
-        return None, True
-    return value, False
 
 
 @dataclass
@@ -243,7 +225,7 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
 
     # Findings, each reviewed by someone other than the run's creator.
     seen: dict[str, int] = {}
-    finding_rows, review_rows, public_findings = [], [], []
+    finding_rows, review_rows, reviewed_findings = [], [], []
     review_counts = {"accepted": 0, "downgraded": 0, "rejected": 0}
     for finding in findings:
         review = review_for(finding, seen)
@@ -275,8 +257,7 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
                 _literal(_iso(reviewed)),
             ]
         )
-        if published:
-            public_findings.append(doc)
+        reviewed_findings.append(doc)
     sql += [
         _insert(
             "anomaly_findings",
@@ -303,35 +284,28 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
         "",
     ]
 
-    # Published aggregates, after small-count suppression.
-    published_rows = []
-    for row in aggregates:
-        value, suppressed = suppress(row)
-        published_rows.append(
-            {
-                "area_code": row["area_code"],
-                "level": row["level"],
-                "metric": row["metric"],
-                "dims": row["dims"],
-                "value": value,
-                "suppressed": suppressed,
-            }
-        )
-    aggregates_doc = {
-        "schema": "electralens.aggregates.v1",
-        "series_id": SERIES,
-        "sequence": 1,
-        "run_id": run_id,
-        "suppression": {"below": SUPPRESS_BELOW, "metrics": sorted(COUNT_METRICS)},
-        "rows": published_rows,
-    }
-    report_doc = {
-        "schema": "electralens.report.v1",
-        "series_id": SERIES,
-        "sequence": 1,
-        "is_synthetic": True,
-        "notice": generation["notice"],
-        "run": {
+    # Published aggregates, report and manifest: the same code the worker uses.
+    published_rows = published_aggregates(aggregates)
+    aggregates_doc = aggregates_document(SERIES, 1, run_id, published_rows)
+    benchmark = None
+    benchmark_path = demo_dir / "run" / "benchmark.json"
+    if benchmark_path.exists():
+        # Detection quality against the generator's ground truth (synthetic data only).
+        raw = json.loads(benchmark_path.read_text(encoding="utf-8"))
+        fields = ("precision", "recall", "true_positives", "false_positives", "false_negatives")
+        benchmark = {
+            "overall": {k: raw["overall"][k] for k in fields},
+            "per_rule": {
+                rule: {k: values[k] for k in fields if k in values}
+                for rule, values in raw["per_rule"].items()
+            },
+        }
+    report_doc = report_document(
+        series=SERIES,
+        sequence=1,
+        is_synthetic=True,
+        notice=generation["notice"],
+        run={
             "id": run_id,
             "methodology": run["methodology"],
             "params_hash": run["params_hash"],
@@ -341,33 +315,17 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
             "every_part_tested": run["every_part_tested"],
             "tests_in_run": run["tests_in_run"],
         },
-        "datasets": {"baseline": run["baseline"], "target": run["target"]},
-        "findings_total": len(findings),
-        "review_counts": review_counts,
-        "weak_findings_not_published": sum(1 for f in findings if f["signal_strength"] == "weak"),
-        "findings": public_findings,
-    }
-    benchmark_path = demo_dir / "run" / "benchmark.json"
-    if benchmark_path.exists():
-        # Detection quality against the generator's ground truth (synthetic data only).
-        benchmark = json.loads(benchmark_path.read_text(encoding="utf-8"))
-        fields = ("precision", "recall", "true_positives", "false_positives", "false_negatives")
-        report_doc["benchmark"] = {
-            "overall": {k: benchmark["overall"][k] for k in fields},
-            "per_rule": {
-                rule: {k: values[k] for k in fields if k in values}
-                for rule, values in benchmark["per_rule"].items()
-            },
-        }
-    report_bytes, aggregates_bytes = jcs_bytes(report_doc), jcs_bytes(aggregates_doc)
-
-    manifest = {
-        "schema": "electralens.manifest.v1",
-        "series_id": SERIES,
-        "sequence": 1,
-        "previous_manifest_hash": None,
-        "is_synthetic": True,
-        "datasets": [
+        datasets={"baseline": run["baseline"], "target": run["target"]},
+        findings=reviewed_findings,
+        review_counts=review_counts,
+        benchmark=benchmark,
+    )
+    manifest = manifest_document(
+        series=SERIES,
+        sequence=1,
+        previous_manifest_hash=None,
+        is_synthetic=True,
+        datasets=[
             {
                 "role": role,
                 "version_id": run[role]["version_id"],
@@ -378,20 +336,18 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
             }
             for role in ("baseline", "target")
         ],
-        "audit_run": {
+        audit_run={
             "id": run_id,
             "engine": engine_rev,
             "image": None,
             "methodology": run["methodology"],
             "params_hash": run["params_hash"],
         },
-        "report_hash": hash_document(report_doc),
-        "aggregates_hash": hash_document(aggregates_doc),
-        "published_at": _iso(published_at),
-        "publisher": PUBLISHER,
-    }
-    validate_manifest(manifest)
-    m_hash = manifest_hash(manifest)
+        report=report_doc,
+        aggregates=aggregates_doc,
+        published_at=_iso(published_at),
+    )
+    m_hash, artifacts = publication_artifacts(SERIES, 1, manifest, report_doc, aggregates_doc)
     publication_id = _id(f"publication:{SERIES}:1")
     folder = f"{SERIES}/1"
     sql += [
@@ -421,7 +377,9 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
                     _literal(SERIES),
                     "1",
                     _literal(run_id),
-                    _literal("published"),
+                    # Approved, not yet published: `pnpm demo:reset` anchors it through the anchor
+                    # service, which publishes it with a real transaction (or falls back, offline).
+                    _literal("approved"),
                     _literal(manifest),
                     _literal(m_hash),
                     _literal(f"{folder}/report.json"),
@@ -432,7 +390,7 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
                     _literal(ACTORS["publisher"]),
                     _literal(_iso(reviewed)),
                     _literal(_iso(approved)),
-                    _literal(manifest["published_at"]),
+                    "null",
                 ]
             ],
         ),
@@ -456,29 +414,6 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
                     _literal(m_hash),
                     _literal("approve"),
                     _literal(_iso(approved)),
-                ],
-            ],
-        ),
-        "",
-        # Not anchored yet: the registry is deployed to Hoodi separately (B08.03), so the
-        # verifier shows ANCHOR PENDING until the anchor service records a transaction.
-        _insert(
-            "blockchain_anchors",
-            ["publication_id", "anchor_type", "network", "chain_id", "status"],
-            [
-                [
-                    _literal(publication_id),
-                    _literal("evm"),
-                    _literal("hoodi"),
-                    "560048",
-                    _literal("pending"),
-                ],
-                [
-                    _literal(publication_id),
-                    _literal("ots"),
-                    _literal("bitcoin"),
-                    "null",
-                    _literal("pending"),
                 ],
             ],
         ),
@@ -520,11 +455,6 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
     sql += [_claims_sql(published_rows, publication_id, now), ""]
     sql += ["commit;", ""]
 
-    artifacts = {
-        f"{folder}/manifest.json": jcs_bytes(manifest),
-        f"{folder}/report.json": report_bytes,
-        f"{folder}/aggregates.json": aggregates_bytes,
-    }
     if hashlib.sha256(artifacts[f"{folder}/manifest.json"]).hexdigest() != m_hash:
         raise RuntimeError("manifest bytes do not hash to the manifest hash")
     return DemoContent("\n".join(sql), artifacts, publication_id, m_hash)

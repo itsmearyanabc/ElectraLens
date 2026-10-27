@@ -1,4 +1,4 @@
-import type { Database, Json } from '../database.types';
+import type { Database, Json } from '@electralens/database';
 
 export type { Json };
 export type Tables = Database['public']['Tables'];

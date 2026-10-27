@@ -29,6 +29,7 @@ __pycache__/
 contracts/artifacts/
 contracts/cache/
 contracts/types/
+contracts/ignition/deployments/chain-31337/
 
 # Supabase local state
 supabase/.temp/

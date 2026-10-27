@@ -2,7 +2,6 @@ import { getTranslations } from 'next-intl/server';
 
 import { OpsHeader, Panel } from '@/components/ops/OpsUi';
 import { WorkflowForm } from '@/components/ops/WorkflowForm';
-import { Notice } from '@/components/ui/Page';
 import { requireStaff } from '@/lib/auth';
 import { pageLocale } from '@/lib/locale';
 
@@ -23,9 +22,31 @@ export default async function InviteStaff({ params }: PageProps<'/[locale]/ops/s
   return (
     <>
       <OpsHeader title={t('staff.invite')} />
-      <Notice tone="caution">
-        {t('staff.inviteNote')} {t('c.apiNeeded')}
-      </Notice>
+      <Panel title={t('staff.invite')}>
+        <p className="mb-4 text-sm text-muted">{t('staff.inviteNote')}</p>
+        <WorkflowForm op="invite_staff" submitLabel={t('staff.inviteSubmit')}>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="label" htmlFor="invite-email">
+                {t('staff.email')}
+              </label>
+              <input id="invite-email" name="email" type="email" required className="field" />
+            </div>
+            <div>
+              <label className="label" htmlFor="invite-role">
+                {t('c.role')}
+              </label>
+              <select id="invite-role" name="role" className="field">
+                {ROLES.map((r) => (
+                  <option key={r} value={r}>
+                    {t(`roles.${r}`)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </WorkflowForm>
+      </Panel>
       <Panel title={t('staff.grant')} className="mt-6">
         <WorkflowForm op="grant_role" submitLabel={t('staff.grant')}>
           <div className="grid gap-4 sm:grid-cols-2">

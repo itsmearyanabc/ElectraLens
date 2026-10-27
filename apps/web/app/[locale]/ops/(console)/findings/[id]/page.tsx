@@ -3,8 +3,8 @@ import { getTranslations } from 'next-intl/server';
 
 import { OpsHeader, Panel, StatusChip } from '@/components/ops/OpsUi';
 import { WorkflowForm } from '@/components/ops/WorkflowForm';
-import { Notice } from '@/components/ui/Page';
 import { requireStaff } from '@/lib/auth';
+import { openEvidence } from '../../../upload-actions';
 import { isUuid } from '@/lib/data/public';
 import { evidenceRows } from '@/lib/evidence';
 import { catalogueText, explanationText, parseFinding, ruleName } from '@/lib/findings';
@@ -54,9 +54,15 @@ export default async function OpsFinding({ params }: PageProps<'/[locale]/ops/fi
               </ul>
             </Panel>
           )}
-          <Notice tone="caution" title={t('ops.findings.evidence')}>
-            {t('ops.findings.evidenceNote')} {t('ops.c.apiNeeded')}
-          </Notice>
+          <Panel title={t('ops.findings.evidence')}>
+            <p className="mb-4 text-sm text-muted">{t('ops.findings.evidenceNote')}</p>
+            <form action={openEvidence}>
+              <input type="hidden" name="id" value={row.id} />
+              <button type="submit" className="btn btn-outline">
+                {t('ops.findings.openEvidence')}
+              </button>
+            </form>
+          </Panel>
         </div>
         {staff.has('reviewer') && (
           <Panel title={t('ops.findings.review')}>

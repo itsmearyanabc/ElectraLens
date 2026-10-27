@@ -1,0 +1,25 @@
+{
+  "name": "@electralens/claims",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Claim checking rules (B11.02): one published figure, a fixed tolerance, four verdicts. Shared by the web app and the API.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "5.0.5"
+  }
+}
