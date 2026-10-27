@@ -29,9 +29,16 @@ export async function generate(system: string, prompt: string): Promise<string> 
   if (calls.length >= MAX_CALLS_PER_MINUTE) throw new GeminiUnavailable('busy');
   calls.push(now);
 
-  const text = process.env.GEMINI_API_KEY
-    ? await gemini(model, process.env.GEMINI_API_KEY, system, prompt)
-    : await nvidia(model, process.env.NVIDIA_API_KEY ?? '', system, prompt);
+  let text: string;
+  try {
+    text = process.env.GEMINI_API_KEY
+      ? await gemini(model, process.env.GEMINI_API_KEY, system, prompt)
+      : await nvidia(model, process.env.NVIDIA_API_KEY ?? '', system, prompt);
+  } catch (error) {
+    // The reason only (status or network error), never the key or the prompt.
+    console.warn(`AI explainer: ${model} failed: ${(error as Error).message}`);
+    throw error instanceof GeminiUnavailable ? error : new GeminiUnavailable('request failed');
+  }
   if (!text) throw new GeminiUnavailable('empty answer');
   return text;
 }
@@ -49,7 +56,10 @@ async function gemini(model: string, key: string, system: string, prompt: string
     cache: 'no-store',
     signal: AbortSignal.timeout(30_000),
   });
-  if (!response.ok) throw new GeminiUnavailable(`status ${response.status}`);
+  if (!response.ok)
+    throw new GeminiUnavailable(
+      `status ${response.status}: ${(await response.text()).slice(0, 200)}`,
+    );
   const body = (await response.json()) as {
     candidates?: { content?: { parts?: { text?: string; thought?: boolean }[] } }[];
   };
@@ -76,7 +86,10 @@ async function nvidia(model: string, key: string, system: string, prompt: string
     cache: 'no-store',
     signal: AbortSignal.timeout(30_000),
   });
-  if (!response.ok) throw new GeminiUnavailable(`status ${response.status}`);
+  if (!response.ok)
+    throw new GeminiUnavailable(
+      `status ${response.status}: ${(await response.text()).slice(0, 200)}`,
+    );
   const body = (await response.json()) as { choices?: { message?: { content?: string } }[] };
   // Reasoning models may prefix their thinking in <think> tags; only the answer is shown.
   return (body.choices?.[0]?.message?.content ?? '')
