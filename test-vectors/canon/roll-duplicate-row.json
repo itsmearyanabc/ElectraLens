@@ -1,0 +1,104 @@
+{
+  "kind": "commitment",
+  "name": "roll-duplicate-row",
+  "description": "A repeated row is counted twice.",
+  "schema": "electoral_roll_v1",
+  "salt": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "rows": [
+    {
+      "record_key": "A1B2C3D4E5F6G7H8",
+      "ac_code": "DEMO-ST01-AC001",
+      "part_no": 1,
+      "serial_no": 1,
+      "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+      "name_latin": "Sita Devi",
+      "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+      "relative_name_latin": "Ram Kumar",
+      "relation_type": "H",
+      "gender": "F",
+      "age": 42,
+      "house_no": "12-B",
+      "epic_like": "DMA0000001",
+      "status": "active",
+      "deletion_reason": null,
+      "qualifying_date": "2026-01-01",
+      "is_synthetic": true
+    },
+    {
+      "record_key": "J2K3L4M5N6P7Q8R9",
+      "ac_code": "DEMO-ST01-AC001",
+      "part_no": 1,
+      "serial_no": 2,
+      "name_local": "\u092e\u094b\u0939\u092e\u094d\u092e\u0926 \u0907\u0958\u092c\u093e\u0932",
+      "name_latin": "Mohammad Iqb\u0101l",
+      "relative_name_local": "\u0905\u092c\u094d\u0926\u0941\u0932 \u0930\u0939\u092e\u093e\u0928",
+      "relative_name_latin": "Abdul Rahman",
+      "relation_type": "F",
+      "gender": "M",
+      "age": 67,
+      "house_no": "7",
+      "epic_like": "DMA0000002",
+      "status": "deleted",
+      "deletion_reason": "S",
+      "qualifying_date": "2026-01-01",
+      "is_synthetic": true
+    },
+    {
+      "record_key": "S1T2U3V4W5X6Y7Z8",
+      "ac_code": "DEMO-ST01-AC001",
+      "part_no": 2,
+      "serial_no": 1,
+      "name_local": "\u092a\u094d\u0930\u093f\u092f\u093e \u0936\u0930\u094d\u092e\u093e",
+      "name_latin": "Priya Sharma",
+      "relative_name_local": "\u0938\u0941\u0930\u0947\u0936 \u0936\u0930\u094d\u092e\u093e",
+      "relative_name_latin": "Suresh Sharma",
+      "relation_type": "F",
+      "gender": "F",
+      "age": 19,
+      "house_no": null,
+      "epic_like": null,
+      "status": "active",
+      "deletion_reason": null,
+      "qualifying_date": "2026-01-01",
+      "is_synthetic": true
+    },
+    {
+      "record_key": "A1B2C3D4E5F6G7H8",
+      "ac_code": "DEMO-ST01-AC001",
+      "part_no": 1,
+      "serial_no": 1,
+      "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+      "name_latin": "Sita Devi",
+      "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+      "relative_name_latin": "Ram Kumar",
+      "relation_type": "H",
+      "gender": "F",
+      "age": 42,
+      "house_no": "12-B",
+      "epic_like": "DMA0000001",
+      "status": "active",
+      "deletion_reason": null,
+      "qualifying_date": "2026-01-01",
+      "is_synthetic": true
+    }
+  ],
+  "expected": {
+    "row_count": 4,
+    "root": "49660b518e6876638d5fd81ac732c7fc919b5d950162f827fd1871a46f5f5e7c",
+    "canonical_rows": [
+      "{\"ac_code\":\"DEMO-ST01-AC001\",\"age\":19,\"deletion_reason\":null,\"epic_like\":null,\"gender\":\"F\",\"house_no\":null,\"is_synthetic\":true,\"name_latin\":\"Priya Sharma\",\"name_local\":\"\u092a\u094d\u0930\u093f\u092f\u093e \u0936\u0930\u094d\u092e\u093e\",\"part_no\":2,\"qualifying_date\":\"2026-01-01\",\"record_key\":\"S1T2U3V4W5X6Y7Z8\",\"relation_type\":\"F\",\"relative_name_latin\":\"Suresh Sharma\",\"relative_name_local\":\"\u0938\u0941\u0930\u0947\u0936 \u0936\u0930\u094d\u092e\u093e\",\"serial_no\":1,\"status\":\"active\"}",
+      "{\"ac_code\":\"DEMO-ST01-AC001\",\"age\":42,\"deletion_reason\":null,\"epic_like\":\"DMA0000001\",\"gender\":\"F\",\"house_no\":\"12-B\",\"is_synthetic\":true,\"name_latin\":\"Sita Devi\",\"name_local\":\"\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940\",\"part_no\":1,\"qualifying_date\":\"2026-01-01\",\"record_key\":\"A1B2C3D4E5F6G7H8\",\"relation_type\":\"H\",\"relative_name_latin\":\"Ram Kumar\",\"relative_name_local\":\"\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930\",\"serial_no\":1,\"status\":\"active\"}",
+      "{\"ac_code\":\"DEMO-ST01-AC001\",\"age\":42,\"deletion_reason\":null,\"epic_like\":\"DMA0000001\",\"gender\":\"F\",\"house_no\":\"12-B\",\"is_synthetic\":true,\"name_latin\":\"Sita Devi\",\"name_local\":\"\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940\",\"part_no\":1,\"qualifying_date\":\"2026-01-01\",\"record_key\":\"A1B2C3D4E5F6G7H8\",\"relation_type\":\"H\",\"relative_name_latin\":\"Ram Kumar\",\"relative_name_local\":\"\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930\",\"serial_no\":1,\"status\":\"active\"}",
+      "{\"ac_code\":\"DEMO-ST01-AC001\",\"age\":67,\"deletion_reason\":\"S\",\"epic_like\":\"DMA0000002\",\"gender\":\"M\",\"house_no\":\"7\",\"is_synthetic\":true,\"name_latin\":\"Mohammad Iqb\u0101l\",\"name_local\":\"\u092e\u094b\u0939\u092e\u094d\u092e\u0926 \u0907\u0915\u093c\u092c\u093e\u0932\",\"part_no\":1,\"qualifying_date\":\"2026-01-01\",\"record_key\":\"J2K3L4M5N6P7Q8R9\",\"relation_type\":\"F\",\"relative_name_latin\":\"Abdul Rahman\",\"relative_name_local\":\"\u0905\u092c\u094d\u0926\u0941\u0932 \u0930\u0939\u092e\u093e\u0928\",\"serial_no\":2,\"status\":\"deleted\"}"
+    ],
+    "leaf_hashes": [
+      "b227079dccf6173a22e91c8ac733a3869240855f691a59d2f70c373fd982ab58",
+      "4e97d9bde490d5fab7cf4c329060561e52bec0788a47d2c9f5cfad04db63b96f",
+      "4e97d9bde490d5fab7cf4c329060561e52bec0788a47d2c9f5cfad04db63b96f",
+      "bb5183db071fc8e18b341468c0dfad97e48c64db7eb7631f68c4fe28d5c85672"
+    ]
+  },
+  "assert": {
+    "different_root_from": "roll-basic"
+  }
+}

@@ -1,0 +1,432 @@
+{
+  "kind": "errors",
+  "name": "errors",
+  "cases": [
+    {
+      "name": "unknown field",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita Devi",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": 42,
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true,
+        "party": "X"
+      },
+      "expected": {
+        "code": "unknown_field",
+        "field": "party"
+      }
+    },
+    {
+      "name": "bad enum",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita Devi",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "X",
+        "age": 42,
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "invalid_enum",
+        "field": "gender"
+      }
+    },
+    {
+      "name": "impossible date",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita Devi",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": 42,
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-02-30",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "invalid_date",
+        "field": "qualifying_date"
+      }
+    },
+    {
+      "name": "fractional integer",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita Devi",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": "42.5",
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "invalid_integer",
+        "field": "age"
+      }
+    },
+    {
+      "name": "unicode digits",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita Devi",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": "\u096a\u0968",
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "invalid_integer",
+        "field": "age"
+      }
+    },
+    {
+      "name": "control character",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita\u0007",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": 42,
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "control_char",
+        "field": "name_latin"
+      }
+    },
+    {
+      "name": "astral character",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita \ud83d\ude00",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": 42,
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "unsupported_char",
+        "field": "name_latin"
+      }
+    },
+    {
+      "name": "lone surrogate",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita\ud800",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": 42,
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "not_well_formed",
+        "field": "name_latin"
+      }
+    },
+    {
+      "name": "blank required",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": " \t ",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": 42,
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "required",
+        "field": "name_latin"
+      }
+    },
+    {
+      "name": "schema pattern",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita Devi",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": 42,
+        "house_no": "12-B",
+        "epic_like": "BAD",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "schema",
+        "field": "epic_like"
+      }
+    },
+    {
+      "name": "schema range",
+      "schema": "electoral_roll_v1",
+      "row": {
+        "record_key": "A1B2C3D4E5F6G7H8",
+        "ac_code": "DEMO-ST01-AC001",
+        "part_no": 1,
+        "serial_no": 1,
+        "name_local": "\u0938\u0940\u0924\u093e \u0926\u0947\u0935\u0940",
+        "name_latin": "Sita Devi",
+        "relative_name_local": "\u0930\u093e\u092e \u0915\u0941\u092e\u093e\u0930",
+        "relative_name_latin": "Ram Kumar",
+        "relation_type": "H",
+        "gender": "F",
+        "age": 151,
+        "house_no": "12-B",
+        "epic_like": "DMA0000001",
+        "status": "active",
+        "deletion_reason": null,
+        "qualifying_date": "2026-01-01",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "schema",
+        "field": "age"
+      }
+    },
+    {
+      "name": "decimal precision",
+      "schema": "polling_stations_v1",
+      "row": {
+        "station_code": "DEMO-ST01-AC001-PS001",
+        "ac_code": "DEMO-ST01-AC001",
+        "parts_served": "2;1",
+        "name": {
+          "en": "DEMO Primary School, Room 1",
+          "hi": "\u0921\u0947\u092e\u094b \u092a\u094d\u0930\u093e\u0925\u092e\u093f\u0915 \u0935\u093f\u0926\u094d\u092f\u093e\u0932\u092f, \u0915\u0915\u094d\u0937 1"
+        },
+        "address": {
+          "en": "Fictional Road, Kalpitpur",
+          "hi": "\u0915\u093e\u0932\u094d\u092a\u0928\u093f\u0915 \u092e\u093e\u0930\u094d\u0917, \u0915\u0932\u094d\u092a\u093f\u0924\u092a\u0941\u0930"
+        },
+        "lat": "28.1234567",
+        "lng": null,
+        "accessibility": {
+          "ramp": "true",
+          "ground_floor": true,
+          "drinking_water": true,
+          "toilet": "FALSE",
+          "wheelchair": false
+        },
+        "source_url": "",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "decimal_scale",
+        "field": "lat"
+      }
+    },
+    {
+      "name": "float precision",
+      "schema": "polling_stations_v1",
+      "row": {
+        "station_code": "DEMO-ST01-AC001-PS001",
+        "ac_code": "DEMO-ST01-AC001",
+        "parts_served": "2;1",
+        "name": {
+          "en": "DEMO Primary School, Room 1",
+          "hi": "\u0921\u0947\u092e\u094b \u092a\u094d\u0930\u093e\u0925\u092e\u093f\u0915 \u0935\u093f\u0926\u094d\u092f\u093e\u0932\u092f, \u0915\u0915\u094d\u0937 1"
+        },
+        "address": {
+          "en": "Fictional Road, Kalpitpur",
+          "hi": "\u0915\u093e\u0932\u094d\u092a\u0928\u093f\u0915 \u092e\u093e\u0930\u094d\u0917, \u0915\u0932\u094d\u092a\u093f\u0924\u092a\u0941\u0930"
+        },
+        "lat": 0.0078125,
+        "lng": null,
+        "accessibility": {
+          "ramp": "true",
+          "ground_floor": true,
+          "drinking_water": true,
+          "toilet": "FALSE",
+          "wheelchair": false
+        },
+        "source_url": "",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "decimal_scale",
+        "field": "lat"
+      }
+    },
+    {
+      "name": "duplicate list item",
+      "schema": "polling_stations_v1",
+      "row": {
+        "station_code": "DEMO-ST01-AC001-PS001",
+        "ac_code": "DEMO-ST01-AC001",
+        "parts_served": "1;1",
+        "name": {
+          "en": "DEMO Primary School, Room 1",
+          "hi": "\u0921\u0947\u092e\u094b \u092a\u094d\u0930\u093e\u0925\u092e\u093f\u0915 \u0935\u093f\u0926\u094d\u092f\u093e\u0932\u092f, \u0915\u0915\u094d\u0937 1"
+        },
+        "address": {
+          "en": "Fictional Road, Kalpitpur",
+          "hi": "\u0915\u093e\u0932\u094d\u092a\u0928\u093f\u0915 \u092e\u093e\u0930\u094d\u0917, \u0915\u0932\u094d\u092a\u093f\u0924\u092a\u0941\u0930"
+        },
+        "lat": null,
+        "lng": null,
+        "accessibility": {
+          "ramp": "true",
+          "ground_floor": true,
+          "drinking_water": true,
+          "toilet": "FALSE",
+          "wheelchair": false
+        },
+        "source_url": "",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "duplicate_item",
+        "field": "parts_served"
+      }
+    },
+    {
+      "name": "bad locale key",
+      "schema": "polling_stations_v1",
+      "row": {
+        "station_code": "DEMO-ST01-AC001-PS001",
+        "ac_code": "DEMO-ST01-AC001",
+        "parts_served": "2;1",
+        "name": {
+          "en": "X",
+          "Hindi": "Y"
+        },
+        "address": {
+          "en": "Fictional Road, Kalpitpur",
+          "hi": "\u0915\u093e\u0932\u094d\u092a\u0928\u093f\u0915 \u092e\u093e\u0930\u094d\u0917, \u0915\u0932\u094d\u092a\u093f\u0924\u092a\u0941\u0930"
+        },
+        "lat": null,
+        "lng": null,
+        "accessibility": {
+          "ramp": "true",
+          "ground_floor": true,
+          "drinking_water": true,
+          "toilet": "FALSE",
+          "wheelchair": false
+        },
+        "source_url": "",
+        "is_synthetic": true
+      },
+      "expected": {
+        "code": "invalid_locale",
+        "field": "name"
+      }
+    }
+  ]
+}

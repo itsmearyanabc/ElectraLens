@@ -1,0 +1,25 @@
+{
+  "version": "2026.1",
+  "description": "First ElectraLens methodology. Thresholds are proposals, tuned on synthetic data only, and frozen once a run uses them.",
+  "fdr_q": "0.05",
+  "min_part_electors": 50,
+  "signal": {
+    "strong": { "q": "0.001", "effect": "3.0" },
+    "moderate": { "q": "0.01", "effect": "2.0" },
+    "weak": { "q": "0.05", "effect": "1.5" }
+  },
+  "rules": {
+    "R01": { "version": "1.0.0" },
+    "R02": { "version": "1.0.0", "matching": "phonetic_key_v1", "max_age_gap": 2 },
+    "R03": { "version": "1.0.0", "min_age": 18, "max_age": 110 },
+    "R04": { "version": "1.0.0", "tolerance_years": 1 },
+    "R05": { "version": "1.0.0", "min_effect": "2.0", "min_count": 20 },
+    "R06": { "version": "1.0.0", "min_effect": "2.0", "min_count": 20 },
+    "R07": { "version": "1.0.0" },
+    "R08": { "version": "1.0.0", "min_electors": 20, "percentile": "0.999" },
+    "R09": { "version": "1.0.0", "min_effect": "1.5", "min_shift_per_1000": 50, "min_count": 10 },
+    "R10": { "version": "1.0.0", "min_share": "0.05", "percentile": "0.95" },
+    "R11": { "version": "1.0.0", "min_effect": "2.0", "min_deletions": 20, "min_count": 10 },
+    "R12": { "version": "1.0.0", "min_effect": "2.0", "min_count": 10 }
+  }
+}

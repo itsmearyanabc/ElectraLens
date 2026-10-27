@@ -1,0 +1,232 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:electralens:schema:electoral_roll_v1",
+  "title": "electoral_roll_v1",
+  "type": "object",
+  "properties": {
+    "record_key": {
+      "type": "string",
+      "pattern": "^[0-9A-Z]{16}$",
+      "x-canon": {
+        "kind": "code",
+        "nullable": false
+      },
+      "x-classification": "direct"
+    },
+    "ac_code": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*-AC[0-9]{3}$",
+      "x-canon": {
+        "kind": "code",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "part_no": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9999,
+      "x-canon": {
+        "kind": "integer",
+        "nullable": false
+      },
+      "x-classification": "quasi"
+    },
+    "serial_no": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 99999,
+      "x-canon": {
+        "kind": "integer",
+        "nullable": false
+      },
+      "x-classification": "direct"
+    },
+    "name_local": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "x-canon": {
+        "kind": "text",
+        "nullable": false
+      },
+      "x-classification": "direct"
+    },
+    "name_latin": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "x-canon": {
+        "kind": "text",
+        "nullable": false
+      },
+      "x-classification": "direct"
+    },
+    "relative_name_local": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "text",
+        "nullable": true
+      },
+      "x-classification": "direct"
+    },
+    "relative_name_latin": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "text",
+        "nullable": true
+      },
+      "x-classification": "direct"
+    },
+    "relation_type": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["F", "M", "H", "O"]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "enum",
+        "nullable": true
+      },
+      "x-classification": "none"
+    },
+    "gender": {
+      "type": "string",
+      "enum": ["M", "F", "T"],
+      "x-canon": {
+        "kind": "enum",
+        "nullable": false
+      },
+      "x-classification": "quasi"
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 150,
+      "x-canon": {
+        "kind": "integer",
+        "nullable": false
+      },
+      "x-classification": "quasi"
+    },
+    "house_no": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "text",
+        "nullable": true
+      },
+      "x-classification": "direct"
+    },
+    "epic_like": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Z]{3}[0-9]{7}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "code",
+        "nullable": true
+      },
+      "x-classification": "direct"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "deleted"],
+      "x-canon": {
+        "kind": "enum",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "deletion_reason": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["D", "S", "A", "R"]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "enum",
+        "nullable": true
+      },
+      "x-classification": "none"
+    },
+    "qualifying_date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$",
+      "x-canon": {
+        "kind": "date",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "is_synthetic": {
+      "type": "boolean",
+      "x-canon": {
+        "kind": "boolean",
+        "nullable": false
+      },
+      "x-classification": "none"
+    }
+  },
+  "required": [
+    "record_key",
+    "ac_code",
+    "part_no",
+    "serial_no",
+    "name_local",
+    "name_latin",
+    "relative_name_local",
+    "relative_name_latin",
+    "relation_type",
+    "gender",
+    "age",
+    "house_no",
+    "epic_like",
+    "status",
+    "deletion_reason",
+    "qualifying_date",
+    "is_synthetic"
+  ],
+  "additionalProperties": false
+}

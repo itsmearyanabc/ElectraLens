@@ -1,0 +1,45 @@
+# Secrets — never commit (NFR-2)
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# Node
+node_modules/
+.pnpm-store/
+dist/
+.next/
+coverage/
+*.tsbuildinfo
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Generated data (synthetic datasets are reproducible from their seed)
+data/
+
+# Contracts
+contracts/artifacts/
+contracts/cache/
+contracts/types/
+
+# Supabase local state
+supabase/.temp/
+supabase/.branches/
+
+# Playwright
+e2e/test-results/
+e2e/playwright-report/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

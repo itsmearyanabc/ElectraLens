@@ -1,0 +1,336 @@
+{
+  "kind": "render",
+  "name": "render",
+  "cases": [
+    {
+      "locale": "en",
+      "template": "{n:int}",
+      "params": {
+        "n": 0
+      },
+      "expected": "0"
+    },
+    {
+      "locale": "en",
+      "template": "{n:int}",
+      "params": {
+        "n": 999
+      },
+      "expected": "999"
+    },
+    {
+      "locale": "en",
+      "template": "{n:int}",
+      "params": {
+        "n": 1000
+      },
+      "expected": "1,000"
+    },
+    {
+      "locale": "en",
+      "template": "{n:int}",
+      "params": {
+        "n": 123456
+      },
+      "expected": "1,23,456"
+    },
+    {
+      "locale": "en",
+      "template": "{n:int}",
+      "params": {
+        "n": 12345678
+      },
+      "expected": "1,23,45,678"
+    },
+    {
+      "locale": "en",
+      "template": "{n:int}",
+      "params": {
+        "n": -1234567
+      },
+      "expected": "-12,34,567"
+    },
+    {
+      "locale": "en",
+      "template": "{r:pct}",
+      "params": {
+        "r": "0.179700"
+      },
+      "expected": "18.0%"
+    },
+    {
+      "locale": "en",
+      "template": "{r:pct}",
+      "params": {
+        "r": "0.000500"
+      },
+      "expected": "0.1%"
+    },
+    {
+      "locale": "en",
+      "template": "{r:pct}",
+      "params": {
+        "r": "0.000499"
+      },
+      "expected": "0.0%"
+    },
+    {
+      "locale": "en",
+      "template": "{r:pct}",
+      "params": {
+        "r": "1.000000"
+      },
+      "expected": "100.0%"
+    },
+    {
+      "locale": "en",
+      "template": "{r:pct}",
+      "params": {
+        "r": "-0.012345"
+      },
+      "expected": "-1.2%"
+    },
+    {
+      "locale": "en",
+      "template": "{x:dec1}",
+      "params": {
+        "x": "2.950000"
+      },
+      "expected": "3.0"
+    },
+    {
+      "locale": "en",
+      "template": "{x:dec1}",
+      "params": {
+        "x": "2.949999"
+      },
+      "expected": "2.9"
+    },
+    {
+      "locale": "en",
+      "template": "{x:dec1}",
+      "params": {
+        "x": "12.000000"
+      },
+      "expected": "12.0"
+    },
+    {
+      "locale": "en",
+      "template": "{x:dec1}",
+      "params": {
+        "x": 3
+      },
+      "expected": "3.0"
+    },
+    {
+      "locale": "en",
+      "template": "{q}",
+      "params": {
+        "q": "4.00e-04"
+      },
+      "expected": "4.00e-04"
+    },
+    {
+      "locale": "en",
+      "template": "{reason:reason}",
+      "params": {
+        "reason": "D"
+      },
+      "expected": "death"
+    },
+    {
+      "locale": "en",
+      "template": "{area} ({n:int})",
+      "params": {
+        "area": {
+          "en": "Part 7, Gurugram DEMO-1",
+          "hi": "\u0917\u0941\u0930\u0941\u0917\u094d\u0930\u093e\u092e \u0921\u0947\u092e\u094b-1, \u092d\u093e\u0917 7"
+        },
+        "n": 5
+      },
+      "expected": "Part 7, Gurugram DEMO-1 (5)"
+    },
+    {
+      "locale": "en",
+      "template": "In {area}, {deletions:int} of the {electors_baseline:int} electors on the earlier roll were deleted ({rate:pct}). Other parts of this constituency deleted about {expected_rate:pct}, so this is {rate_ratio:dec1} times the usual rate. A difference this large is unlikely to be chance alone (q = {q_value}).",
+      "params": {
+        "area": {
+          "en": "Part 7, Gurugram DEMO-1",
+          "hi": "\u0917\u0941\u0930\u0941\u0917\u094d\u0930\u093e\u092e \u0921\u0947\u092e\u094b-1, \u092d\u093e\u0917 7"
+        },
+        "deletions": 175,
+        "electors_baseline": 1024,
+        "rate": "0.170898",
+        "expected_rate": "0.036000",
+        "rate_ratio": "4.747166",
+        "q_value": "1.20e-30"
+      },
+      "expected": "In Part 7, Gurugram DEMO-1, 175 of the 1,024 electors on the earlier roll were deleted (17.1%). Other parts of this constituency deleted about 3.6%, so this is 4.7 times the usual rate. A difference this large is unlikely to be chance alone (q = 1.20e-30)."
+    },
+    {
+      "locale": "hi",
+      "template": "{n:int}",
+      "params": {
+        "n": 0
+      },
+      "expected": "0"
+    },
+    {
+      "locale": "hi",
+      "template": "{n:int}",
+      "params": {
+        "n": 999
+      },
+      "expected": "999"
+    },
+    {
+      "locale": "hi",
+      "template": "{n:int}",
+      "params": {
+        "n": 1000
+      },
+      "expected": "1,000"
+    },
+    {
+      "locale": "hi",
+      "template": "{n:int}",
+      "params": {
+        "n": 123456
+      },
+      "expected": "1,23,456"
+    },
+    {
+      "locale": "hi",
+      "template": "{n:int}",
+      "params": {
+        "n": 12345678
+      },
+      "expected": "1,23,45,678"
+    },
+    {
+      "locale": "hi",
+      "template": "{n:int}",
+      "params": {
+        "n": -1234567
+      },
+      "expected": "-12,34,567"
+    },
+    {
+      "locale": "hi",
+      "template": "{r:pct}",
+      "params": {
+        "r": "0.179700"
+      },
+      "expected": "18.0%"
+    },
+    {
+      "locale": "hi",
+      "template": "{r:pct}",
+      "params": {
+        "r": "0.000500"
+      },
+      "expected": "0.1%"
+    },
+    {
+      "locale": "hi",
+      "template": "{r:pct}",
+      "params": {
+        "r": "0.000499"
+      },
+      "expected": "0.0%"
+    },
+    {
+      "locale": "hi",
+      "template": "{r:pct}",
+      "params": {
+        "r": "1.000000"
+      },
+      "expected": "100.0%"
+    },
+    {
+      "locale": "hi",
+      "template": "{r:pct}",
+      "params": {
+        "r": "-0.012345"
+      },
+      "expected": "-1.2%"
+    },
+    {
+      "locale": "hi",
+      "template": "{x:dec1}",
+      "params": {
+        "x": "2.950000"
+      },
+      "expected": "3.0"
+    },
+    {
+      "locale": "hi",
+      "template": "{x:dec1}",
+      "params": {
+        "x": "2.949999"
+      },
+      "expected": "2.9"
+    },
+    {
+      "locale": "hi",
+      "template": "{x:dec1}",
+      "params": {
+        "x": "12.000000"
+      },
+      "expected": "12.0"
+    },
+    {
+      "locale": "hi",
+      "template": "{x:dec1}",
+      "params": {
+        "x": 3
+      },
+      "expected": "3.0"
+    },
+    {
+      "locale": "hi",
+      "template": "{q}",
+      "params": {
+        "q": "4.00e-04"
+      },
+      "expected": "4.00e-04"
+    },
+    {
+      "locale": "hi",
+      "template": "{reason:reason}",
+      "params": {
+        "reason": "D"
+      },
+      "expected": "\u092e\u0943\u0924\u094d\u092f\u0941"
+    },
+    {
+      "locale": "hi",
+      "template": "{area} ({n:int})",
+      "params": {
+        "area": {
+          "en": "Part 7, Gurugram DEMO-1",
+          "hi": "\u0917\u0941\u0930\u0941\u0917\u094d\u0930\u093e\u092e \u0921\u0947\u092e\u094b-1, \u092d\u093e\u0917 7"
+        },
+        "n": 5
+      },
+      "expected": "\u0917\u0941\u0930\u0941\u0917\u094d\u0930\u093e\u092e \u0921\u0947\u092e\u094b-1, \u092d\u093e\u0917 7 (5)"
+    },
+    {
+      "locale": "hi",
+      "template": "{area} \u092e\u0947\u0902 \u092a\u093f\u091b\u0932\u0940 \u0938\u0942\u091a\u0940 \u0915\u0947 {electors_baseline:int} \u092e\u0924\u0926\u093e\u0924\u093e\u0913\u0902 \u092e\u0947\u0902 \u0938\u0947 {deletions:int} \u0915\u0947 \u0928\u093e\u092e \u0939\u091f\u093e\u090f \u0917\u090f ({rate:pct})\u0964 \u0907\u0938 \u0928\u093f\u0930\u094d\u0935\u093e\u091a\u0928 \u0915\u094d\u0937\u0947\u0924\u094d\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u092d\u093e\u0917\u094b\u0902 \u092e\u0947\u0902 \u0932\u0917\u092d\u0917 {expected_rate:pct} \u0928\u093e\u092e \u0939\u091f\u0947, \u092f\u093e\u0928\u0940 \u092f\u0939 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0926\u0930 \u0915\u093e {rate_ratio:dec1} \u0917\u0941\u0928\u093e \u0939\u0948\u0964 \u0907\u0924\u0928\u093e \u092c\u0921\u093c\u093e \u0905\u0902\u0924\u0930 \u0915\u0947\u0935\u0932 \u0938\u0902\u092f\u094b\u0917 \u0938\u0947 \u0939\u094b\u0928\u0947 \u0915\u0940 \u0938\u0902\u092d\u093e\u0935\u0928\u093e \u0915\u092e \u0939\u0948 (q = {q_value})\u0964",
+      "params": {
+        "area": {
+          "en": "Part 7, Gurugram DEMO-1",
+          "hi": "\u0917\u0941\u0930\u0941\u0917\u094d\u0930\u093e\u092e \u0921\u0947\u092e\u094b-1, \u092d\u093e\u0917 7"
+        },
+        "deletions": 175,
+        "electors_baseline": 1024,
+        "rate": "0.170898",
+        "expected_rate": "0.036000",
+        "rate_ratio": "4.747166",
+        "q_value": "1.20e-30"
+      },
+      "expected": "\u0917\u0941\u0930\u0941\u0917\u094d\u0930\u093e\u092e \u0921\u0947\u092e\u094b-1, \u092d\u093e\u0917 7 \u092e\u0947\u0902 \u092a\u093f\u091b\u0932\u0940 \u0938\u0942\u091a\u0940 \u0915\u0947 1,024 \u092e\u0924\u0926\u093e\u0924\u093e\u0913\u0902 \u092e\u0947\u0902 \u0938\u0947 175 \u0915\u0947 \u0928\u093e\u092e \u0939\u091f\u093e\u090f \u0917\u090f (17.1%)\u0964 \u0907\u0938 \u0928\u093f\u0930\u094d\u0935\u093e\u091a\u0928 \u0915\u094d\u0937\u0947\u0924\u094d\u0930 \u0915\u0947 \u0905\u0928\u094d\u092f \u092d\u093e\u0917\u094b\u0902 \u092e\u0947\u0902 \u0932\u0917\u092d\u0917 3.6% \u0928\u093e\u092e \u0939\u091f\u0947, \u092f\u093e\u0928\u0940 \u092f\u0939 \u0938\u093e\u092e\u093e\u0928\u094d\u092f \u0926\u0930 \u0915\u093e 4.7 \u0917\u0941\u0928\u093e \u0939\u0948\u0964 \u0907\u0924\u0928\u093e \u092c\u0921\u093c\u093e \u0905\u0902\u0924\u0930 \u0915\u0947\u0935\u0932 \u0938\u0902\u092f\u094b\u0917 \u0938\u0947 \u0939\u094b\u0928\u0947 \u0915\u0940 \u0938\u0902\u092d\u093e\u0935\u0928\u093e \u0915\u092e \u0939\u0948 (q = 1.20e-30)\u0964"
+    }
+  ]
+}

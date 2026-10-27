@@ -1,0 +1,35 @@
+{
+  "name": "electralens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Independent, open-methodology electoral-roll transparency platform. Not affiliated with the Election Commission of India.",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "build": "pnpm -r --if-present build",
+    "engine:sync": "uv sync --directory services/engine",
+    "engine:lint": "uv run --directory services/engine ruff check . && uv run --directory services/engine ruff format --check .",
+    "engine:test": "uv run --directory services/engine pytest",
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm engine:lint && pnpm engine:test",
+    "db:start": "npx supabase start",
+    "db:reset": "npx supabase db reset",
+    "db:test": "npx supabase db lint --level warning --fail-on warning && npx supabase test db"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1"
+  }
+}

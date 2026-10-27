@@ -1,0 +1,13 @@
+pnpm-lock.yaml
+LICENSE
+docs/
+test-vectors/
+services/engine/
+supabase/
+**/.next/
+**/dist/
+**/coverage/
+contracts/artifacts/
+contracts/cache/
+contracts/types/
+data/

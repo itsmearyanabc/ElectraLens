@@ -1,0 +1,14 @@
+{
+  "kind": "commitment",
+  "name": "roll-empty",
+  "description": "No rows.",
+  "schema": "electoral_roll_v1",
+  "salt": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "rows": [],
+  "expected": {
+    "row_count": 0,
+    "root": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "canonical_rows": [],
+    "leaf_hashes": []
+  }
+}

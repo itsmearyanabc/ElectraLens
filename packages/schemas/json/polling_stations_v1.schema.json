@@ -1,0 +1,184 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:electralens:schema:polling_stations_v1",
+  "title": "polling_stations_v1",
+  "type": "object",
+  "properties": {
+    "station_code": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*-PS[0-9]{3}$",
+      "x-canon": {
+        "kind": "code",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "ac_code": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*-AC[0-9]{3}$",
+      "x-canon": {
+        "kind": "code",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "parts_served": {
+      "minItems": 1,
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9999
+      },
+      "x-canon": {
+        "kind": "int_list",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "name": {
+      "type": "object",
+      "properties": {
+        "en": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        }
+      },
+      "required": ["en"],
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 300
+      },
+      "x-canon": {
+        "kind": "locale_text",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "en": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        }
+      },
+      "required": ["en"],
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 300
+      },
+      "x-canon": {
+        "kind": "locale_text",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "lat": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)\\.[0-9]{6}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "decimal",
+        "nullable": true,
+        "scale": 6
+      },
+      "x-classification": "none"
+    },
+    "lng": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^-?(?:0|[1-9][0-9]*)\\.[0-9]{6}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "decimal",
+        "nullable": true,
+        "scale": 6
+      },
+      "x-classification": "none"
+    },
+    "accessibility": {
+      "type": "object",
+      "properties": {
+        "ramp": {
+          "type": "boolean"
+        },
+        "ground_floor": {
+          "type": "boolean"
+        },
+        "drinking_water": {
+          "type": "boolean"
+        },
+        "toilet": {
+          "type": "boolean"
+        },
+        "wheelchair": {
+          "type": "boolean"
+        }
+      },
+      "required": ["ramp", "ground_floor", "drinking_water", "toilet", "wheelchair"],
+      "additionalProperties": false,
+      "x-canon": {
+        "kind": "flags",
+        "nullable": false
+      },
+      "x-classification": "none"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^https?:\\/\\/\\S+$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "x-canon": {
+        "kind": "text",
+        "nullable": true
+      },
+      "x-classification": "none"
+    },
+    "is_synthetic": {
+      "type": "boolean",
+      "x-canon": {
+        "kind": "boolean",
+        "nullable": false
+      },
+      "x-classification": "none"
+    }
+  },
+  "required": [
+    "station_code",
+    "ac_code",
+    "parts_served",
+    "name",
+    "address",
+    "lat",
+    "lng",
+    "accessibility",
+    "source_url",
+    "is_synthetic"
+  ],
+  "additionalProperties": false
+}

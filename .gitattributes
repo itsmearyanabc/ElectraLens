@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+# Byte-exact canonicalisation vectors: never normalise line endings.
+test-vectors/** -text
+
+*.pdf binary
+*.parquet binary
+*.png binary

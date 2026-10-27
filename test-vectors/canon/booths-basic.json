@@ -1,0 +1,69 @@
+{
+  "kind": "commitment",
+  "name": "booths-basic",
+  "description": "Translations, unsorted part lists, decimals and flags.",
+  "schema": "polling_stations_v1",
+  "salt": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "rows": [
+    {
+      "station_code": "DEMO-ST01-AC001-PS001",
+      "ac_code": "DEMO-ST01-AC001",
+      "parts_served": "2;1",
+      "name": {
+        "en": "DEMO Primary School, Room 1",
+        "hi": "\u0921\u0947\u092e\u094b \u092a\u094d\u0930\u093e\u0925\u092e\u093f\u0915 \u0935\u093f\u0926\u094d\u092f\u093e\u0932\u092f, \u0915\u0915\u094d\u0937 1"
+      },
+      "address": {
+        "en": "Fictional Road, Kalpitpur",
+        "hi": "\u0915\u093e\u0932\u094d\u092a\u0928\u093f\u0915 \u092e\u093e\u0930\u094d\u0917, \u0915\u0932\u094d\u092a\u093f\u0924\u092a\u0941\u0930"
+      },
+      "lat": null,
+      "lng": null,
+      "accessibility": {
+        "ramp": "true",
+        "ground_floor": true,
+        "drinking_water": true,
+        "toilet": "FALSE",
+        "wheelchair": false
+      },
+      "source_url": "",
+      "is_synthetic": true
+    },
+    {
+      "station_code": "DEMO-ST01-AC001-PS002",
+      "ac_code": "DEMO-ST01-AC001",
+      "parts_served": [
+        3
+      ],
+      "name": {
+        "en": "  DEMO Community Hall  "
+      },
+      "address": {
+        "en": "Imaginary Lane"
+      },
+      "lat": 0.5,
+      "lng": "-0.000000",
+      "accessibility": {
+        "ramp": false,
+        "ground_floor": true,
+        "drinking_water": false,
+        "toilet": true,
+        "wheelchair": false
+      },
+      "source_url": "https://example.org/demo-booths",
+      "is_synthetic": true
+    }
+  ],
+  "expected": {
+    "row_count": 2,
+    "root": "47cfd13590a651419afcb6a90b70fd43df6fa2b36fa71565aa67d3244f48f040",
+    "canonical_rows": [
+      "{\"ac_code\":\"DEMO-ST01-AC001\",\"accessibility\":{\"drinking_water\":false,\"ground_floor\":true,\"ramp\":false,\"toilet\":true,\"wheelchair\":false},\"address\":{\"en\":\"Imaginary Lane\"},\"is_synthetic\":true,\"lat\":\"0.500000\",\"lng\":\"0.000000\",\"name\":{\"en\":\"DEMO Community Hall\"},\"parts_served\":[3],\"source_url\":\"https://example.org/demo-booths\",\"station_code\":\"DEMO-ST01-AC001-PS002\"}",
+      "{\"ac_code\":\"DEMO-ST01-AC001\",\"accessibility\":{\"drinking_water\":true,\"ground_floor\":true,\"ramp\":true,\"toilet\":false,\"wheelchair\":false},\"address\":{\"en\":\"Fictional Road, Kalpitpur\",\"hi\":\"\u0915\u093e\u0932\u094d\u092a\u0928\u093f\u0915 \u092e\u093e\u0930\u094d\u0917, \u0915\u0932\u094d\u092a\u093f\u0924\u092a\u0941\u0930\"},\"is_synthetic\":true,\"lat\":null,\"lng\":null,\"name\":{\"en\":\"DEMO Primary School, Room 1\",\"hi\":\"\u0921\u0947\u092e\u094b \u092a\u094d\u0930\u093e\u0925\u092e\u093f\u0915 \u0935\u093f\u0926\u094d\u092f\u093e\u0932\u092f, \u0915\u0915\u094d\u0937 1\"},\"parts_served\":[1,2],\"source_url\":null,\"station_code\":\"DEMO-ST01-AC001-PS001\"}"
+    ],
+    "leaf_hashes": [
+      "3e3dd17179bc75e05a2ff5e9b7be3c3fdb8ef791f266e10bbde6965e59905e56",
+      "3baa99270ccb5c3a69b0a4e31846cb87e3b67b68394f132aa10a106b9e9f5a50"
+    ]
+  }
+}

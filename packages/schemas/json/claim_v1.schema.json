@@ -1,0 +1,128 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:electralens:schema:claim_v1",
+  "title": "claim_v1",
+  "type": "object",
+  "properties": {
+    "claim_type": {
+      "type": "string",
+      "enum": ["number", "cause_or_intent"]
+    },
+    "area_code": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+    },
+    "metric": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "additions",
+            "deletions",
+            "deletions_by_reason",
+            "corrections",
+            "net_change",
+            "electors"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "deletion_reason": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["D", "S", "A", "R"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "comparator": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["equals", "at_least", "at_most"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "value": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "string",
+              "pattern": "^-?(?:0|[1-9][0-9]*)\\.[0-9]{6}$"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "unit": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["count", "percent"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "period": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "baseline": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+            },
+            "target": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+            }
+          },
+          "required": ["baseline", "target"],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}$"
+    }
+  },
+  "required": [
+    "claim_type",
+    "area_code",
+    "metric",
+    "deletion_reason",
+    "comparator",
+    "value",
+    "unit",
+    "period",
+    "language"
+  ],
+  "additionalProperties": false
+}
