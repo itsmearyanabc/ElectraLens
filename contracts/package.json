@@ -1,0 +1,34 @@
+{
+  "name": "@electralens/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ElectraLensRegistry: append-only, role-gated registry of publication manifest hashes.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "build": "hardhat build",
+    "test": "hardhat test mocha",
+    "gas": "hardhat test mocha --gas-stats",
+    "typecheck": "hardhat build --quiet && tsc -p tsconfig.json --noEmit",
+    "wallet:new": "node scripts/new-wallet.ts",
+    "deploy:hoodi": "hardhat ignition deploy ignition/modules/Registry.ts --network hoodi --parameters ignition/parameters/hoodi.json"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "4.2.1",
+    "@nomicfoundation/hardhat-ethers-chai-matchers": "3.0.13",
+    "@nomicfoundation/hardhat-ignition": "3.1.9",
+    "@nomicfoundation/hardhat-ignition-ethers": "3.1.6",
+    "@nomicfoundation/hardhat-mocha": "4.0.1",
+    "@nomicfoundation/hardhat-network-helpers": "3.0.12",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "4.0.0",
+    "@types/chai": "5.2.3",
+    "@types/mocha": "10.0.10",
+    "chai": "6.3.0",
+    "ethers": "6.17.0",
+    "hardhat": "3.21.1",
+    "mocha": "12.0.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.6.1"
+  }
+}

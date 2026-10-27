@@ -1,0 +1,32 @@
+{
+  "name": "@electralens/anchor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Anchors approved publication manifests on the ElectraLens registry. The only holder of the publisher key.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@electralens/canon": "workspace:*",
+    "@electralens/schemas": "workspace:*",
+    "@supabase/supabase-js": "2.118.0",
+    "ethers": "6.17.0"
+  },
+  "devDependencies": {
+    "vitest": "5.0.5"
+  }
+}

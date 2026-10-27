@@ -105,6 +105,25 @@ def _cmd_run(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_ots(args: argparse.Namespace) -> int:
+    from electralens_engine import ots
+
+    path = Path(args.file)
+    if args.action == "stamp":
+        out = path.with_name(path.name + ".ots")
+        out.write_bytes(ots.stamp(path.read_bytes()))
+        print(f"wrote {out} (pending until Bitcoin confirms, usually a few hours)")
+        return 0
+    if args.action == "upgrade":
+        upgraded, s = ots.upgrade(path.read_bytes())
+        path.write_bytes(upgraded)
+    else:
+        s = ots.status(path.read_bytes())
+    state = f"complete (Bitcoin block {s.bitcoin_heights[0]})" if s.complete else "pending"
+    print(f"digest {s.digest}: {state}")
+    return 0
+
+
 def _cmd_seed_sql(args: argparse.Namespace) -> int:
     from electralens_engine.paths import repo_root
     from electralens_engine.seed import write_seed
@@ -160,6 +179,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="dataset salt for local runs (ingestion generates a random one per version)",
     )
     run.set_defaults(handler=_cmd_run)
+
+    ots_cmd = sub.add_parser("ots", help="OpenTimestamps: stamp a file, upgrade or inspect a proof")
+    ots_cmd.add_argument("action", choices=["stamp", "upgrade", "info"])
+    ots_cmd.add_argument("file", help="file to stamp, or .ots proof to upgrade or inspect")
+    ots_cmd.set_defaults(handler=_cmd_ots)
 
     seed = sub.add_parser("seed-sql", help="write supabase/seed.sql from a jurisdictions.json")
     seed.add_argument("--areas", required=True, help="jurisdictions.json from `el generate`")

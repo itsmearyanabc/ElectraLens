@@ -1,0 +1,6 @@
+{
+  "ElectraLensRegistry": {
+    "admin": "0xYourOfflineAdminWallet0000000000000000000",
+    "publisher": "0xPublisherAddressFromNewWalletScript000000"
+  }
+}

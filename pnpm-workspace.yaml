@@ -16,3 +16,8 @@ minimumReleaseAgeExclude:
   - '@typescript-eslint/utils@8.72.1'
   - '@typescript-eslint/visitor-keys@8.72.1'
   - typescript-eslint@8.72.1
+  - hardhat@3.21.1
+# Install scripts stay off by default (supply-chain safety). esbuild's postinstall only fetches a
+# binary that already arrives through its platform-specific optional dependency.
+allowBuilds:
+  esbuild: false

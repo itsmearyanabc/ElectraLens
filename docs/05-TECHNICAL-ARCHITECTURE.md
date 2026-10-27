@@ -389,18 +389,21 @@ Each rule is a pure function `rule(ctx) -> list[Finding]`. The runner loads both
 - [ ] **B07.13** `/health` (liveness) and `/ready` (database and storage reachable). [NFR-11] P0
 
 ### B08 Integrity: contract, anchor service, OpenTimestamps · S4 · hours 3–8
-- [ ] **B08.01** `ElectraLensRegistry.sol` (Solidity 0.8.x, OpenZeppelin `AccessControl`): `constructor(admin, publisher)`, `anchor`, `retract`, `latest`, `entry`, `count`, events `Anchored` and `Retracted`, custom errors. No upgradeability, no overwrite, no delete. [FR-INT-3] P0
-- [ ] **B08.02** Contract tests: happy path; duplicate hash reverts; wrong `expectedPrevious` reverts; non-publisher reverts; after the admin revokes the publisher, anchoring reverts; retract emits an event and removes nothing; sequence increments; gas report. [FR-INT-3] P0
+- [x] **B08.01** `ElectraLensRegistry.sol` (Solidity 0.8.x, OpenZeppelin `AccessControl`): `constructor(admin, publisher)`, `anchor`, `retract`, `latest`, `entry`, `count`, events `Anchored` and `Retracted`, custom errors. No upgradeability, no overwrite, no delete. [FR-INT-3] P0
+- [x] **B08.02** Contract tests: happy path; duplicate hash reverts; wrong `expectedPrevious` reverts; non-publisher reverts; after the admin revokes the publisher, anchoring reverts; retract emits an event and removes nothing; sequence increments; gas report. [FR-INT-3] P0
 - [ ] **B08.03** Deploy to Hoodi with Hardhat Ignition. The deployer is the **new** publisher wallet. Your MetaMask address is passed in as admin, so your personal key never touches the server or the repo. Record the address and deploy block. [FR-INT-3, D5] P0
+  - Ready: `pnpm --filter @electralens/contracts deploy:hoodi` once the publisher wallet holds Hoodi test ETH and the admin address is confirmed.
 - [ ] **B08.04** Verify the contract source on a Hoodi block explorer, if one supports it for free [A]. [FR-PUB-5] P1
-- [ ] **B08.05** Anchor service: internal-only HTTP, HMAC check with a ±60 s window and a nonce replay cache. [TB4] P0
-- [ ] **B08.06** Anchor service reloads the publication, **recomputes the manifest hash itself**, and checks status `approved` plus two valid approvals bound to that hash. Otherwise it refuses and records a security event. [FR-INT-2, T16] P0
-- [ ] **B08.07** Transactions go through a single-flight queue with nonce management and a fee bump after a timeout. It waits for 1 confirmation, records transaction hash, block and log index, then calls `mark_published`. [FR-INT-5] P0
+- [x] **B08.05** Anchor service: internal-only HTTP, HMAC check with a ±60 s window and a nonce replay cache. [TB4] P0
+- [x] **B08.06** Anchor service reloads the publication, **recomputes the manifest hash itself**, and checks status `approved` plus two valid approvals bound to that hash. Otherwise it refuses and records a security event. [FR-INT-2, T16] P0
+- [x] **B08.07** Transactions go through a single-flight queue with nonce management and a fee bump after a timeout. It waits for 1 confirmation, records transaction hash, block and log index, then calls `mark_published`. [FR-INT-5] P0
 - [ ] **B08.08** Failure path: retries with backoff. The publication shows "anchor pending". Alert after 1 hour. [Architecture §14] P1
-- [ ] **B08.09** Reconciliation every 10 minutes: read `Anchored` and `Retracted` logs since the deploy block. Any event without a matching published publication → critical alert and security event. [T16, T17] P1
-- [ ] **B08.10** Alert when the publisher wallet's balance runs low. [T17] P1
-- [ ] **B08.11** Worker job `ots_stamp`: stamp the manifest hash with OpenTimestamps, store the pending `.ots` file in `public-artifacts`, add an `ots` anchor row. [FR-INT-4] P1
+  - The anchor service is safe to retry (it recovers a confirmed anchor instead of sending again); the retrying job and the one-hour alert come with the worker in S5.
+- [x] **B08.09** Reconciliation every 10 minutes: read `Anchored` and `Retracted` logs since the deploy block. Any event without a matching published publication → critical alert and security event. [T16, T17] P1
+- [x] **B08.10** Alert when the publisher wallet's balance runs low. [T17] P1
+- [ ] **B08.11** Worker job `ots_stamp`: stamp the JCS manifest bytes with OpenTimestamps (so the proof's digest is the manifest hash), store the pending `.ots` file in `public-artifacts`, add an `ots` anchor row. [FR-INT-4] P1
 - [ ] **B08.12** Job `ots_upgrade` runs hourly until complete, then marks the anchor `upgraded` with the Bitcoin block height. [FR-INT-4] P1
+  - `ots.stamp`, `ots.upgrade` and `ots.status` are built and tested (B08.11, B08.12); the worker jobs that call them come in S5.
 - [ ] **B08.13** The verifier shows OTS status and offers the `.ots` download with instructions for checking it with the official client. [FR-INT-5] P1
 
 ---
@@ -573,7 +576,7 @@ A claim is `{area_code, metric, period, comparator, value, unit, claim_type}`. M
 - [ ] **B19.12** AC-12: claim verdict fixtures. P0
 - [ ] **B19.13** API route × role authorisation tests, including IDOR attempts. [T05] P0
 - [ ] **B19.14** Upload fuzzing with malformed CSV and Parquet. [T03] P1
-- [ ] **B19.15** Contract tests (B08.02). P0
+- [x] **B19.15** Contract tests (B08.02). P0
 - [ ] **B19.16** Lighthouse and axe checks on key pages. [NFR-7] P1
 - [ ] **B19.17** CI blocks merges on any failure. P0
 
