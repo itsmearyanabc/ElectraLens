@@ -69,7 +69,12 @@ It creates the admin and any demo staff set in the env file, grants their roles,
 a password. Change a password in the env file and run it again to update it. Each person scans
 the authenticator QR code at their first sign-in to `/en/ops/login`.
 
-## 6. nginx and HTTPS
+## 6. Web server and HTTPS
+
+On this VPS Caddy owns ports 80 and 443. `first-install.sh` copies `infra/caddy/electralens.caddy`
+to `/etc/caddy/`, adds `import /etc/caddy/electralens.caddy` to the Caddyfile (backed up as
+`Caddyfile.before-electralens`), validates and reloads; Caddy gets the certificate itself.
+On a host with nginx instead:
 
 ```bash
 cp /opt/electralens/infra/nginx/electralens.conf /etc/nginx/sites-available/electralens.conf

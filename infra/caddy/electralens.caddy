@@ -1,0 +1,32 @@
+# ElectraLens site for the host Caddy (S8). first-install.sh copies this to /etc/caddy/ and adds
+# one `import` line to the Caddyfile; Caddy gets the HTTPS certificate itself.
+# The website, the API and nothing else are public; the anchor service is never proxied.
+# No access log is configured, so visitor IPs and query strings are not written (NFR-11).
+
+electralens.armedias.com {
+	request_body {
+		max_size 1MB # file uploads go straight to Supabase Storage, not through here
+	}
+	header -Server
+
+	# Same-host services only.
+	handle /internal/* {
+		respond 404
+	}
+
+	handle /api/* {
+		reverse_proxy 127.0.0.1:4100 {
+			transport http {
+				read_timeout 300s # approving a publication waits for the on-chain anchor
+			}
+		}
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:3100 {
+			transport http {
+				read_timeout 300s
+			}
+		}
+	}
+}
