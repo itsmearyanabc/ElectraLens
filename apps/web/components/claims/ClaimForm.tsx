@@ -10,6 +10,7 @@ import {
   type CheckState,
   type SubmitState,
 } from '@/app/[locale]/(site)/claims/actions';
+import { Turnstile } from '@/components/ui/Turnstile';
 import { Link } from '@/i18n/navigation';
 
 export interface AreaOption {
@@ -27,7 +28,13 @@ const VERDICT_STYLE = {
   cannot_establish: 'border-line bg-mist',
 } as const;
 
-export function ClaimForm({ areas }: { areas: AreaOption[] }) {
+export function ClaimForm({
+  areas,
+  turnstileSiteKey,
+}: {
+  areas: AreaOption[];
+  turnstileSiteKey: string | null;
+}) {
   const t = useTranslations('claimForm');
   const [state, action, pending] = useActionState<CheckState, FormData>(checkClaim, {
     status: 'idle',
@@ -186,7 +193,7 @@ export function ClaimForm({ areas }: { areas: AreaOption[] }) {
                 →
               </Link>
             )}
-            <SubmitForModeration claim={state.claim} />
+            <SubmitForModeration claim={state.claim} turnstileSiteKey={turnstileSiteKey} />
           </div>
         )}
         {state.status === 'idle' && (
@@ -199,7 +206,13 @@ export function ClaimForm({ areas }: { areas: AreaOption[] }) {
   );
 }
 
-function SubmitForModeration({ claim }: { claim: Claim }) {
+function SubmitForModeration({
+  claim,
+  turnstileSiteKey,
+}: {
+  claim: Claim;
+  turnstileSiteKey: string | null;
+}) {
   const t = useTranslations('claimForm');
   const locale = useLocale();
   const [state, action, pending] = useActionState<SubmitState, FormData>(submitClaim, {
@@ -229,6 +242,7 @@ function SubmitForModeration({ claim }: { claim: Claim }) {
           required
           className="field"
         />
+        <Turnstile siteKey={turnstileSiteKey} action="claim_submit" locale={locale} />
         <button type="submit" className="btn btn-blue btn-sm" disabled={pending}>
           {t('submit')}
         </button>

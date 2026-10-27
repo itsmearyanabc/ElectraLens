@@ -5,6 +5,7 @@ import { SignInForm } from '@/components/account/SignInForm';
 import { LogoMark } from '@/components/ui/Logo';
 import { Link, redirect } from '@/i18n/navigation';
 import { currentUser } from '@/lib/auth';
+import { env } from '@/lib/env';
 import { pageLocale } from '@/lib/locale';
 import { oneOf } from '@/lib/params';
 
@@ -45,7 +46,10 @@ export default async function SignInPage({
         <div className="card-float mx-auto w-full max-w-md p-8 sm:p-10">
           <LogoMark size={44} />
           <div className="mt-6">
-            <SignInForm initialError={error ? ERRORS[error] : undefined} />
+            <SignInForm
+              initialError={error ? ERRORS[error] : undefined}
+              turnstileSiteKey={env.turnstileSiteKey()}
+            />
           </div>
         </div>
       </div>

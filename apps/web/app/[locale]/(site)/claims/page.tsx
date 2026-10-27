@@ -8,6 +8,7 @@ import { EmptyState, PageHeader, Section } from '@/components/ui/Page';
 import { Link } from '@/i18n/navigation';
 import { getChildAreas, getTopAreas, listPublishedClaims } from '@/lib/data/public';
 import { localName } from '@/lib/data/types';
+import { env } from '@/lib/env';
 import { formatDate } from '@/lib/format';
 import { pageLocale } from '@/lib/locale';
 
@@ -56,7 +57,7 @@ export default async function ClaimsPage({ params }: PageProps<'/[locale]/claims
       <PageHeader eyebrow={t('claims.eyebrow')} title={t('claims.title')} lede={t('claims.lede')} />
       <div className="container-page py-4">
         <Section>
-          <ClaimForm areas={areas} />
+          <ClaimForm areas={areas} turnstileSiteKey={env.turnstileSiteKey()} />
         </Section>
 
         <Section title={t('claims.howTitle')} id="how">

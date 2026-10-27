@@ -9,6 +9,7 @@ import {
   type ClaimResult,
 } from '@/lib/claims';
 import { callApi } from '@/lib/api';
+import { turnstileToken } from '@/lib/turnstile';
 
 export type CheckState =
   | { status: 'idle' }
@@ -64,6 +65,7 @@ export async function submitClaim(_previous: SubmitState, form: FormData): Promi
       },
       text,
       language,
+      turnstile_token: turnstileToken(form),
     },
   });
   return reply.ok ? { status: 'sent' } : { status: 'error', code: reply.code };

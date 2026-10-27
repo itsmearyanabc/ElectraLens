@@ -8,6 +8,7 @@ import { currentUser } from '@/lib/auth';
 import { isAreaCode, isUuid } from '@/lib/data/public';
 import { env } from '@/lib/env';
 import { sessionDb } from '@/lib/supabase/server';
+import { turnstileOk } from '@/lib/turnstile';
 
 export type FormState = { status: 'idle' | 'ok' | 'error'; message?: string; email?: string };
 
@@ -17,11 +18,18 @@ const localeOf = (form: FormData) => {
   return isLocale(value) ? value : 'en';
 };
 
-export async function sendMagicLink(_previous: FormState, form: FormData): Promise<FormState> {
+const CODE = /^[0-9]{6,10}$/;
+
+/**
+ * Emails a one-time sign-in code (the email template shows {{ .Token }}). The link in older
+ * templates still works through /auth/callback, so both kinds of email sign the person in.
+ */
+export async function sendSignInCode(_previous: FormState, form: FormData): Promise<FormState> {
   const email = String(form.get('email') ?? '')
     .trim()
     .toLowerCase();
   if (!EMAIL.test(email)) return { status: 'error', message: 'invalidEmail' };
+  if (!(await turnstileOk(form, 'sign_in'))) return { status: 'error', message: 'notHuman' };
   const locale = localeOf(form);
   const db = await sessionDb();
   const { error } = await db.auth.signInWithOtp({
@@ -33,6 +41,22 @@ export async function sendMagicLink(_previous: FormState, form: FormData): Promi
   });
   if (error) return { status: 'error', message: error.status === 429 ? 'rateLimited' : 'failed' };
   return { status: 'ok', email };
+}
+
+/** Checks the emailed code and signs the person in. */
+export async function verifySignInCode(_previous: FormState, form: FormData): Promise<FormState> {
+  const email = String(form.get('email') ?? '')
+    .trim()
+    .toLowerCase();
+  const token = String(form.get('code') ?? '').replace(/\s+/g, '');
+  if (!EMAIL.test(email)) return { status: 'error', message: 'invalidEmail' };
+  if (!CODE.test(token)) return { status: 'ok', email, message: 'wrongCode' };
+  const db = await sessionDb();
+  const { error } = await db.auth.verifyOtp({ email, token, type: 'email' });
+  if (error) {
+    return { status: 'ok', email, message: error.status === 429 ? 'rateLimited' : 'wrongCode' };
+  }
+  redirect(`/${localeOf(form)}/account`);
 }
 
 export async function signInWithGoogle(form: FormData): Promise<void> {
