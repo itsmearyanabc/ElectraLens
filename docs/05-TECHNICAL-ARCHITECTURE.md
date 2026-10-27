@@ -391,7 +391,7 @@ Each rule is a pure function `rule(ctx) -> list[Finding]`. The runner loads both
 ### B08 Integrity: contract, anchor service, OpenTimestamps · S4 · hours 3–8
 - [x] **B08.01** `ElectraLensRegistry.sol` (Solidity 0.8.x, OpenZeppelin `AccessControl`): `constructor(admin, publisher)`, `anchor`, `retract`, `latest`, `entry`, `count`, events `Anchored` and `Retracted`, custom errors. No upgradeability, no overwrite, no delete. [FR-INT-3] P0
 - [x] **B08.02** Contract tests: happy path; duplicate hash reverts; wrong `expectedPrevious` reverts; non-publisher reverts; after the admin revokes the publisher, anchoring reverts; retract emits an event and removes nothing; sequence increments; gas report. [FR-INT-3] P0
-- [ ] **B08.03** Deploy to Hoodi with Hardhat Ignition. The deployer is the **new** publisher wallet. Your MetaMask address is passed in as admin, so your personal key never touches the server or the repo. Record the address and deploy block. [FR-INT-3, D5] P0
+- [x] **B08.03** Deploy to Hoodi with Hardhat Ignition. The deployer is the **new** publisher wallet. Your MetaMask address is passed in as admin, so your personal key never touches the server or the repo. Record the address and deploy block. [FR-INT-3, D5] P0
   - Ready: `pnpm --filter @electralens/contracts deploy:hoodi` once the publisher wallet holds Hoodi test ETH and the admin address is confirmed.
 - [ ] **B08.04** Verify the contract source on a Hoodi block explorer, if one supports it for free [A]. [FR-PUB-5] P1
 - [x] **B08.05** Anchor service: internal-only HTTP, HMAC check with a ±60 s window and a nonce replay cache. [TB4] P0
@@ -429,30 +429,31 @@ Each rule is a pure function `rule(ctx) -> list[Finding]`. The runner loads both
 | `/[locale]/account/*` | Citizen sign-in, saved items, subscriptions, settings |
 | `/[locale]/ops/*` | Operations console (B15) |
 
-- [ ] **B09.01** Layout: header, language switcher (en / hi / third), a persistent "independent, not affiliated with ECI" notice, footer with links. [FR-PUB-1, T25, NFR-13] P0
-- [ ] **B09.02** Home page. [FR-PUB-1] P0
+- [x] **B09.01** Layout: header, language switcher (en / hi / third), a persistent "independent, not affiliated with ECI" notice, footer with links. [FR-PUB-1, T25, NFR-13] P0
+- [x] **B09.02** Home page. [FR-PUB-1] P0
 - [ ] **B09.03** Datasets page. [FR-PUB-6] P0
 - [ ] **B09.04** Compare page: SVG bar charts plus a data table, drill-down state → district → constituency → part, "< 10" suppression markers. [FR-PUB-2, FR-PUB-9, NFR-7] P0
-- [ ] **B09.05** Findings list with filters (rule, area, strength, review status) and per-run counts, **including findings rejected in review**. [FR-PUB-3, T20] P0
-- [ ] **B09.06** Finding detail: evidence table, baseline, criterion, signal strength with interval, explanation, alternatives shown as prominently as the evidence, limitations, review status, content label, permalink, share card with disclaimer. [FR-PUB-3, FR-PUB-7, AC-9, T24] P0
+- [x] **B09.05** Findings list with filters (rule, area, strength, review status) and per-run counts, **including findings rejected in review**. [FR-PUB-3, T20] P0
+- [x] **B09.06** Finding detail: evidence table, baseline, criterion, signal strength with interval, explanation, alternatives shown as prominently as the evidence, limitations, review status, content label, permalink, share card with disclaimer. [FR-PUB-3, FR-PUB-7, AC-9, T24] P0
 - [ ] **B09.07** Methodology page: rules table, thresholds, statistical tests, what signal strength means, limitations, benchmark precision and recall, change log. [FR-PUB-4, FR-AUD-7] P0
-- [ ] **B09.08** Publications page: sequence per series, linked corrections and retractions, anchor status. [FR-PUB-6, FR-GOV-4] P0
+- [x] **B09.08** Publications page: sequence per series, linked corrections and retractions, anchor status. [FR-PUB-6, FR-GOV-4] P0
 - [ ] **B09.09** Downloads: aggregates as CSV and JSON, report as JSON, each with its hash. CSV cells starting with `= + - @` are escaped. [FR-PUB-8, T03] P1
 - [ ] **B09.10** Official-links page plus contextual links (Forms 6/7/8, roll search, ECINET), clearly marked external and official. [FR-PUB-10, FR-AST-1] P0
 - [ ] **B09.11** About page (is / is not) and privacy page (data inventory and retention). [NFR-13] P0
 - [ ] **B09.12** One `LabelBadge` component used everywhere: Source data / Analytical finding / User-submitted claim / Unverified / Confirmed correction. [FR-PUB-7] P0
+- [x] **B09.16** AI plain-language explanation on finding detail pages: Gemini, server-side, built only from the published evidence, labelled "AI-written", checked against the banned-terms list, with model fallback and no effect on the page when unavailable. [FR-EXP] P2
 - [ ] **B09.13** "Data as of …" banner served from cache when Supabase is unreachable. [NFR-6] P1
 - [ ] **B09.14** Accessibility pass: keyboard, focus, contrast, labels, chart tables, `lang` attributes. [NFR-7] P0
 - [ ] **B09.15** Performance budget: minimal client JS on public routes; Lighthouse mobile check. [NFR-5, NFR-9] P1
 
 ### B10 Verification and tamper demo · S6
-- [ ] **B10.01** Load the manifest, report and aggregates from `public-artifacts` and recompute hashes in the browser (WebCrypto + `packages/canon`). [FR-PUB-5, FR-INT-5] P0
-- [ ] **B10.02** Read the chain directly from a public Hoodi RPC (read-only ethers provider), compare with `entry(seriesId, sequence)`, and show the transaction, block, time, previous link and an explorer link. [FR-INT-5, TB9] P0
-- [ ] **B10.03** Result states: MATCH, MISMATCH, ANCHOR PENDING, RETRACTED, NETWORK UNAVAILABLE. [FR-INT-5] P0
+- [x] **B10.01** Load the manifest, report and aggregates from `public-artifacts` and recompute hashes in the browser (WebCrypto + `packages/canon`). [FR-PUB-5, FR-INT-5] P0
+- [x] **B10.02** Read the chain directly from a public Hoodi RPC (read-only ethers provider), compare with `entry(seriesId, sequence)`, and show the transaction, block, time, previous link and an explorer link. [FR-INT-5, TB9] P0
+- [x] **B10.03** Result states: MATCH, MISMATCH, ANCHOR PENDING, RETRACTED, NETWORK UNAVAILABLE. [FR-INT-5] P0
 - [ ] **B10.04** Full synthetic-dataset verification: download canonical rows and salt, rebuild the Merkle root in a Web Worker. [Architecture DF4] P0
 - [ ] **B10.05** Tamper demo: edit one record in a local copy, recompute, show MISMATCH and **which leaf changed** using inclusion proofs. Synthetic data only. [FR-INT-6, AC-6] P0
 - [ ] **B10.06** OTS panel (B08.13). [FR-INT-4] P1
-- [ ] **B10.07** "What this proves / what it doesn't prove" box (Architecture §8.5). [FR-INT-5] P0
+- [x] **B10.07** "What this proves / what it doesn't prove" box (Architecture §8.5). [FR-INT-5] P0
 
 ### B11 Claim checker · S6
 A claim is `{area_code, metric, period, comparator, value, unit, claim_type}`. Metrics: additions, deletions, deletions by reason, corrections, net change, electors. Tolerance [P]: counts within max(1 %, 10), percentages within 0.5 points.
@@ -474,7 +475,7 @@ A claim is `{area_code, metric, period, comparator, value, unit, claim_type}`. M
 ### B13 Booths and QR codes · S6
 - [ ] **B13.01** Booth import: a `polling_stations_v1` file goes through ingestion and approval, then is published. [FR-QR-4] P0
 - [ ] **B13.02** `public_code` generator (§4.1), unique. [FR-QR-2] P0
-- [ ] **B13.03** Booth page `/b/{code}`: name, address, parts served, accessibility, source, last verified, official links, "not an official document", DEMO watermark for synthetic data. Server-rendered and cacheable. [FR-QR-1, FR-QR-4] P0
+- [x] **B13.03** Booth page `/b/{code}`: name, address, parts served, accessibility, source, last verified, official links, "not an official document", DEMO watermark for synthetic data. Server-rendered and cacheable. [FR-QR-1, FR-QR-4] P0
 - [ ] **B13.04** Booth search by area only. There is no search by person. [FR-AST-1] P0
 - [ ] **B13.05** QR SVG endpoint encoding only `https://<host>/b/<code>`, with a decode test. [FR-QR-2, AC-11] P0
 - [ ] **B13.06** Printable A4 poster per booth: QR code and notice, print CSS. [FR-QR-3] P1
@@ -503,7 +504,7 @@ A claim is `{area_code, metric, period, comparator, value, unit, claim_type}`. M
 - [ ] **B15.03** Analyst: start a run (baseline, target, methodology), watch the job, inspect findings and restricted evidence through a signed-URL viewer. [US-S2] P0
 - [ ] **B15.04** Reviewer: review findings with a reason (blocked on own runs), approve the review step, moderate claims. [US-S3] P0
 - [ ] **B15.05** Publisher: create a publication from a run, view the manifest and its diff from the previous one, approve the publish step, retract or correct with a reason. [US-S4, US-S5] P0
-- [ ] **B15.06** The two-person rule is enforced in the database and shown as a clear error message. [FR-GOV-2, AC-5] P0
+- [x] **B15.06** The two-person rule is enforced in the database and shown as a clear error message. [FR-GOV-2, AC-5] P0
 - [ ] **B15.07** A correction creates a new linked version (`supersedes_id`). A retraction appends. Nothing is deleted. [FR-GOV-4] P0
 - [ ] **B15.08** Auditor: read-only audit log and security-event viewers with filters. [US-S6, FR-GOV-3] P1
 - [ ] **B15.09** Sysadmin: staff list, invite, grant and revoke scoped roles. Can't publish or review (enforced). [US-S7] P1
@@ -550,7 +551,7 @@ A claim is `{area_code, metric, period, comparator, value, unit, claim_type}`. M
 - [ ] **B18.04** DNS record for the subdomain (Cloudflare proxy if D3 = yes) and a TLS certificate (certbot or Cloudflare Origin CA). [D2, D3] P0
 - [ ] **B18.05** nginx server block deployed, `nginx -t` passes, and both sites are checked with curl so the other app is confirmed unaffected. [C5] P0
 - [ ] **B18.06** Turnstile widget (site key and secret) for the subdomain. [FR-CLM-5] P0
-- [ ] **B18.07** Registry deployed (B08.03) and its address in the environment. [FR-INT-3] P0
+- [x] **B18.07** Registry deployed (B08.03) and its address in the environment. [FR-INT-3] P0
 - [ ] **B18.08** Backup cron: nightly `pg_dump` → `age` encryption → keep 14 daily and 8 weekly. First restore drill into local Supabase, timed. [T18, T21] P0
 - [ ] **B18.09** Free external uptime monitor on `/` and `/api/v1/health`, plus an alert channel. [NFR-6, NFR-11] P0
 - [ ] **B18.10** Supabase keep-alive (worker polling plus a daily health query), and a check that the project isn't paused. P0
@@ -628,7 +629,7 @@ Recorded for a later phase. Nothing below is implemented or validated, and none 
 
 ### B23 Public evidence verification portal · Priority: High · Planned / Partly built
 Most of this already exists in the current build: the registry contract (B08.01–B08.02), the browser verifier at `/verify/{id}` that recomputes the RFC 8785 manifest hash and file hashes and reads `entry(seriesId, sequence)` from a public RPC (B10.01–B10.03), the tamper demo (B10.05) and the "what this proves / doesn't prove" box (B10.07). Only the remaining gaps are listed:
-- [ ] **B23.01** Deploy the registry to Hoodi and record anchors, so the chain step returns a real result instead of ANCHOR PENDING (B08.03).
+- [x] **B23.01** Deploy the registry to Hoodi and record anchors, so the chain step returns a real result instead of ANCHOR PENDING (B08.03).
 - [ ] **B23.02** Separate result wording for missing commitment, wrong network and RPC unavailable (today these share NETWORK UNAVAILABLE).
 - [ ] **B23.03** Show the transaction reference and on-chain timestamp from the chain read itself, not only from the database.
 - [ ] **B23.04** Let a visitor verify a report file they upload against the on-chain commitment, without using our API (extends the manifest-file check).

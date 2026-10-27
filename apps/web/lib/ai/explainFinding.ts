@@ -8,7 +8,7 @@ import { getFinding } from '@/lib/data/public';
 import { evidenceRows } from '@/lib/evidence';
 import { catalogueText, explanationText, parseFinding, ruleName } from '@/lib/findings';
 
-import { generate, GeminiUnavailable, modelName } from './gemini';
+import { generate, GeminiUnavailable } from './gemini';
 
 export type Explanation =
   | { status: 'ok'; text: string; model: string }
@@ -60,9 +60,9 @@ export async function explainFinding(id: string, locale: string): Promise<Explan
     ...finding.limitations.map((key) => `- ${catalogueText(locale, key)}`),
   ].filter((line): line is string => line !== null);
 
-  let text: string;
+  let answer: { text: string; model: string };
   try {
-    text = await generate(
+    answer = await generate(
       SYSTEM,
       `Write the explanation in ${LANGUAGE[locale] ?? 'English'}.\n\nFacts:\n${facts.join('\n')}`,
     );
@@ -72,12 +72,12 @@ export async function explainFinding(id: string, locale: string): Promise<Explan
   }
 
   // Plain text only, and nothing that accuses (FR-EXP-4); a refused answer is not cached.
-  const clean = text.replace(/[*#_`]+/g, '').trim();
+  const clean = answer.text.replace(/[*#_`]+/g, '').trim();
   if (findBannedTerm(clean)) return { status: 'refused' };
   const result: Explanation = {
     status: 'ok',
     text: clean,
-    model: modelName() ?? '',
+    model: answer.model,
   };
   if (cache.size > 500) cache.clear();
   cache.set(cacheKey, result);

@@ -93,9 +93,32 @@ curl -s https://electralens.armedias.com/api/v1/publications | head -c 200
 pm2 logs electralens-worker --lines 20
 ```
 
+## 8. Registry on Hoodi (done)
+
+`ElectraLensRegistry` is at `0x33dDc801030b62066f731289de0FBB5D38Ee4aA8` (deploy block 3898610),
+admin `0xb7Bf3660FbC34D8B979beb9544a4B3977d00a8e1` (key in `secrets/admin_private_key`, kept off
+the server), publisher `0x765eE9a8194aE69f244561777BB30Fe4E885F3cB`. `anchor.env` holds the
+registry address, deploy block and publisher key; `electralens.env` holds
+`NEXT_PUBLIC_REGISTRY_ADDRESS`. Both files must carry the same `ANCHOR_HMAC_KEY`.
+
+A publication approved before the registry existed is anchored with:
+
+```bash
+cd /opt/electralens && /opt/electralens-node/bin/node --env-file=/etc/electralens/electralens.env   infra/scripts/anchor-publication.mjs <publication-id>
+```
+
+## 9. AI explanations
+
+`GEMINI_API_KEY` in `electralens.env` turns on "Explain with AI" on finding pages (server-side
+only; overloaded models fall back to lighter Flash models). After changing it:
+`pm2 restart electralens-web --update-env`. Failures are logged as `AI explainer: …` in
+`pm2 logs electralens-web`.
+
 ## Demo data on the live site
 
-The demo is made through the real pipeline, as the judges would see it: sign in as the data
-steward, create two roll versions and upload `roll_v1.csv` and `roll_v2.csv` (from `el generate`),
-approve them, then analyst → reviewer → publisher. `pnpm demo:reset` is for local machines only
-and refuses to touch the cloud.
+Publication DEMO-HR #1 was loaded with `el demo-sql` (rows applied with
+`npx supabase db query --linked -f data/demo/publish/demo.sql`), its public files uploaded with
+`infra/scripts/upload-demo-artifacts.sh` (the exact bytes in `infra/demo/`), then anchored as
+above. Further publications go through the real pipeline: data steward uploads, analyst runs,
+reviewer reviews, two people approve, and the anchor follows the second approval.
+`pnpm demo:reset` is for local machines only and refuses to touch the cloud.

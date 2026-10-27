@@ -12,35 +12,47 @@ export class GeminiUnavailable extends Error {}
 
 const calls: number[] = [];
 
-/** The model that will answer, for the label under the text; null when none is configured. */
-export function modelName(): string | null {
-  if (process.env.GEMINI_API_KEY) return process.env.GEMINI_MODEL ?? 'gemini-flash-latest';
-  if (process.env.NVIDIA_API_KEY) return process.env.NVIDIA_MODEL ?? 'meta/llama-3.3-70b-instruct';
-  return null;
+/** Models to try in order: the configured one, then lighter Flash models when it is overloaded. */
+function candidates(): string[] {
+  if (process.env.GEMINI_API_KEY) {
+    const preferred = process.env.GEMINI_MODEL ?? 'gemini-flash-latest';
+    return [...new Set([preferred, 'gemini-flash-lite-latest', 'gemini-2.5-flash'])];
+  }
+  if (process.env.NVIDIA_API_KEY) return [process.env.NVIDIA_MODEL ?? 'meta/llama-3.1-8b-instruct'];
+  return [];
 }
 
-/** One generation: a fixed system instruction and one user message. Returns plain text. */
-export async function generate(system: string, prompt: string): Promise<string> {
-  const model = modelName();
-  if (!model) throw new GeminiUnavailable('not configured');
+/** Overloaded, rate-limited, retired or briefly failing: worth trying the next model. */
+const RETRYABLE = /^status (404|410|429|500|502|503|504)\b/;
+
+/** One generation: a fixed system instruction and one user message. Plain text and its model. */
+export async function generate(
+  system: string,
+  prompt: string,
+): Promise<{ text: string; model: string }> {
+  const models = candidates();
+  if (models.length === 0) throw new GeminiUnavailable('not configured');
 
   const now = Date.now();
   while (calls.length && now - (calls[0] ?? now) > 60_000) calls.shift();
   if (calls.length >= MAX_CALLS_PER_MINUTE) throw new GeminiUnavailable('busy');
   calls.push(now);
 
-  let text: string;
-  try {
-    text = process.env.GEMINI_API_KEY
-      ? await gemini(model, process.env.GEMINI_API_KEY, system, prompt)
-      : await nvidia(model, process.env.NVIDIA_API_KEY ?? '', system, prompt);
-  } catch (error) {
-    // The reason only (status or network error), never the key or the prompt.
-    console.warn(`AI explainer: ${model} failed: ${(error as Error).message}`);
-    throw error instanceof GeminiUnavailable ? error : new GeminiUnavailable('request failed');
+  for (const model of models) {
+    try {
+      const text = process.env.GEMINI_API_KEY
+        ? await gemini(model, process.env.GEMINI_API_KEY, system, prompt)
+        : await nvidia(model, process.env.NVIDIA_API_KEY ?? '', system, prompt);
+      if (text) return { text, model };
+      console.warn(`AI explainer: ${model} returned an empty answer`);
+    } catch (error) {
+      // The reason only (status or network error), never the key or the prompt.
+      const reason = (error as Error).message;
+      console.warn(`AI explainer: ${model} failed: ${reason}`);
+      if (error instanceof GeminiUnavailable && !RETRYABLE.test(reason)) throw error;
+    }
   }
-  if (!text) throw new GeminiUnavailable('empty answer');
-  return text;
+  throw new GeminiUnavailable('every model failed');
 }
 
 async function gemini(model: string, key: string, system: string, prompt: string) {
