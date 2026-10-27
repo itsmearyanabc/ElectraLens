@@ -7,6 +7,8 @@ import 'server-only';
 const GEMINI = 'https://generativelanguage.googleapis.com/v1beta/models';
 const NVIDIA = 'https://integrate.api.nvidia.com/v1/chat/completions';
 const MAX_CALLS_PER_MINUTE = 30;
+// Short, so an overloaded model hands over to the next one quickly.
+const MODEL_TIMEOUT_MS = 12_000;
 
 export class GeminiUnavailable extends Error {}
 
@@ -66,7 +68,7 @@ async function gemini(model: string, key: string, system: string, prompt: string
       generationConfig: { temperature: 0.2, maxOutputTokens: 2048 },
     }),
     cache: 'no-store',
-    signal: AbortSignal.timeout(30_000),
+    signal: AbortSignal.timeout(MODEL_TIMEOUT_MS),
   });
   if (!response.ok)
     throw new GeminiUnavailable(
@@ -96,7 +98,7 @@ async function nvidia(model: string, key: string, system: string, prompt: string
       max_tokens: 1024,
     }),
     cache: 'no-store',
-    signal: AbortSignal.timeout(30_000),
+    signal: AbortSignal.timeout(MODEL_TIMEOUT_MS),
   });
   if (!response.ok)
     throw new GeminiUnavailable(
