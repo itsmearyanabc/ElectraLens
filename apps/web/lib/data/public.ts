@@ -421,6 +421,29 @@ export const getMethodologyVersion = cache(
   },
 );
 
+// ---- demo voter cards ---------------------------------------------------------------------
+
+export interface VoterCard {
+  card_number: string;
+  holder_name: string;
+  part_number: number | null;
+  serial_number: number | null;
+  booth_code: string;
+  is_synthetic: boolean;
+}
+
+export const VOTER_CARD_CODE = /^[0-9A-HJKMNP-TV-Z]{10}$/;
+
+/** What a card's QR code shows: the holder and their booth, never participation. */
+export const getVoterCard = cache(async (code: string): Promise<VoterCard | null> => {
+  if (!VOTER_CARD_CODE.test(code)) return null;
+  const rows = check(
+    'voter card',
+    await publicDb().rpc('demo_voter_card', { p_code: code }),
+  ) as VoterCard[];
+  return rows[0] ?? null;
+});
+
 // ---- booths -------------------------------------------------------------------------------
 
 export interface Booth {

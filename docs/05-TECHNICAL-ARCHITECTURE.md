@@ -479,7 +479,9 @@ A claim is `{area_code, metric, period, comparator, value, unit, claim_type}`. M
 - [ ] **B13.04** Booth search by area only. There is no search by person. [FR-AST-1] P0
 - [ ] **B13.05** QR SVG endpoint encoding only `https://<host>/b/<code>`, with a decode test. [FR-QR-2, AC-11] P0
 - [ ] **B13.06** Printable A4 poster per booth: QR code and notice, print CSS. [FR-QR-3] P1
-- [ ] **B13.07** No per-voter QR route exists, and a test asserts it. [FR-QR-5] P0
+- [ ] **B13.07** No per-voter QR route exists for real people, and a test asserts it. [FR-QR-5] P0
+  *Deliberate, recorded exception (B13.09):* synthetic demo voter cards only. The table refuses non-synthetic rows, the QR holds a random code (never a card or EPIC number), a scan shows only the booth, and participation history needs the card's PIN (bcrypt, five wrong tries lock the card for 15 minutes).
+- [x] **B13.09** Demo voter cards: ten synthetic citizens, `/v/<code>` shows their polling booth; a 4-digit PIN reveals their synthetic participation history (elections voted and missed). Printable card sheet from `apps/web/scripts/demo-voter-cards.mjs` (kept out of git: it shows the PINs). P2
 - [ ] **B13.08** Booth views are never linked to accounts, and query strings aren't logged. [Threat model §5.4] P0
 
 ---

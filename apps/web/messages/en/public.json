@@ -751,5 +751,27 @@
     "listening": "Listening…",
     "voicePrivacy": "Voice is handled by your browser. Some browsers send the audio to their maker’s speech service; ElectraLens never receives it.",
     "notUnderstood": "Sorry, we didn’t catch that. Please tap an option instead."
+  },
+  "voterCard": {
+    "metaTitle": "Demo voter card",
+    "eyebrow": "Demo voter card · scanned",
+    "hello": "Hello, {name}",
+    "yourBooth": "Your polling booth",
+    "partSerial": "Part and serial",
+    "partSerialValue": "Part {part} · serial {serial}",
+    "boothDetails": "Booth details and accessibility",
+    "historyTitle": "Your voting record",
+    "historyIntro": "Enter the 4-digit PIN printed on your card. Without it nobody who scans your card can see whether you voted.",
+    "pin": "Card PIN",
+    "show": "Show my record",
+    "wrong": "That PIN does not match this card.",
+    "locked": "Too many wrong PINs. This card is locked for 15 minutes.",
+    "failed": "The record could not be loaded. Please try again.",
+    "voted": "Voted",
+    "missed": "Missed",
+    "summary": "You missed {missed} of {total} elections",
+    "allVoted": "You voted in every election. Thank you!",
+    "synthetic": "Synthetic demonstration record. ElectraLens holds no real voting records: the electoral roll does not record who voted.",
+    "notOfficial": "This is a demonstration card for a fictional person, not an official EPIC. For your real polling station use the official electoral search or call 1950."
   }
 }

@@ -532,6 +532,69 @@ export type Database = {
           },
         ];
       };
+      demo_voter_cards: {
+        Row: {
+          birth_year: number | null;
+          card_code: string;
+          card_number: string;
+          created_at: string;
+          failed_attempts: number;
+          gender: string | null;
+          holder_name: string;
+          id: string;
+          is_synthetic: boolean;
+          locked_until: string | null;
+          part_number: number | null;
+          participation: NonNullable<Json>;
+          pin_hash: string;
+          polling_station_id: string;
+          serial_number: number | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          birth_year?: number | null;
+          card_code: string;
+          card_number: string;
+          created_at?: string;
+          failed_attempts?: number;
+          gender?: string | null;
+          holder_name: string;
+          id?: string;
+          is_synthetic?: boolean;
+          locked_until?: string | null;
+          part_number?: number | null;
+          participation?: NonNullable<Json>;
+          pin_hash: string;
+          polling_station_id: string;
+          serial_number?: number | null;
+        };
+        Update: {
+          birth_year?: number | null;
+          card_code?: string;
+          card_number?: string;
+          created_at?: string;
+          failed_attempts?: number;
+          gender?: string | null;
+          holder_name?: string;
+          id?: string;
+          is_synthetic?: boolean;
+          locked_until?: string | null;
+          part_number?: number | null;
+          participation?: NonNullable<Json>;
+          pin_hash?: string;
+          polling_station_id?: string;
+          serial_number?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'demo_voter_cards_polling_station_id_fkey';
+            columns: ['polling_station_id'];
+            isOneToOne: false;
+            referencedRelation: 'polling_stations';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       finding_reviews: {
         Row: {
           created_at: string;
@@ -1206,6 +1269,18 @@ export type Database = {
       create_publication: { Args: { p_run: string }; Returns: string };
       custom_access_token_hook: { Args: { event: Json }; Returns: Json };
       delete_own_unpublished_claims: { Args: Record<PropertyKey, never>; Returns: number };
+      demo_voter_card: {
+        Args: { p_code: string };
+        Returns: {
+          booth_code: string;
+          card_number: string;
+          holder_name: string;
+          is_synthetic: boolean;
+          part_number: number;
+          serial_number: number;
+        }[];
+      };
+      demo_voter_history: { Args: { p_code: string; p_pin: string }; Returns: Json };
       fail_job: {
         Args: { p_error: string; p_id: string; p_worker: string };
         Returns: Database['public']['Enums']['job_status'];
