@@ -23,7 +23,7 @@ __pycache__/
 .ruff_cache/
 
 # Generated data (synthetic datasets are reproducible from their seed)
-data/
+/data/
 
 # Contracts
 contracts/artifacts/
