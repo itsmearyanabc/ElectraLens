@@ -3,6 +3,7 @@ import hi from '../catalogue/hi.json' with { type: 'json' };
 
 import type { Catalogue } from './render.ts';
 
+export * from './banned.ts';
 export * from './render.ts';
 
 /** Catalogues by locale. The third language is added here once chosen (decision D4). */

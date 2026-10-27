@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { AiExplanation } from '@/components/findings/AiExplanation';
 import { LabelBadge, ReviewBadge, SignalBadge } from '@/components/ui/Badge';
 import { DefinitionList, Notice, PageHeader, TableWrap } from '@/components/ui/Page';
 import { Link } from '@/i18n/navigation';
@@ -64,6 +65,21 @@ export default async function FindingPage({ params }: PageProps<'/[locale]/findi
                 {t(`strength.help_${finding.signal_strength}`)}
               </p>
             </section>
+
+            <AiExplanation
+              findingId={row.id}
+              locale={locale}
+              text={{
+                title: t('finding.ai.title'),
+                intro: t('finding.ai.intro'),
+                button: t('finding.ai.button'),
+                working: t('finding.ai.working'),
+                badge: t('finding.ai.badge'),
+                disclaimer: t('finding.ai.disclaimer'),
+                unavailable: t('finding.ai.unavailable'),
+                refused: t('finding.ai.refused'),
+              }}
+            />
 
             {/* B09.06: alternatives are shown as prominently as the evidence, side by side. */}
             <div className="grid gap-6 lg:grid-cols-2">

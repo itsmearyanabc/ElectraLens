@@ -150,6 +150,16 @@
     "open": "Open finding {code}"
   },
   "finding": {
+    "ai": {
+      "title": "In plain words",
+      "intro": "Ask Gemini to explain this finding in everyday language. It sees only the figures and notes on this page.",
+      "button": "Explain with AI",
+      "working": "Writing an explanation…",
+      "badge": "AI-written",
+      "disclaimer": "Written by an AI model from the figures on this page. The figures above are the record; if they disagree, trust them.",
+      "unavailable": "The AI explanation is not available right now. The explanation and figures on this page are complete without it.",
+      "refused": "The AI answer did not meet our wording rules, so it is not shown. Please try again."
+    },
     "metaTitle": "Finding {code}",
     "eyebrow": "Finding {code}",
     "inArea": "In {area}",
