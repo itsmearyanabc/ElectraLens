@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+@theme {
+  /* Exact OriginX Design System Color Palette */
+  --color-dark: #172033;
+  --color-foreground: #172033;
+  --color-slate: #475467;
+  --color-muted: #475467;
+  
+  --color-background: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F7F8FA;
+  --color-border: #E4E7EC;
+  --color-border-dark: #D0D5DD;
+  
+  /* OriginX Primary Saffron / Orange */
+  --color-orange: #F07824;
+  --color-orange-dark: #D9661A;
+  --color-orange-light: #FFF4EC;
+  --color-accent: #F07824;
+  
+  /* OriginX Analytical Royal Blue */
+  --color-blue: #2864DC;
+  --color-blue-dark: #1C4BB4;
+  --color-blue-light: #EAF0FC;
+  
+  /* OriginX Verification Emerald Green */
+  --color-green: #14663F;
+  --color-green-light: #E7F6EE;
+  --color-verified: #14663F;
+  
+  --color-caution: #D9661A;
+  --color-critical: #DC2626;
+  
+  /* Deep Dark Surfaces (e.g. Tamper Section) */
+  --color-dark-surface: #172033;
+  --color-dark-text: #F7F8FA;
+  
+  /* Fonts - Caprasimo heading & Figtree bold UI */
+  --font-serif: "Caprasimo", Georgia, serif;
+  --font-heading: "Caprasimo", Georgia, serif;
+  --font-sans: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+  --radius-pill: 9999px;
+}
+
+/* Base styles */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Complete OriginX Pill Buttons */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 24px;
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  will-change: transform;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-pill:hover {
+  transform: translateY(-1px);
+}
+
+.btn-pill:active {
+  transform: scale(0.98);
+}
+
+.btn-pill-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.2;
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+
+.btn-orange {
+  background: #F07824;
+  color: #172033;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+.btn-orange:hover {
+  background: #F48F45;
+  box-shadow: 0 8px 24px -6px rgba(240, 120, 36, 0.5);
+}
+
+.btn-dark {
+  background: #172033;
+  color: #FFFFFF;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+.btn-dark:hover {
+  background: #232E47;
+  box-shadow: 0 8px 24px -6px rgba(23, 32, 51, 0.4);
+}
+
+.btn-blue {
+  background: #2864DC;
+  color: #FFFFFF;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 2px rgba(40, 100, 220, 0.1);
+}
+.btn-blue:hover {
+  background: #1C4BB4;
+  box-shadow: 0 8px 24px -6px rgba(40, 100, 220, 0.45);
+}
+
+.btn-outline {
+  border: 1.5px solid #172033;
+  color: #172033;
+  background: #FFFFFF;
+}
+.btn-outline:hover {
+  background: #172033;
+  color: #FFFFFF;
+}
+
+.btn-subtle {
+  border: 1px solid #E4E7EC;
+  color: #172033;
+  background: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+.btn-subtle:hover {
+  border-color: #172033;
+  background: #F7F8FA;
+}
+
+/* OriginX Signature Content Cards */
+.card-origin {
+  background: #FFFFFF;
+  border: 1px solid #E4E7EC;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card-origin:hover {
+  border-color: #172033;
+  box-shadow: 0 12px 30px -10px rgba(23, 32, 51, 0.08);
+}
+
+/* Kicker tag */
+.kicker-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: #F7F8FA;
+  border: 1px solid #E4E7EC;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #475467;
+}
+
+/* Monospace data values */
+.font-data {
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Formal Verification Dossier Print Stylesheet */
+@media print {
+  header,
+  footer,
+  nav,
+  .no-print,
+  button {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #172033 !important;
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .card-origin {
+    border: 1px solid #d0d5dd !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    border-radius: 12px !important;
+    padding: 16px !important;
+  }
+
+  pre {
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    font-size: 8pt !important;
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  @page {
+    margin: 1.2cm;
+    size: A4 portrait;
+  }
+}
