@@ -17,7 +17,9 @@ CADDY_IMPORT="import /etc/caddy/electralens.caddy"
 step() { echo; echo "======== $* ========"; }
 
 step "1/7 checking ports 3100, 4100, 4200 are free"
-if ss -ltn | grep -qE ':(3100|4100|4200) '; then
+if pm2 describe electralens-web >/dev/null 2>&1; then
+  echo "ElectraLens is already running on them (re-run)"
+elif ss -ltn | grep -qE ':(3100|4100|4200) '; then
   ss -ltnp | grep -E ':(3100|4100|4200) '
   echo "A port ElectraLens needs is in use by another app. Stopping without changing anything." >&2
   exit 1
