@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
   ArrowRight,
@@ -26,20 +26,19 @@ import {
   ChevronDown,
   ExternalLink,
 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-  Cell,
-} from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { useLanguage } from "@/context/language-context";
+
+const BreakdownChart = dynamic(() => import("@/components/charts/breakdown-chart"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[220px] w-full rounded-2xl bg-[#F7F8FA] animate-pulse flex items-center justify-center text-xs text-[#98A2B3]">
+      Loading statistical distribution...
+    </div>
+  ),
+});
 import {
   primaryComparison,
   getPublishedFindings,
@@ -120,7 +119,7 @@ export default function HomePage() {
   };
 
   // FAQ Accordion State
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Copy Hash Micro-Interaction State
   const [copiedHash, setCopiedHash] = useState(false);
@@ -155,81 +154,44 @@ export default function HomePage() {
     <div className="min-h-screen bg-white text-[#172033] selection:bg-[#F07824]/20 selection:text-[#F07824]">
       {/* ===== SECTION 1: HERO (OriginX Layout with 3D Tilt & Verifiable Roll Passport) ===== */}
       <section className="relative overflow-hidden pt-8 pb-16 md:pt-16 md:pb-24 border-b border-[#E4E7EC]">
-        {/* OriginX Ambient Circular Background Blobs with Gentle Breathing Float */}
-        <motion.div
-          animate={{
-            scale: [1, 1.06, 1],
-            x: [0, 15, 0],
-            y: [0, -10, 0],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+        {/* OriginX Ambient Circular Background Blobs */}
+        <div
           className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full bg-[#FFF4EC] opacity-70 blur-3xl pointer-events-none"
           aria-hidden="true"
         />
-        <motion.div
-          animate={{
-            scale: [1, 1.08, 1],
-            x: [0, -12, 0],
-            y: [0, 15, 0],
-          }}
-          transition={{
-            duration: 14,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+        <div
           className="absolute top-20 right-0 w-[480px] h-[480px] rounded-full bg-[#EAF0FC] opacity-80 blur-3xl pointer-events-none"
           aria-hidden="true"
         />
 
         <div className="max-w-[1240px] mx-auto px-4 md:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            {/* Left Column: OriginX Bold Typography with Staggered Entrance */}
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-              className="lg:col-span-7 flex flex-col items-start gap-6"
-            >
+            {/* Left Column: OriginX Bold Typography (Direct HTML for Instant LCP) */}
+            <div className="lg:col-span-7 flex flex-col items-start gap-6">
               {/* Kicker Tag */}
-              <motion.div variants={fadeInUp} custom={0} className="inline-flex items-center gap-2">
+              <div className="inline-flex items-center gap-2">
                 <span className="font-mono text-[11px] font-bold tracking-[0.14em] uppercase text-[#475467] bg-[#F7F8FA] border border-[#E4E7EC] px-3.5 py-1 rounded-full flex items-center gap-2 shadow-xs">
                   <span className="w-2 h-2 rounded-full bg-[#F07824]" />
                   {t("hero.kicker", "THE VERIFIABLE CIVIC INTELLIGENCE LAYER")}
                 </span>
-              </motion.div>
+              </div>
 
               {/* Clamp Heading */}
-              <motion.h1
-                variants={fadeInUp}
-                custom={1}
-                className="font-serif text-[44px] sm:text-[64px] lg:text-[76px] leading-[0.96] tracking-[-0.02em] text-[#172033] font-normal m-0"
-              >
+              <h1 className="font-serif text-[44px] sm:text-[64px] lg:text-[76px] leading-[0.96] tracking-[-0.02em] text-[#172033] font-normal m-0">
                 <span className="block">{t("hero.headline1", "Every roll.")}</span>
                 <span className="block text-[#2864DC]">{t("hero.headline2", "One verifiable record.")}</span>
-              </motion.h1>
+              </h1>
 
               {/* Subhead */}
-              <motion.p
-                variants={fadeInUp}
-                custom={2}
-                className="m-0 max-w-[540px] text-base sm:text-lg lg:text-[19px] leading-[1.6] text-[#475467] font-medium"
-              >
+              <p className="m-0 max-w-[540px] text-base sm:text-lg lg:text-[19px] leading-[1.6] text-[#475467] font-medium">
                 {t(
                   "hero.subhead",
                   "Give every electoral roll snapshot a verifiable public record. Examine additions and deletions, inspect statistical evidence, detect unusual anomalies, and independently verify publication integrity through one connected civic platform."
                 )}
-              </motion.p>
+              </p>
 
               {/* Action Buttons (OriginX Pills with Lift Physics) */}
-              <motion.div
-                variants={fadeInUp}
-                custom={3}
-                className="flex flex-wrap items-center gap-3 pt-2"
-              >
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                   <Link
                     href="/compare"
@@ -249,12 +211,10 @@ export default function HomePage() {
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform text-[#F07824]" />
                   </Link>
                 </motion.div>
-              </motion.div>
+              </div>
 
               {/* Tricolor Proof Banner */}
-              <motion.div
-                variants={fadeInUp}
-                custom={4}
+              <div
                 className="pt-6 border-t border-[#E4E7EC] w-full flex flex-wrap items-center gap-4 text-xs font-bold text-[#475467]"
               >
                 <div className="flex items-center gap-1.5">
@@ -271,8 +231,8 @@ export default function HomePage() {
                   <span className="w-2 h-2 rounded-full bg-[#14663F]" />
                   <span>{t("hero.proof.privateIdentities", "Private identities")}</span>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
             {/* Right Column: OriginX Floating Passport Card with 3D Tilt */}
             <motion.div
@@ -282,9 +242,7 @@ export default function HomePage() {
               className="lg:col-span-5 relative min-h-[480px] flex items-center justify-center"
             >
               {/* Circular Backdrop Shapes */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+              <div
                 className="absolute w-[380px] h-[380px] rounded-full bg-[#EAF0FC] -top-6 -right-6 pointer-events-none opacity-80"
               />
               <div className="absolute w-[240px] h-[240px] rounded-full bg-[#FFF4EC] -bottom-8 -left-6 pointer-events-none opacity-70" />
@@ -486,50 +444,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="h-[220px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData} margin={{ top: 10, right: 10, bottom: 4, left: -22 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#F2F4F7" vertical={false} />
-                      <XAxis
-                        dataKey="name"
-                        tick={{ fontSize: 10, fill: "#475467" }}
-                        axisLine={{ stroke: "#E4E7EC" }}
-                        tickLine={false}
-                        interval={0}
-                        angle={-15}
-                        textAnchor="end"
-                        height={40}
-                      />
-                      <YAxis
-                        tick={{ fontSize: 10, fill: "#475467" }}
-                        axisLine={false}
-                        tickLine={false}
-                        tickFormatter={(v) => `${v}%`}
-                      />
-                      <Tooltip
-                        contentStyle={{
-                          fontSize: 12,
-                          borderRadius: 8,
-                          border: "1px solid #E4E7EC",
-                          backgroundColor: "#FFFFFF",
-                        }}
-                        formatter={(val: any) => [`${val}%`, "Addition rate"]}
-                      />
-                      <Bar
-                        dataKey="additions"
-                        radius={[4, 4, 0, 0]}
-                        maxBarSize={30}
-                        animationDuration={1200}
-                        animationEasing="ease-out"
-                      >
-                        {chartData.map((entry, index) => (
-                          <Cell
-                            key={index}
-                            fill={entry.isHighlighted ? "#F07824" : "#2864DC"}
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <BreakdownChart chartData={chartData} />
                 </div>
               </div>
 
@@ -1119,17 +1034,9 @@ export default function HomePage() {
       {/* ===== SECTION 9: CLOSING CTA (OriginX Signature Giant Orange Banner) ===== */}
       <section className="py-16 md:py-24 px-4 md:px-8 bg-white">
         <div className="max-w-[1400px] mx-auto rounded-[36px] bg-[#F07824] relative overflow-hidden p-8 sm:p-14 lg:p-20 shadow-xl">
-          {/* OriginX Parallax Blob circles with subtle motion */}
-          <motion.div
-            animate={{ scale: [1, 1.08, 1], rotate: [0, 10, 0] }}
-            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute w-[440px] h-[440px] rounded-full bg-[#F48F45] -right-20 -top-24 pointer-events-none opacity-80"
-          />
-          <motion.div
-            animate={{ scale: [1, 1.12, 1], rotate: [0, -12, 0] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute w-[260px] h-[260px] rounded-full bg-[#2864DC] right-16 -bottom-28 pointer-events-none opacity-90"
-          />
+          {/* OriginX Decorative Blob circles */}
+          <div className="absolute w-[440px] h-[440px] rounded-full bg-[#F48F45] -right-20 -top-24 pointer-events-none opacity-80" />
+          <div className="absolute w-[260px] h-[260px] rounded-full bg-[#2864DC] right-16 -bottom-28 pointer-events-none opacity-90" />
 
           <div className="relative z-10 max-w-2xl space-y-6">
             <h2 className="font-serif text-[38px] sm:text-[54px] lg:text-[68px] leading-[0.98] font-normal text-[#172033] tracking-[-0.01em]">

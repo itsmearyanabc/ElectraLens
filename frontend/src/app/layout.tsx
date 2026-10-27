@@ -1,6 +1,26 @@
 import type { Metadata } from "next";
+import { Caprasimo, Figtree, JetBrains_Mono } from "next/font/google";
 import { LanguageProvider } from "@/context/language-context";
 import "./globals.css";
+
+const caprasimo = Caprasimo({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-caprasimo",
+  display: "swap",
+});
+
+const figtree = Figtree({
+  subsets: ["latin"],
+  variable: "--font-figtree",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -18,16 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="min-h-screen bg-background text-foreground antialiased">
+    <html
+      lang="en"
+      className={`scroll-smooth ${caprasimo.variable} ${figtree.variable} ${jetbrainsMono.variable} ${figtree.className}`}
+    >
+      <body className="min-h-screen bg-background text-foreground antialiased font-sans">
         <LanguageProvider>
           {children}
         </LanguageProvider>

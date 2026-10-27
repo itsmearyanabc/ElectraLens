@@ -37,11 +37,11 @@
   --color-dark-text: #F7F8FA;
   
   /* Fonts - Caprasimo heading & Figtree bold UI */
-  --font-serif: "Caprasimo", Georgia, serif;
-  --font-heading: "Caprasimo", Georgia, serif;
-  --font-sans: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-body: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --font-serif: var(--font-caprasimo), Georgia, serif;
+  --font-heading: var(--font-caprasimo), Georgia, serif;
+  --font-sans: var(--font-figtree), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: var(--font-figtree), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, Menlo, monospace;
   
   --radius-sm: 8px;
   --radius-md: 14px;
