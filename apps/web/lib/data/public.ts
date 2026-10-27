@@ -79,6 +79,30 @@ export const getAreasByIds = cache(async (ids: readonly string[]): Promise<Map<s
   return new Map(rows.map((row) => [row.id, row]));
 });
 
+/** An area and everything under it, depth-first in code order, for the location picker. */
+export const areaTree = cache(
+  async (rootId: string): Promise<{ area: Area; depth: number }[]> => {
+    const rows = check(
+      'areas',
+      await publicDb().from('jurisdictions').select(AREA_COLUMNS).order('code').limit(5000),
+    );
+    const children = new Map<string, Area[]>();
+    for (const row of rows) {
+      if (!row.parent_id) continue;
+      children.set(row.parent_id, [...(children.get(row.parent_id) ?? []), row]);
+    }
+    const root = rows.find((row) => row.id === rootId);
+    if (!root) return [];
+    const out: { area: Area; depth: number }[] = [];
+    const walk = (area: Area, depth: number) => {
+      out.push({ area, depth });
+      for (const child of children.get(area.id) ?? []) walk(child, depth + 1);
+    };
+    walk(root, 0);
+    return out;
+  },
+);
+
 /** The chain from the state down to this area, for breadcrumbs. */
 export async function areaPath(area: Area): Promise<Area[]> {
   const path = [area];

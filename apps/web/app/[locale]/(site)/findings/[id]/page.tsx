@@ -14,6 +14,8 @@ import { catalogueText, explanationText, parseFinding, ruleName } from '@/lib/fi
 import { formatDate } from '@/lib/format';
 import { pageLocale } from '@/lib/locale';
 
+import { explainFindingAction } from './actions';
+
 export async function generateMetadata({
   params,
 }: PageProps<'/[locale]/findings/[id]'>): Promise<Metadata> {
@@ -67,8 +69,7 @@ export default async function FindingPage({ params }: PageProps<'/[locale]/findi
             </section>
 
             <AiExplanation
-              findingId={row.id}
-              locale={locale}
+              explain={explainFindingAction.bind(null, row.id, locale)}
               text={{
                 title: t('finding.ai.title'),
                 intro: t('finding.ai.intro'),

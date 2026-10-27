@@ -130,7 +130,33 @@
       "unrecorded": "No deletion record",
       "unspecified": "No reason recorded"
     },
-    "band": "Age {band}"
+    "band": "Age {band}",
+    "picker": "Choose a location",
+    "pickerSubmit": "Show",
+    "levelTitle": "How unusual is this change?",
+    "levelHelp": "Each rate is compared with the other {count, plural, one {# area} other {# areas}} under {parent}, using the median and a robust spread so one extreme area cannot skew it. The level comes from that fixed rule, not from AI.",
+    "rateOf": {
+      "additions": "Additions as a share of the earlier roll",
+      "deletions": "Deletions as a share of the earlier roll"
+    },
+    "peerMedian": "Neighbours’ median: {rate}",
+    "ratesChart": "Addition and deletion rates by {level}",
+    "ratesHelp": "Rates make areas of different sizes comparable. Levels in the table compare each area with the others shown here.",
+    "additionLevel": "Additions level",
+    "deletionLevel": "Deletions level",
+    "levels": {
+      "normal": "Normal",
+      "unusual": "Unusual",
+      "highly_unusual": "Highly unusual",
+      "none": "Not enough to compare",
+      "higher": "Higher than the neighbours",
+      "lower": "Lower than the neighbours"
+    },
+    "ai": {
+      "title": "What these changes mean",
+      "intro": "Ask an AI model to summarise this area’s additions and deletions in plain words, using the published figures and the levels above."
+    },
+    "levelHelpTop": "{area} is the largest area published, so it has nothing beside it to compare with. The areas inside it are levelled against each other below; choose one to see how it compares."
   },
   "findings": {
     "metaTitle": "Findings",

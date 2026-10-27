@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from 'react';
 
-import { explainFindingAction } from '@/app/[locale]/(site)/findings/[id]/actions';
 import type { Explanation } from '@/lib/ai/explainFinding';
 
 export interface AiExplanationText {
@@ -16,14 +15,15 @@ export interface AiExplanationText {
   refused: string;
 }
 
-/** On request, a Gemini-written plain-language summary of this finding, clearly labelled. */
+/**
+ * On request, an AI-written plain-language summary, clearly labelled. `explain` is a server
+ * action already bound to what it explains (a finding, an area), so the browser sends no facts.
+ */
 export function AiExplanation({
-  findingId,
-  locale,
+  explain,
   text,
 }: {
-  findingId: string;
-  locale: string;
+  explain: () => Promise<Explanation>;
   text: AiExplanationText;
 }) {
   const [result, setResult] = useState<Explanation | null>(null);
@@ -32,7 +32,7 @@ export function AiExplanation({
   const ask = () =>
     startTransition(async () => {
       try {
-        setResult(await explainFindingAction(findingId, locale));
+        setResult(await explain());
       } catch {
         setResult({ status: 'unavailable' });
       }

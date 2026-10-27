@@ -1,9 +1,13 @@
+import { getTranslations } from 'next-intl/server';
+
+import { ChatWidget } from '@/components/assistant/ChatWidget';
 import { SiteFooter } from '@/components/site/SiteFooter';
 import { SiteHeader } from '@/components/site/SiteHeader';
 import { pageLocale } from '@/lib/locale';
 
 export default async function SiteLayout({ children, params }: LayoutProps<'/[locale]'>) {
-  await pageLocale(params);
+  const locale = await pageLocale(params);
+  const t = await getTranslations({ locale, namespace: 'chat' });
   return (
     <>
       <SiteHeader />
@@ -11,6 +15,23 @@ export default async function SiteLayout({ children, params }: LayoutProps<'/[lo
         {children}
       </main>
       <SiteFooter />
+      <ChatWidget
+        locale={locale}
+        text={{
+          open: t('open'),
+          close: t('close'),
+          title: t('title'),
+          subtitle: t('subtitle'),
+          placeholder: t('placeholder'),
+          send: t('send'),
+          thinking: t('thinking'),
+          notice: t('notice'),
+          unavailable: t('unavailable'),
+          refused: t('refused'),
+          invalid: t('invalid'),
+          suggestions: t.raw('suggestions') as string[],
+        }}
+      />
     </>
   );
 }

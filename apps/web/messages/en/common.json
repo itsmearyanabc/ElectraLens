@@ -197,5 +197,24 @@
     "retry": "Try again",
     "goHome": "Go to the home page",
     "dataUnavailable": "The data service is not reachable right now. Please try again shortly."
+  },
+  "chat": {
+    "open": "Ask ElectraLens",
+    "close": "Close",
+    "title": "ElectraLens assistant",
+    "subtitle": "AI answers from published data and official sources",
+    "placeholder": "Ask about the findings, verification or voter services…",
+    "send": "Send",
+    "thinking": "Thinking…",
+    "notice": "Answers are written by an AI model from ElectraLens’ published data and official ECI information. It cannot look up any individual voter. Don’t share personal details.",
+    "unavailable": "The assistant is not available right now. Please try again in a moment.",
+    "refused": "That answer did not meet our wording rules, so it is not shown. Please rephrase your question.",
+    "invalid": "Please ask a shorter question.",
+    "suggestions": [
+      "What does ElectraLens do?",
+      "Which areas had unusual deletions?",
+      "How can I verify a publication is genuine?",
+      "How do I check my own name on the roll?"
+    ]
   }
 }

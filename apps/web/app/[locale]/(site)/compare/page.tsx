@@ -1,16 +1,18 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
+import { AreaPicker } from '@/components/charts/AreaPicker';
 import { BarList } from '@/components/charts/BarList';
+import { LevelBadge } from '@/components/charts/LevelBadge';
+import { AiExplanation } from '@/components/findings/AiExplanation';
 import { SyntheticBadge } from '@/components/ui/Badge';
 import { EmptyState, Notice, PageHeader, Section, StatTile, TableWrap } from '@/components/ui/Page';
 import { Link } from '@/i18n/navigation';
-import { AggregateTable } from '@/lib/aggregates';
+import { compareArea } from '@/lib/areaStats';
 import {
   areaPath,
-  getAggregates,
+  areaTree,
   getArea,
-  getChildAreas,
   getPublication,
   isUuid,
   latestPublication,
@@ -19,6 +21,8 @@ import { localName } from '@/lib/data/types';
 import { formatNumber, formatRate, formatSigned } from '@/lib/format';
 import { pageLocale } from '@/lib/locale';
 import { one } from '@/lib/params';
+
+import { explainAreaAction } from './actions';
 
 export async function generateMetadata({
   params,
@@ -73,10 +77,19 @@ export default async function ComparePage({
       </div>
     );
   }
-  const [children, path] = await Promise.all([getChildAreas(area.id), areaPath(area)]);
-  const table = new AggregateTable(
-    await getAggregates(publication.id, [area.id, ...children.map((child) => child.id)]),
-  );
+  const [comparison, path] = await Promise.all([compareArea(publication.id, area), areaPath(area)]);
+  const { table } = comparison;
+  const children = comparison.children.map((row) => row.area);
+  const tree = path[0] ? await areaTree(path[0].id) : [];
+  const levelLabels = {
+    normal: t('compare.levels.normal'),
+    unusual: t('compare.levels.unusual'),
+    highly_unusual: t('compare.levels.highly_unusual'),
+    none: t('compare.levels.none'),
+    higher: t('compare.levels.higher'),
+    lower: t('compare.levels.lower'),
+  };
+  const percent = (value: number) => formatRate(locale, value / 100);
   const fmt = (value: number) => formatNumber(locale, value);
   const childLevel = children[0]?.level;
   const keep = {
@@ -137,6 +150,20 @@ export default async function ComparePage({
       </PageHeader>
 
       <div className="container-page py-4">
+        <div className="card mb-6 p-5">
+          <AreaPicker
+            options={tree.map(({ area: option, depth }) => ({
+              code: option.code,
+              label: `${localName(option.name, locale)} · ${t(`level.${option.level}`)}`,
+              depth,
+            }))}
+            current={area.code}
+            publication={keep.publication}
+            label={t('compare.picker')}
+            submit={t('compare.pickerSubmit')}
+          />
+        </div>
+
         <Section title={t('compare.overview')} id="overview">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
             {HEADLINES.map((metric, index) => {
@@ -167,6 +194,58 @@ export default async function ComparePage({
           </p>
         </Section>
 
+        <Section
+          title={t('compare.levelTitle')}
+          id="levels"
+          description={
+            comparison.parent
+              ? t('compare.levelHelp', {
+                  count: comparison.peerCount - 1,
+                  parent: localName(comparison.parent.name, locale),
+                })
+              : t('compare.levelHelpTop', { area: localName(area.name, locale) })
+          }
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            {(
+              [
+                ['additions', comparison.self.additionRate, comparison.self.additionLevel],
+                ['deletions', comparison.self.deletionRate, comparison.self.deletionLevel],
+              ] as const
+            ).map(([metric, rate, level]) => (
+              <div key={metric} className="card p-5">
+                <p className="mono-label">{t(`compare.rateOf.${metric}`)}</p>
+                <p className="display mt-2 text-3xl">
+                  {rate === null ? '—' : formatRate(locale, rate)}
+                </p>
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted">
+                  <LevelBadge level={level} labels={levelLabels} />
+                  {level && (
+                    <span>
+                      {t('compare.peerMedian', { rate: formatRate(locale, level.peerMedian) })}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6">
+            <AiExplanation
+              explain={explainAreaAction.bind(null, publication.id, area.code, locale)}
+              text={{
+                title: t('compare.ai.title'),
+                intro: t('compare.ai.intro'),
+                button: t('finding.ai.button'),
+                working: t('finding.ai.working'),
+                badge: t('finding.ai.badge'),
+                disclaimer: t('finding.ai.disclaimer'),
+                unavailable: t('finding.ai.unavailable'),
+                refused: t('finding.ai.refused'),
+              }}
+            />
+          </div>
+        </Section>
+
         {children.length > 0 && childLevel ? (
           <Section
             title={t('compare.byChild', { level: t(`level.${childLevel}`) })}
@@ -190,6 +269,28 @@ export default async function ComparePage({
               tableLabel={t('common.tableOfChart')}
             />
             <div className="mt-6">
+              <BarList
+                id="rates-by-child"
+                title={t('compare.ratesChart', { level: t(`level.${childLevel}`) })}
+                description={t('compare.ratesHelp')}
+                series={[
+                  { key: 'additions', label: t('compare.rateOf.additions'), tone: 'saffron' },
+                  { key: 'deletions', label: t('compare.rateOf.deletions'), tone: 'blue' },
+                ]}
+                rows={comparison.children.map((row) => ({
+                  key: row.area.id,
+                  label: localName(row.area.name, locale),
+                  values: [
+                    row.additionRate === null ? null : row.additionRate * 100,
+                    row.deletionRate === null ? null : row.deletionRate * 100,
+                  ],
+                }))}
+                format={percent}
+                suppressedLabel={t('common.suppressed')}
+                tableLabel={t('common.tableOfChart')}
+              />
+            </div>
+            <div className="mt-6">
               <TableWrap label={t('compare.byChild', { level: t(`level.${childLevel}`) })}>
                 <thead>
                   <tr>
@@ -212,10 +313,12 @@ export default async function ComparePage({
                     <th scope="col" className="text-right">
                       {t('compare.deletionRate')}
                     </th>
+                    <th scope="col">{t('compare.additionLevel')}</th>
+                    <th scope="col">{t('compare.deletionLevel')}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {children.map((child) => {
+                  {comparison.children.map(({ area: child, additionLevel, deletionLevel }) => {
                     const cells = (
                       ['electors_baseline', 'electors_target', 'additions', 'deletions'] as const
                     ).map((metric) => table.get(child.id, metric));
@@ -244,6 +347,12 @@ export default async function ComparePage({
                           {baseline && deletions !== null && deletions !== undefined
                             ? formatRate(locale, deletions / baseline)
                             : '—'}
+                        </td>
+                        <td>
+                          <LevelBadge level={additionLevel} labels={levelLabels} />
+                        </td>
+                        <td>
+                          <LevelBadge level={deletionLevel} labels={levelLabels} />
                         </td>
                       </tr>
                     );
