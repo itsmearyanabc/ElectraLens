@@ -149,7 +149,8 @@ async function main(): Promise<void> {
   const timer = setInterval(runReconcile, config.reconcileIntervalMs);
   void runReconcile();
 
-  server.listen(config.port, () =>
+  // Never public: only the API on the same host calls it (TB4).
+  server.listen(config.port, process.env.HOST ?? '127.0.0.1', () =>
     console.log(`anchor service listening on :${config.port} (${config.network})`),
   );
   const stop = () => {

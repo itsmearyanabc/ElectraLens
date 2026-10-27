@@ -11,4 +11,5 @@ const shutdown = () => {
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
 
-await app.listen({ host: '0.0.0.0', port: config.port });
+// Localhost only by default: nginx is the one public entry point on the VPS.
+await app.listen({ host: process.env.HOST ?? '127.0.0.1', port: config.port });

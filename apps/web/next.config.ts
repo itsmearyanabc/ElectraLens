@@ -16,8 +16,6 @@ const securityHeaders = [
 ];
 
 const config: NextConfig = {
-  output: 'standalone',
-  outputFileTracingRoot: repoRoot,
   turbopack: { root: repoRoot },
   poweredByHeader: false,
   reactStrictMode: true,

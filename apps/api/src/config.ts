@@ -17,7 +17,7 @@ export interface Config {
   publishableKey: string;
   secretKey: string;
   turnstileSecret: string | null;
-  /** Only for local development: skips Turnstile when no secret is configured. */
+  /** Explicit operator choice: skip Turnstile when no secret is configured (rate limits still apply). */
   turnstileDisabled: boolean;
   anchorUrl: string | null;
   anchorHmacKey: Buffer | null;
@@ -34,7 +34,7 @@ export function loadConfig(env: Env = process.env): Config {
     publishableKey: secret(env, 'SUPABASE_PUBLISHABLE_KEY') as string,
     secretKey: secret(env, 'SUPABASE_SECRET_KEY') as string,
     turnstileSecret: secret(env, 'TURNSTILE_SECRET_KEY', false),
-    turnstileDisabled: env.TURNSTILE_DISABLED === '1' && env.NODE_ENV !== 'production',
+    turnstileDisabled: env.TURNSTILE_DISABLED === '1',
     anchorUrl: env.ANCHOR_URL ?? null,
     // Same encoding as the anchor service: the key file's text, as UTF-8 bytes.
     anchorHmacKey: hmac ? Buffer.from(hmac, 'utf8') : null,

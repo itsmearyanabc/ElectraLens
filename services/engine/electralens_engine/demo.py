@@ -122,6 +122,11 @@ def build_demo(demo_dir: Path, engine_rev: str, now: datetime | None = None) -> 
         "insert into auth.users (id, instance_id, aud, role, email, encrypted_password, "
         "email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at) values",
         users + "\non conflict (id) do nothing;",
+        # Supabase Auth reads these token columns as strings and fails to list users on NULL.
+        "update auth.users set confirmation_token = '', recovery_token = '', "
+        "email_change_token_new = '', email_change = '', email_change_token_current = '', "
+        "phone_change = '', phone_change_token = '', reauthentication_token = '' "
+        "where email like '%@demo.electralens.invalid';",
         "",
         # A constant id, quoted by _literal: offline generation, never user input.
         "update public.data_sources set is_public = true where id = "  # noqa: S608
