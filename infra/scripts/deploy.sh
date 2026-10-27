@@ -34,9 +34,11 @@ git pull --ff-only
 echo "== installing"
 pnpm install --frozen-lockfile
 uv sync --directory services/engine --frozen
+npm --prefix frontend install
 
 echo "== building"
-pnpm --filter "@electralens/web..." --filter "@electralens/api..." --filter "@electralens/anchor..." build
+npm --prefix frontend run build
+pnpm --filter "@electralens/api..." --filter "@electralens/anchor..." build
 
 # The worker names the engine in each manifest by the deployed commit.
 sha=$(git rev-parse --short=12 HEAD)
