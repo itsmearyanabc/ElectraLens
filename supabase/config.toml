@@ -234,7 +234,7 @@ max_frequency = "1s"
 # Number of characters used in the email OTP.
 otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
-otp_expiry = 3600
+otp_expiry = 600
 
 # Use a production-ready SMTP server
 # [auth.email.smtp]
@@ -250,6 +250,16 @@ otp_expiry = 3600
 # [auth.email.template.invite]
 # subject = "You have been invited"
 # content_path = "./supabase/templates/invite.html"
+
+# Sign-in sends a 6-digit code (the web app verifies it), so no emailed link can open on the
+# wrong host. New users get the confirmation email, returning users the magic-link one.
+[auth.email.template.magic_link]
+subject = "Your ElectraLens sign-in code"
+content_path = "./supabase/templates/sign_in_code.html"
+
+[auth.email.template.confirmation]
+subject = "Your ElectraLens sign-in code"
+content_path = "./supabase/templates/sign_in_code.html"
 
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]
@@ -418,3 +428,27 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
+
+# The hosted project (`supabase config push`): production URLs and a demo-sized email limit.
+# SMTP (Resend) is set in the dashboard, so its key never enters this repository.
+[remotes.production]
+project_id = "iuupravfeffusjydzeyt"
+
+[remotes.production.auth]
+site_url = "https://electralens.armedias.com"
+additional_redirect_urls = [
+  "https://electralens.armedias.com/auth/callback",
+  "https://electralens.armedias.com/**",
+]
+
+[remotes.production.auth.email]
+max_frequency = "1m0s"
+enable_confirmations = true
+
+[remotes.production.auth.rate_limit]
+email_sent = 100
+
+# Keep the hosted pooler at Supabase's sizing for the plan.
+[remotes.production.db.pooler]
+default_pool_size = 15
+max_client_conn = 200
