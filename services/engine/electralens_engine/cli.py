@@ -133,6 +133,27 @@ def _cmd_seed_sql(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_demo_sql(args: argparse.Namespace) -> int:
+    import subprocess
+
+    from electralens_engine.demo import write_demo
+
+    rev = args.engine_rev
+    if rev is None:
+        # Developer tool: git from PATH, fixed arguments.
+        head = subprocess.run(
+            ["git", "rev-parse", "--short=12", "HEAD"],  # noqa: S607
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        rev = f"git:{head.stdout.strip()}"
+    content = write_demo(Path(args.demo_dir), Path(args.out), rev)
+    print(f"wrote {Path(args.out) / 'demo.sql'} and {len(content.artifacts)} public artifacts")
+    print(f"  publication {content.publication_id}, manifest hash {content.manifest_hash}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="el",
@@ -189,6 +210,14 @@ def build_parser() -> argparse.ArgumentParser:
     seed.add_argument("--areas", required=True, help="jurisdictions.json from `el generate`")
     seed.add_argument("--out", help="output path (default: supabase/seed.sql)")
     seed.set_defaults(handler=_cmd_seed_sql)
+
+    demo = sub.add_parser(
+        "demo-sql", help="turn a generated dataset and its run into demo publication content"
+    )
+    demo.add_argument("--demo-dir", default="data/demo", help="output of `el generate` + `el run`")
+    demo.add_argument("--out", default="data/demo/publish", help="output directory")
+    demo.add_argument("--engine-rev", help="engine revision for the manifest (default: git HEAD)")
+    demo.set_defaults(handler=_cmd_demo_sql)
     return parser
 
 

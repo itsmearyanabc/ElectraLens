@@ -1,0 +1,200 @@
+{
+  "common": {
+    "appName": "ElectraLens",
+    "tagline": "Open, checkable analysis of electoral-roll revisions",
+    "independence": "Independent project. Not affiliated with the Election Commission of India.",
+    "syntheticNotice": "Demonstration data: every person, constituency and polling station here is fictional.",
+    "skipToContent": "Skip to main content",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "pageOf": "Page {page} of {pages}",
+    "apply": "Apply",
+    "clearFilters": "Clear filters",
+    "search": "Search",
+    "download": "Download",
+    "external": "opens an external site",
+    "official": "Official",
+    "yes": "Yes",
+    "no": "No",
+    "none": "None",
+    "notAvailable": "Not available",
+    "any": "Any",
+    "allAreas": "All areas",
+    "viewAll": "View all",
+    "learnMore": "Learn more",
+    "published": "Published {date}",
+    "synthetic": "Synthetic",
+    "demo": "DEMO",
+    "sha256": "SHA-256",
+    "copyHint": "Select to copy",
+    "show": "Show",
+    "hide": "Hide",
+    "source": "Source",
+    "total": "Total",
+    "area": "Area",
+    "rule": "Rule",
+    "status": "Status",
+    "date": "Date",
+    "count": "Count",
+    "value": "Value",
+    "suppressed": "Fewer than 10",
+    "suppressedNote": "Counts below 10 are shown as “< 10” so that no small group of people can be singled out.",
+    "tableOfChart": "Data table for this chart",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "remove": "Remove",
+    "signOut": "Sign out",
+    "required": "required",
+    "optional": "optional"
+  },
+  "nav": {
+    "home": "Home",
+    "findings": "Findings",
+    "compare": "Compare",
+    "datasets": "Datasets",
+    "publications": "Publications",
+    "verify": "Verify",
+    "claims": "Check a claim",
+    "assistant": "Help me",
+    "booths": "Find a booth",
+    "methodology": "Methodology",
+    "officialLinks": "Official services",
+    "about": "About",
+    "privacy": "Privacy",
+    "account": "My account",
+    "signIn": "Sign in",
+    "menu": "Menu",
+    "language": "Language",
+    "ops": "Staff console",
+    "primary": "Main"
+  },
+  "footer": {
+    "explore": "Explore",
+    "trust": "Check our work",
+    "help": "Help",
+    "project": "Project",
+    "notOfficial": "ElectraLens is not an official source. To check or change your own registration, use the official services.",
+    "openSource": "Open source under the Apache-2.0 licence",
+    "sourceCode": "Source code",
+    "openData": "Every published number can be downloaded and checked."
+  },
+  "labels": {
+    "source_data": "Source data",
+    "analytical_finding": "Analytical finding",
+    "user_claim": "User-submitted claim",
+    "unverified": "Unverified",
+    "confirmed_correction": "Confirmed correction"
+  },
+  "labelHelp": {
+    "source_data": "Numbers taken directly from the published roll, before any analysis.",
+    "analytical_finding": "A pattern our open methodology flagged as unusual. Not proof of wrongdoing.",
+    "user_claim": "A claim someone submitted, checked against published data and moderated.",
+    "unverified": "Not yet checked against published data.",
+    "confirmed_correction": "A correction confirmed after review."
+  },
+  "strength": {
+    "strong": "Strong signal",
+    "moderate": "Moderate signal",
+    "weak": "Weak signal",
+    "data_quality": "Data quality",
+    "help_strong": "Very unusual compared with similar parts.",
+    "help_moderate": "Clearly unusual compared with similar parts.",
+    "help_weak": "Somewhat unusual; shown to reviewers only.",
+    "help_data_quality": "A record-level check, not a statistical comparison."
+  },
+  "review": {
+    "pending": "Awaiting review",
+    "accepted": "Reviewed and accepted",
+    "downgraded": "Reviewed and downgraded",
+    "rejected": "Reviewed and rejected"
+  },
+  "pubStatus": {
+    "draft": "Draft",
+    "preparing": "Preparing",
+    "in_review": "In review",
+    "approved": "Approved",
+    "published": "Published",
+    "retracted": "Retracted",
+    "withdrawn": "Withdrawn"
+  },
+  "anchorStatus": {
+    "pending": "Pending",
+    "submitted": "Submitted",
+    "confirmed": "Confirmed",
+    "upgraded": "Confirmed in Bitcoin",
+    "failed": "Failed"
+  },
+  "anchorType": {
+    "evm": "Ethereum (Hoodi testnet)",
+    "ots": "OpenTimestamps (Bitcoin)"
+  },
+  "datasetStatus": {
+    "uploading": "Uploading",
+    "validating": "Validating",
+    "quarantined": "Quarantined",
+    "validated": "Validated",
+    "approved": "Approved",
+    "superseded": "Superseded"
+  },
+  "runStatus": {
+    "queued": "Queued",
+    "running": "Running",
+    "ready_for_review": "Ready for review",
+    "failed": "Failed",
+    "superseded": "Superseded"
+  },
+  "jobStatus": {
+    "queued": "Queued",
+    "running": "Running",
+    "succeeded": "Succeeded",
+    "failed": "Failed",
+    "dead": "Gave up"
+  },
+  "level": {
+    "state": "State",
+    "district": "District",
+    "ac": "Assembly constituency",
+    "part": "Part"
+  },
+  "rollStage": {
+    "draft": "Draft roll",
+    "final": "Final roll",
+    "supplement": "Supplement"
+  },
+  "permission": {
+    "synthetic": "Synthetic (generated for demonstration)",
+    "public_official": "Published officially",
+    "authorised": "Used with permission"
+  },
+  "metric": {
+    "electors_baseline": "Electors on the earlier roll",
+    "electors_target": "Electors on the later roll",
+    "additions": "Additions",
+    "additions_18_19": "New electors aged 18–19",
+    "deletions": "Deletions",
+    "transfers_in": "Transfers in",
+    "transfers_out": "Transfers out",
+    "corrections": "Corrections",
+    "net_change": "Net change",
+    "deletions_by_reason": "Deletions by reason",
+    "electors_target_by_gender": "Electors by gender",
+    "electors_target_by_age_band": "Electors by age"
+  },
+  "gender": {
+    "M": "Men",
+    "F": "Women",
+    "T": "Third gender",
+    "unknown": "Not recorded"
+  },
+  "errors": {
+    "notFoundTitle": "We couldn’t find that page",
+    "notFoundBody": "The address may be mistyped, or the item may not be published.",
+    "errorTitle": "Something went wrong",
+    "errorBody": "We couldn’t load this page. Please try again in a moment.",
+    "retry": "Try again",
+    "goHome": "Go to the home page",
+    "dataUnavailable": "The data service is not reachable right now. Please try again shortly."
+  }
+}

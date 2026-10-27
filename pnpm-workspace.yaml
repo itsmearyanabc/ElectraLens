@@ -17,7 +17,9 @@ minimumReleaseAgeExclude:
   - '@typescript-eslint/visitor-keys@8.72.1'
   - typescript-eslint@8.72.1
   - hardhat@3.21.1
-# Install scripts stay off by default (supply-chain safety). esbuild's postinstall only fetches a
-# binary that already arrives through its platform-specific optional dependency.
+# Install scripts stay off by default (supply-chain safety). Each package below only fetches or
+# checks a native binary that already arrives through its platform-specific optional dependency.
 allowBuilds:
   esbuild: false
+  '@parcel/watcher': false
+  '@swc/core': false

@@ -21,7 +21,9 @@
     "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm engine:lint && pnpm engine:test",
     "db:start": "npx supabase start",
     "db:reset": "npx supabase db reset",
-    "db:test": "npx supabase db lint --level warning --fail-on warning && npx supabase test db"
+    "db:test": "npx supabase db lint --level warning --fail-on warning && npx supabase test db",
+    "db:types": "npx supabase gen types typescript --local --schema public > apps/web/lib/database.types.ts && prettier --write apps/web/lib/database.types.ts",
+    "demo:reset": "node scripts/demo-reset.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

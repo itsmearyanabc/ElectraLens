@@ -593,6 +593,51 @@ A claim is `{area_code, metric, period, comparator, value, unit, claim_type}`. M
 
 ---
 
+## 13a. Planned enhancements: after the current build · **Planned / Not Started**
+
+Recorded for a later phase. Nothing below is implemented or validated, and none of it changes the current architecture, methodology (R01–R12), review workflow, privacy rules or blockchain approach. Each item will be a minimal, optional module on the existing stack.
+
+### B21 Historical change timeline · Priority: High · Planned / Not Started
+- [ ] **B21.01** Compare aggregate additions, deletions and corrections across successive revisions (reuses `aggregate_metrics` and the publication series).
+- [ ] **B21.02** Timeline and trend charts built from the existing server-rendered chart components, each with its data table.
+- [ ] **B21.03** Choose revision periods and geographic units the dataset supports.
+- [ ] **B21.04** Show the aggregate figures and change rates next to every chart.
+- [ ] **B21.05** Mark missing revisions, incomplete data and differences in coverage clearly.
+- [ ] **B21.06** Keep observed changes visibly separate from interpretations or possible anomalies.
+- [ ] **B21.07** Works on synthetic multi-revision datasets for the prototype (generator gains more than two versions).
+- [ ] **B21.08** Aggregates only, with the existing suppression; no individual voter information.
+- [ ] **B21.09** Complements the audit engine now and the historical model (B22) later.
+- Depends on: B04 (aggregates), B09.04 (compare page and charts), a generator with several revisions.
+- Acceptance: users see aggregate changes across several revisions; displayed figures match the dataset and calculations; missing or incomparable data is identified; existing audit functionality is unchanged.
+
+### B22 Historical-data AI anomaly detection · Priority: Medium · Planned / Not Started
+- [ ] **B22.01** Pipeline to prepare and validate historical revision data.
+- [ ] **B22.02** Synthetic historical datasets with known normal patterns and injected anomalies first.
+- [ ] **B22.03** Aggregate features only: additions, deletions, corrections and revision-to-revision change rates. No identities or personal data in features.
+- [ ] **B22.04** An interpretable baseline model before anything more complex.
+- [ ] **B22.05** Train on earlier revisions and hold later revisions out, to test generalisation.
+- [ ] **B22.06** Report detection performance and false-positive rates, compared with the existing statistical baseline.
+- [ ] **B22.07** A separate, optional module in the worker; the audit workflow runs unchanged when it is disabled or unavailable.
+- [ ] **B22.08** Show model scores, historical baselines, explanations and model version next to the existing findings.
+- [ ] **B22.09** Scores stay separate from statistical significance and are never presented as a probability of fraud.
+- [ ] **B22.10** Model findings go through the existing human review and two-person publication approval.
+- [ ] **B22.11** On-chain anchoring is unchanged: only approved report hashes, never unreviewed predictions or personal data.
+- [ ] **B22.12** Document limitations, dataset provenance, validation results, and that unusual patterns are not proven wrongdoing.
+- Depends on: B21 (multi-revision data), B04 (rules and statistics), B15.04 (review), B08 (anchoring unchanged).
+- Acceptance: beats or matches the statistical baseline on held-out synthetic revisions with reported false-positive rates; disabling the module leaves every existing test passing; every model output shown carries its version and limits.
+
+### B23 Public evidence verification portal · Priority: High · Planned / Partly built
+Most of this already exists in the current build: the registry contract (B08.01–B08.02), the browser verifier at `/verify/{id}` that recomputes the RFC 8785 manifest hash and file hashes and reads `entry(seriesId, sequence)` from a public RPC (B10.01–B10.03), the tamper demo (B10.05) and the "what this proves / doesn't prove" box (B10.07). Only the remaining gaps are listed:
+- [ ] **B23.01** Deploy the registry to Hoodi and record anchors, so the chain step returns a real result instead of ANCHOR PENDING (B08.03).
+- [ ] **B23.02** Separate result wording for missing commitment, wrong network and RPC unavailable (today these share NETWORK UNAVAILABLE).
+- [ ] **B23.03** Show the transaction reference and on-chain timestamp from the chain read itself, not only from the database.
+- [ ] **B23.04** Let a visitor verify a report file they upload against the on-chain commitment, without using our API (extends the manifest-file check).
+- [ ] **B23.05** Tests for: unchanged report verifies; modified report fails; missing commitment and network errors are reported accurately.
+- Depends on: B08.03 (deployment), B10.
+- Acceptance: a published report checks against its real on-chain commitment; unchanged reports verify and modified ones fail; missing commitments and network errors are handled accurately; no step relies on trusting the ElectraLens database or API.
+
+---
+
 ## 14. Traceability: every requirement → checklist items
 
 ### Functional requirements

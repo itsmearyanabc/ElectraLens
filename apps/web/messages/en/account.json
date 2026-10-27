@@ -1,0 +1,67 @@
+{
+  "account": {
+    "eyebrow": "Your account",
+    "title": "My account",
+    "lede": "Optional. An account lets you save items, follow areas and see the claims you sent. It never holds your voter ID.",
+    "signedInAs": "Signed in as {email}",
+    "overviewSaved": "Saved items",
+    "overviewSavedText": "Publications, findings and booths you saved.",
+    "overviewSubscriptions": "Following",
+    "overviewSubscriptionsText": "Areas and series you get email alerts for.",
+    "overviewClaims": "My claims",
+    "overviewClaimsText": "Claims you sent and their moderation status.",
+    "overviewSettings": "Settings",
+    "overviewSettingsText": "Name, language, alerts and deleting your account.",
+    "nav": "Account sections",
+    "savedTitle": "Saved items",
+    "savedEmpty": "You haven’t saved anything yet. Use “Save” on a publication, finding or booth.",
+    "itemType": {
+      "publication": "Publication",
+      "finding": "Finding",
+      "booth": "Booth"
+    },
+    "savedOn": "Saved {date}",
+    "subscriptionsTitle": "Following",
+    "subscriptionsEmpty": "You aren’t following any area or series yet.",
+    "follow": "Follow",
+    "followArea": "Follow an area",
+    "targetType": {
+      "jurisdiction": "Area",
+      "series": "Series"
+    },
+    "claimsTitle": "My claims",
+    "claimsEmpty": "You haven’t sent any claims.",
+    "claimStatus": {
+      "checked": "Checked",
+      "in_moderation": "Waiting for moderation",
+      "published": "Published",
+      "rejected": "Not published"
+    },
+    "settingsTitle": "Settings",
+    "displayName": "Display name",
+    "displayNameHelp": "Optional. Never shown publicly.",
+    "language": "Language for emails",
+    "notifyEmail": "Email me when something I follow is published",
+    "saved": "Saved.",
+    "dangerTitle": "Delete my account",
+    "dangerText": "This removes your profile, saved items, followed areas, unpublished claims and your sign-in. Published claims stay published without your name.",
+    "deleteConfirm": "Type DELETE to confirm",
+    "deleteButton": "Delete my account",
+    "deleteUnavailable": "Account deletion needs the ElectraLens API, which isn’t connected in this environment. Your saved items and follows can still be removed one by one.",
+    "deleted": "Your account has been deleted."
+  },
+  "auth": {
+    "signInTitle": "Sign in",
+    "signInLede": "We’ll email you a one-time sign-in link. No password, and no voter ID ever.",
+    "email": "Email address",
+    "sendLink": "Email me a sign-in link",
+    "orContinue": "or",
+    "google": "Continue with Google",
+    "linkSent": "Check your inbox: we sent a sign-in link to {email}.",
+    "invalidEmail": "Please enter a valid email address.",
+    "failed": "Sign-in didn’t work. Please try again.",
+    "rateLimited": "Too many attempts. Please wait a minute and try again.",
+    "linkExpired": "That sign-in link has expired or was already used. Please request a new one.",
+    "staffNote": "Staff sign in through the operations console."
+  }
+}
