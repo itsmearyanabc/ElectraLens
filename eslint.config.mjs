@@ -11,6 +11,8 @@ export default defineConfig(
       '**/.next/**',
       '**/coverage/**',
       'services/engine/**',
+      // The standalone frontend prototype has its own npm install and lint config.
+      'frontend/**',
       'supabase/**',
       'contracts/artifacts/**',
       'contracts/cache/**',

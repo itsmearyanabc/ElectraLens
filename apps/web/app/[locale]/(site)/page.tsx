@@ -50,12 +50,10 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
       {/* Hero */}
       <section className="glow relative overflow-hidden">
         <HeroStage
-          sceneLabel={t('home.sceneLabel')}
-          sceneHint={t('home.sceneHint')}
           intro={
             <>
               <p className="eyebrow">{t('home.eyebrow')}</p>
-              <h1 className="mt-5 text-[2.75rem] leading-[1.02] sm:text-[3.5rem] xl:text-[4rem]">
+              <h1 className="mt-5 text-[2.75rem] leading-[1.02] sm:text-[4rem]">
                 {t('home.titleA')}
                 <br />
                 <span className="text-blue">{t('home.titleB')}</span>

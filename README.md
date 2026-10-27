@@ -12,13 +12,13 @@
 
 The primary civic portal and editorial audit suite is located in [`frontend/`](./frontend). It features a high-fidelity OriginX design system, interactive statistical tooling, and deterministic verification:
 
-* 🏛️ **3D Sovereign Canvas**: Interactive Three.js & Canvas visualization for civic engagement.
-* 📊 **Revision Delta Comparison Workspace (`/compare`)**: Granular inspection of additions, deletions, and corrections across draft and final roll revisions.
-* 🚩 **Statistical Anomaly Directory (`/findings`)**: Automated Benjamini-Hochberg False Discovery Rate (FDR) audit signals documenting multiple plausible hypotheses.
-* ⚖️ **Epistemic Claim Verification Engine (`/claims`)**: Natural-language fact-checking engine that tests claims against mathematical deltas and enforces strict epistemic boundaries (separating numbers from motive/fraud allegations).
-* 🔒 **In-Browser Cryptographic Verifier (`/verify`)**: Zero-server trust verification using W3C Web Crypto (`SHA-256`) and RFC-8785 canonical JSON sorting, including **drag-and-drop custom `.json` manifest upload**.
-* 📄 **Formal PDF Audit Dossier**: Vector-crisp `@media print` print layout for formal evidence archiving and physical dossier printing.
-* 🇮🇳 **Complete Bilingual Support**: Full English (`en`) and Hindi (`hi`) locale toggling across all public and operations pages.
+- 🏛️ **3D Sovereign Canvas**: Interactive Three.js & Canvas visualization for civic engagement.
+- 📊 **Revision Delta Comparison Workspace (`/compare`)**: Granular inspection of additions, deletions, and corrections across draft and final roll revisions.
+- 🚩 **Statistical Anomaly Directory (`/findings`)**: Automated Benjamini-Hochberg False Discovery Rate (FDR) audit signals documenting multiple plausible hypotheses.
+- ⚖️ **Epistemic Claim Verification Engine (`/claims`)**: Natural-language fact-checking engine that tests claims against mathematical deltas and enforces strict epistemic boundaries (separating numbers from motive/fraud allegations).
+- 🔒 **In-Browser Cryptographic Verifier (`/verify`)**: Zero-server trust verification using W3C Web Crypto (`SHA-256`) and RFC-8785 canonical JSON sorting, including **drag-and-drop custom `.json` manifest upload**.
+- 📄 **Formal PDF Audit Dossier**: Vector-crisp `@media print` print layout for formal evidence archiving and physical dossier printing.
+- 🇮🇳 **Complete Bilingual Support**: Full English (`en`) and Hindi (`hi`) locale toggling across all public and operations pages.
 
 ### Quick Start: Frontend Only
 
@@ -49,14 +49,14 @@ infra             Docker Compose, nginx, backups, deploy scripts
 
 ## Documentation
 
-| Document | Contents |
-| --- | --- |
-| [docs/01-PRD.md](docs/01-PRD.md) | Product requirements |
-| [docs/02-ARCHITECTURE.md](docs/02-ARCHITECTURE.md) | System architecture |
-| [docs/03-THREAT-MODEL.md](docs/03-THREAT-MODEL.md) | Threat model and privacy review |
-| [docs/04-ROADMAP.md](docs/04-ROADMAP.md) | Roadmap, 24-hour schedule, open decisions |
-| [docs/05-TECHNICAL-ARCHITECTURE.md](docs/05-TECHNICAL-ARCHITECTURE.md) | Technical design and build checklist |
-| [docs/06-FRONTEND.md](docs/06-FRONTEND.md) | Frontend UX & OriginX design specifications |
+| Document                                                               | Contents                                    |
+| ---------------------------------------------------------------------- | ------------------------------------------- |
+| [docs/01-PRD.md](docs/01-PRD.md)                                       | Product requirements                        |
+| [docs/02-ARCHITECTURE.md](docs/02-ARCHITECTURE.md)                     | System architecture                         |
+| [docs/03-THREAT-MODEL.md](docs/03-THREAT-MODEL.md)                     | Threat model and privacy review             |
+| [docs/04-ROADMAP.md](docs/04-ROADMAP.md)                               | Roadmap, 24-hour schedule, open decisions   |
+| [docs/05-TECHNICAL-ARCHITECTURE.md](docs/05-TECHNICAL-ARCHITECTURE.md) | Technical design and build checklist        |
+| [docs/06-FRONTEND.md](docs/06-FRONTEND.md)                             | Frontend UX & OriginX design specifications |
 
 ## Backend & Monorepo Prerequisites
 

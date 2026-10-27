@@ -11,3 +11,5 @@ contracts/artifacts/
 contracts/cache/
 contracts/types/
 data/
+infra/demo/
+frontend/
