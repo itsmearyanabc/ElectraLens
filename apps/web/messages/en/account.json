@@ -69,6 +69,30 @@
     "verify": "Sign in",
     "wrongCode": "That code is wrong or has expired. Check the latest email, or ask for a new code.",
     "differentEmail": "Use a different email",
-    "notHuman": "Please complete the security check, then try again."
+    "notHuman": "Please complete the security check, then try again.",
+    "signUpTitle": "Create your account",
+    "signUpLede": "Follow your area, save findings and get an email when something new is published. We’ll email you a 6-digit code: no password, and no voter ID ever.",
+    "signUpBenefits": [
+      "Follow your state, district or constituency",
+      "Save findings, publications and booths",
+      "Email updates when new results are published (optional)",
+      "Track the claims you submit"
+    ],
+    "name": "Full name",
+    "language": "Preferred language",
+    "homeArea": "Home area (optional)",
+    "homeAreaNone": "Choose later",
+    "homeAreaHelp": "We follow this area for you so updates about it show on your account. You can change it any time.",
+    "notify": "Email me when a new publication covers my area.",
+    "consent": "I agree to how ElectraLens handles my data. It never asks for or stores a voter ID.",
+    "privacyLink": "Read the privacy notice",
+    "sendSignUpCode": "Email me a code to create my account",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "newHere": "New to ElectraLens?",
+    "createAccount": "Create an account",
+    "noAccount": "There is no account with this email yet.",
+    "nameInvalid": "Please enter your name (2 to 80 characters).",
+    "consentRequired": "Please agree to the privacy notice to create an account."
   }
 }

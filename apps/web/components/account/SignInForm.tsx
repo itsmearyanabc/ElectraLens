@@ -10,8 +10,11 @@ import {
   type FormState,
 } from '@/app/[locale]/(site)/account/actions';
 import { Turnstile } from '@/components/ui/Turnstile';
+import { Link } from '@/i18n/navigation';
 
-/** Email a 6-digit code, then type it in: no links that can open on the wrong host. */
+import { CodeStep } from './CodeStep';
+
+/** Sign in to an existing account: email a 6-digit code, then type it in. */
 export function SignInForm({
   initialError,
   turnstileSiteKey,
@@ -32,7 +35,9 @@ export function SignInForm({
   useEffect(() => setAttempt((n) => n + 1), [sent]);
 
   if (sent.status === 'ok' && sent.email && restart === 0) {
-    return <CodeStep email={sent.email} onRestart={() => setRestart(1)} />;
+    return (
+      <CodeStep email={sent.email} verify={verifySignInCode} onRestart={() => setRestart(1)} />
+    );
   }
 
   return (
@@ -56,12 +61,26 @@ export function SignInForm({
         {sent.status === 'error' && sent.message && (
           <p role="alert" className="font-semibold text-danger">
             {t(sent.message)}
+            {sent.message === 'noAccount' && (
+              <>
+                {' '}
+                <Link href="/account/sign-up" className="underline">
+                  {t('createAccount')}
+                </Link>
+              </>
+            )}
           </p>
         )}
         <button type="submit" className="btn btn-primary w-full" disabled={sending}>
           {t('sendCode')}
         </button>
       </form>
+      <p className="text-center text-sm text-muted">
+        {t('newHere')}{' '}
+        <Link href="/account/sign-up" className="font-bold">
+          {t('createAccount')}
+        </Link>
+      </p>
       <div className="flex items-center gap-3 text-sm text-muted">
         <span className="h-px flex-1 bg-line" />
         {t('orContinue')}
@@ -74,51 +93,5 @@ export function SignInForm({
         </button>
       </form>
     </div>
-  );
-}
-
-function CodeStep({ email, onRestart }: { email: string; onRestart: () => void }) {
-  const t = useTranslations('auth');
-  const locale = useLocale();
-  const [state, verify, verifying] = useActionState<FormState, FormData>(verifySignInCode, {
-    status: 'ok',
-    email,
-  });
-
-  return (
-    <form action={verify} className="space-y-4">
-      <input type="hidden" name="locale" value={locale} />
-      <input type="hidden" name="email" value={email} />
-      <p role="status" className="rounded-2xl bg-blue-tint p-4 font-semibold text-ink">
-        {t('codeSent', { email })}
-      </p>
-      <div>
-        <label htmlFor="code" className="label">
-          {t('code')}
-        </label>
-        <input
-          id="code"
-          name="code"
-          inputMode="numeric"
-          autoComplete="one-time-code"
-          pattern="[0-9 ]{6,12}"
-          maxLength={12}
-          required
-          autoFocus
-          className="field text-center font-mono text-2xl tracking-[0.4em]"
-        />
-      </div>
-      {state.message && (
-        <p role="alert" className="font-semibold text-danger">
-          {t(state.message)}
-        </p>
-      )}
-      <button type="submit" className="btn btn-primary w-full" disabled={verifying}>
-        {t('verify')}
-      </button>
-      <button type="button" onClick={onRestart} className="btn btn-ghost w-full">
-        {t('differentEmail')}
-      </button>
-    </form>
   );
 }

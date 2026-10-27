@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { safeNext } from '@/lib/auth';
+import { env } from '@/lib/env';
 import { sessionDb } from '@/lib/supabase/server';
 
 /** S02: OAuth code exchange, then back to a same-site page. */
@@ -11,7 +12,7 @@ export async function GET(request: NextRequest) {
   if (code) {
     const db = await sessionDb();
     const { error } = await db.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(new URL(next, url.origin));
+    if (!error) return NextResponse.redirect(new URL(next, env.appOrigin()));
   }
-  return NextResponse.redirect(new URL('/en/account/sign-in?error=failed', url.origin));
+  return NextResponse.redirect(new URL('/en/account/sign-in?error=failed', env.appOrigin()));
 }
