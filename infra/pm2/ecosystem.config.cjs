@@ -34,7 +34,7 @@ const apps = [
   {
     ...common,
     name: 'electralens-web',
-    cwd: `${ROOT}/frontend`,
+    cwd: `${ROOT}/apps/web`,
     script: 'node_modules/next/dist/bin/next',
     args: 'start --hostname 127.0.0.1 --port 3100',
     interpreter: NODE,

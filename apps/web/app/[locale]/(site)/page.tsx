@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
+import { HeroStage } from '@/components/hero/HeroStage';
 import { AnchorStatusBadge } from '@/components/site/AnchorStatus';
 import { Badge } from '@/components/ui/Badge';
 import { Icon, type IconName } from '@/components/ui/Icon';
@@ -48,47 +49,36 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
     <>
       {/* Hero */}
       <section className="glow relative overflow-hidden">
-        <div className="container-page relative grid items-center gap-14 pt-16 pb-20 lg:grid-cols-[1.15fr_1fr] lg:pt-24 lg:pb-28">
-          <div>
-            <p className="eyebrow">{t('home.eyebrow')}</p>
-            <h1 className="mt-5 text-[2.75rem] leading-[1.02] sm:text-[4rem]">
-              {t('home.titleA')}
-              <br />
-              <span className="text-blue">{t('home.titleB')}</span>
-            </h1>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-              {t('home.lede')}
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link href="/findings" className="btn btn-primary !min-h-14 !px-7 text-[1.0625rem]">
-                {t('home.ctaFindings')} <Icon name="arrow" size={20} />
-              </Link>
-              <Link href="/verify" className="btn btn-outline !min-h-14 !px-7 text-[1.0625rem]">
-                {t('home.ctaVerify')}
-              </Link>
-            </div>
-            <p className="mt-8 flex items-start gap-2 text-sm text-muted">
-              <span
-                aria-hidden="true"
-                className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-saffron"
-              />
-              {t('common.syntheticNotice')}
-            </p>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-            <div
-              aria-hidden="true"
-              className="absolute -top-10 -right-6 h-56 w-56 rounded-full bg-peach"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute -bottom-10 -left-8 h-48 w-48 rounded-full bg-blue-tint"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute top-8 -left-4 h-16 w-16 rotate-12 rounded-2xl bg-saffron"
-            />
+        <HeroStage
+          sceneLabel={t('home.sceneLabel')}
+          sceneHint={t('home.sceneHint')}
+          intro={
+            <>
+              <p className="eyebrow">{t('home.eyebrow')}</p>
+              <h1 className="mt-5 text-[2.75rem] leading-[1.02] sm:text-[3.5rem] xl:text-[4rem]">
+                {t('home.titleA')}
+                <br />
+                <span className="text-blue">{t('home.titleB')}</span>
+              </h1>
+              <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted">{t('home.lede')}</p>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link href="/findings" className="btn btn-primary !min-h-14 !px-7 text-[1.0625rem]">
+                  {t('home.ctaFindings')} <Icon name="arrow" size={20} />
+                </Link>
+                <Link href="/verify" className="btn btn-outline !min-h-14 !px-7 text-[1.0625rem]">
+                  {t('home.ctaVerify')}
+                </Link>
+              </div>
+              <p className="mt-8 flex items-start gap-2 text-sm text-muted">
+                <span
+                  aria-hidden="true"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-saffron"
+                />
+                {t('common.syntheticNotice')}
+              </p>
+            </>
+          }
+          passport={
             <aside aria-labelledby="latest-title" className="card-float relative p-7 sm:p-8">
               <div className="flex items-center justify-between gap-3">
                 <p id="latest-title" className="mono-label">
@@ -145,8 +135,8 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
                 <p className="mt-6 text-muted">{t('home.latestEmpty')}</p>
               )}
             </aside>
-          </div>
-        </div>
+          }
+        />
       </section>
 
       {/* Audience strip */}

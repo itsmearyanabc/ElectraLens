@@ -52,8 +52,13 @@ export async function SiteHeader() {
             className="flex shrink-0 items-center gap-3 no-underline"
             aria-label={`${t('common.appName')}, ${t('nav.home')}`}
           >
-            <LogoMark />
-            <Wordmark className="text-[1.5rem] leading-none" />
+            <LogoMark size={38} />
+            <span className="flex flex-col leading-none">
+              <Wordmark className="text-[1.5rem] leading-none" />
+              <span className="mt-1 hidden text-[9px] font-bold tracking-[0.14em] text-muted uppercase sm:block">
+                {t('nav.brandLine')}
+              </span>
+            </span>
           </Link>
 
           <nav aria-label={t('nav.primary')} className="hidden xl:block">
