@@ -16,24 +16,14 @@ Secrets live only in `/etc/electralens/electralens.env` and `/etc/electralens/an
 ## 1. One-time server setup
 
 ```bash
-# Ports must be free (ORIGINX uses 8080/8443; check the others).
 ss -ltnp | grep -E ':(3100|4100|4200) ' || echo "ports free"
-
-# Tools: Node 24, pnpm through corepack, uv, pm2 (already installed).
-node --version
-corepack enable && corepack prepare pnpm@12.15.0 --activate
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
 git clone https://github.com/itsmearyanabc/ElectraLens.git /opt/electralens
-mkdir -p /etc/electralens && chmod 700 /etc/electralens
-cp /opt/electralens/infra/env/electralens.env.example /etc/electralens/electralens.env
-cp /opt/electralens/infra/env/anchor.env.example /etc/electralens/anchor.env
-chmod 600 /etc/electralens/*.env
-nano /etc/electralens/electralens.env   # fill in values, including the admin email and password
-nano /etc/electralens/anchor.env
+bash /opt/electralens/infra/scripts/install-tools.sh   # private Node 24, pnpm, uv
+bash /opt/electralens/infra/scripts/setup-env.sh       # asks for each value, writes /etc/electralens/*.env
 ```
 
-`ANCHOR_HMAC_KEY` must be the same in both files (`openssl rand -hex 32`).
+The system Node used by the other pm2 apps is not changed. The anchor service starts only once
+`REGISTRY_ADDRESS` is set (re-run `setup-env.sh` after the Hoodi deployment).
 
 ## 2. Database (Supabase cloud), from your own machine
 

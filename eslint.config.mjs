@@ -36,4 +36,9 @@ export default defineConfig(
       ],
     },
   },
+  {
+    // pm2 reads its ecosystem file as CommonJS.
+    files: ['**/*.cjs'],
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
 );
