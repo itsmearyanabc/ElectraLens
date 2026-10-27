@@ -152,7 +152,7 @@
   "finding": {
     "ai": {
       "title": "In plain words",
-      "intro": "Ask Gemini to explain this finding in everyday language. It sees only the figures and notes on this page.",
+      "intro": "Ask an AI model to explain this finding in everyday language. It sees only the figures and notes on this page.",
       "button": "Explain with AI",
       "working": "Writing an explanation…",
       "badge": "AI-written",

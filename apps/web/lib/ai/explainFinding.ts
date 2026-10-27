@@ -8,7 +8,7 @@ import { getFinding } from '@/lib/data/public';
 import { evidenceRows } from '@/lib/evidence';
 import { catalogueText, explanationText, parseFinding, ruleName } from '@/lib/findings';
 
-import { generate, GeminiUnavailable } from './gemini';
+import { generate, GeminiUnavailable, modelName } from './gemini';
 
 export type Explanation =
   | { status: 'ok'; text: string; model: string }
@@ -77,7 +77,7 @@ export async function explainFinding(id: string, locale: string): Promise<Explan
   const result: Explanation = {
     status: 'ok',
     text: clean,
-    model: process.env.GEMINI_MODEL ?? 'gemini-flash-latest',
+    model: modelName() ?? '',
   };
   if (cache.size > 500) cache.clear();
   cache.set(cacheKey, result);

@@ -13,3 +13,4 @@ contracts/types/
 data/
 infra/demo/
 frontend/
+contracts/ignition/deployments/
