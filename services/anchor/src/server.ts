@@ -99,7 +99,8 @@ export function buildServer(options: ServerOptions): Server {
   });
 }
 
-async function main(): Promise<void> {
+/** Starts the service: reconciliation timer and the HTTP listener. */
+export async function main(): Promise<void> {
   const config = loadConfig();
   const provider = new JsonRpcProvider(config.rpcUrl, Number(config.chainId), {
     staticNetwork: true,

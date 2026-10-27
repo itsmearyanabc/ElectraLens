@@ -31,6 +31,29 @@ class WorkerConfig:
         return f"git:{self.git_sha}" if self.git_sha else None
 
 
+def read_env_file(path: str | Path) -> dict[str, str]:
+    """KEY=value lines as Node's --env-file reads them: the value is everything after the first
+    `=`, taken literally (one pair of matching quotes is removed); blank lines and # comments are
+    skipped. Passwords with `@`, `!` or `$` need no escaping."""
+    values: dict[str, str] = {}
+    for raw in Path(path).read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        values[key.strip().removeprefix("export ").strip()] = value
+    return values
+
+
+def with_env_file(env: Mapping[str, str]) -> dict[str, str]:
+    """The environment plus ELECTRALENS_ENV_FILE's values; variables already set win."""
+    path = env.get("ELECTRALENS_ENV_FILE")
+    return {**(read_env_file(path) if path else {}), **env}
+
+
 def load_config(env: Mapping[str, str] = os.environ) -> WorkerConfig:
     sha = env.get("ELECTRALENS_GIT_SHA", "").strip().lower() or None
     if sha is not None and not re.fullmatch(r"[0-9a-f]{7,40}", sha):

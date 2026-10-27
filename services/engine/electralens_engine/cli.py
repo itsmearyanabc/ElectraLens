@@ -1,6 +1,7 @@
 """Command-line entry point (`el`). Subcommands are added stage by stage."""
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -171,11 +172,11 @@ def _cmd_ingest(args: argparse.Namespace) -> int:
 def _cmd_worker(args: argparse.Namespace) -> int:
     import logging
 
-    from electralens_engine.worker.config import load_config
+    from electralens_engine.worker.config import load_config, with_env_file
     from electralens_engine.worker.loop import run_forever
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
-    run_forever(load_config(), once=args.once)
+    run_forever(load_config(with_env_file(os.environ)), once=args.once)
     return 0
 
 
