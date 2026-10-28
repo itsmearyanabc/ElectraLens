@@ -26,6 +26,7 @@ const SECTIONS: [string, string, Role[]][] = [
   ['/ops/findings', 'findings', ['reviewer', 'analyst']],
   ['/ops/publications', 'publications', ['publisher', 'reviewer']],
   ['/ops/claims', 'claims', ['reviewer']],
+  ['/ops/complaints', 'complaints', ['reviewer', 'sysadmin']],
   ['/ops/booths', 'booths', ['data_steward']],
   ['/ops/methodology', 'methodology', ['analyst', 'publisher']],
   ['/ops/staff', 'staff', ['sysadmin']],

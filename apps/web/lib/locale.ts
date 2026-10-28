@@ -25,4 +25,5 @@ export const CLIENT_NAMESPACES = [
   'ops',
   'auth',
   'account',
+  'complaints',
 ] as const;

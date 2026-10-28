@@ -94,5 +94,116 @@
     "noAccount": "There is no account with this email yet.",
     "nameInvalid": "Please enter your name (2 to 80 characters).",
     "consentRequired": "Please agree to the privacy notice to create an account."
+  },
+  "complaints": {
+    "title": "My complaints",
+    "lede": "Tell the official responsible for your area about a problem with your electoral-roll entry or polling booth. You need to verify your identity once first.",
+    "raise": "Raise a complaint",
+    "verifyFirst": "Verify your identity to raise a complaint",
+    "empty": "You have not raised any complaints.",
+    "back": "All my complaints",
+    "routedNote": "This complaint went to the staff responsible for this area. Their replies appear here.",
+    "status": {
+      "submitted": "Submitted",
+      "in_review": "In review",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "category": {
+      "name_missing": "My name is missing from the roll",
+      "wrong_details": "Wrong details in my entry",
+      "wrongful_deletion": "I think my entry was wrongly deleted",
+      "booth_issue": "Problem with my polling booth",
+      "voter_card": "Voter card (EPIC) problem",
+      "accessibility": "Accessibility at the booth",
+      "other": "Something else"
+    },
+    "ekyc": {
+      "title": "Verify your identity",
+      "navLabel": "Identity check",
+      "lede": "Complaints go to a real official, so we check once that you are a real person.",
+      "demoNotice": "Demonstration e-KYC. This prototype is not connected to UIDAI or DigiLocker: real Aadhaar OTP verification needs a licence this project does not have. Nothing you enter is sent anywhere, the number is never stored (only its last 4 digits), and the OTP is shown on screen instead of being sent by SMS.",
+      "name": "Name as on your Aadhaar",
+      "aadhaar": "Aadhaar number (12 digits)",
+      "aadhaarHelp": "For the demo, use a specimen number such as 2341 2341 2346.",
+      "consent": "I consent to ElectraLens checking my identity for filing complaints. I understand only my name, the last 4 digits and the date are kept.",
+      "sendOtp": "Send OTP",
+      "otpSent": "An OTP would be sent to the mobile number linked to Aadhaar ending {last4}.",
+      "demoOtpLabel": "Demo OTP:",
+      "otp": "Enter the 6-digit OTP",
+      "verify": "Verify",
+      "done": "Identity verified",
+      "doneText": "{name}, Aadhaar ending {last4}, verified on {date} (demonstration e-KYC).",
+      "raise": "Raise a complaint",
+      "production": "In production this step would use DigiLocker’s Aadhaar e-KYC through a registered partner integration, with the citizen’s consent on DigiLocker itself.",
+      "errors": {
+        "signIn": "Please sign in first.",
+        "nameInvalid": "Please enter your name (2 to 80 characters).",
+        "aadhaarInvalid": "That is not a valid Aadhaar-format number (12 digits with a correct check digit).",
+        "consentRequired": "Please give consent to continue.",
+        "otpWrong": "That OTP is not correct.",
+        "expired": "This check expired. Please start again.",
+        "failed": "Verification could not be saved. Please try again."
+      }
+    },
+    "new": {
+      "title": "Raise a complaint",
+      "lede": "Describe your problem to the assistant in your own words. It will ask a few questions and draft the complaint for you. Check the draft, choose the area and file it.",
+      "greeting": "Hello! Tell me what problem you faced with your voter registration or polling booth, in your own words. Please don’t share your Aadhaar, EPIC or phone number here.",
+      "chatTitle": "Complaint assistant",
+      "chatSubtitle": "AI helps you write it; you decide what is sent",
+      "placeholder": "Describe your problem…",
+      "send": "Send",
+      "thinking": "Thinking…",
+      "draftTitle": "Your complaint",
+      "draftEmpty": "Chat with the assistant, or fill this in yourself.",
+      "draftReady": "The assistant drafted this from your conversation. Check and edit it before filing.",
+      "area": "Area it concerns",
+      "areaChoose": "Choose the area",
+      "category": "Type of problem",
+      "categoryChoose": "Choose a type",
+      "subject": "Subject",
+      "details": "Details",
+      "file": "File complaint",
+      "fileNote": "Your complaint goes to the staff responsible for this area. Your verified name is visible to them; your Aadhaar number never is, because it is not stored.",
+      "errors": {
+        "unavailable": "The assistant is not available right now. You can still fill in the complaint yourself.",
+        "refused": "That answer did not meet our wording rules. Please rephrase.",
+        "invalid": "Please write a message first.",
+        "areaRequired": "Please choose the area.",
+        "categoryRequired": "Please choose the type of problem.",
+        "titleInvalid": "The subject needs 5 to 140 characters.",
+        "summaryInvalid": "The details need 10 to 4000 characters.",
+        "not_verified": "Please verify your identity first.",
+        "too_many": "You can raise up to 5 complaints a day.",
+        "unknown_area": "That area is not known.",
+        "failed": "The complaint could not be filed. Please try again."
+      }
+    },
+    "thread": {
+      "author": {
+        "citizen": "Citizen",
+        "staff": "Official",
+        "system": "Update"
+      },
+      "reply": "Write a reply",
+      "send": "Send reply",
+      "closed": "This complaint is closed.",
+      "errors": {
+        "messageInvalid": "Please write a message (up to 4000 characters).",
+        "closed": "This complaint is closed.",
+        "failed": "That did not work. Please try again."
+      }
+    },
+    "staff": {
+      "title": "Citizen complaints",
+      "lede": "Complaints from verified citizens in the areas you are responsible for. {open} open.",
+      "empty": "No complaints in your areas.",
+      "back": "All complaints",
+      "setStatus": "Status",
+      "note": "Note (shown to the citizen)",
+      "update": "Update status",
+      "verifiedNote": "Filed by a citizen who completed identity verification (demonstration e-KYC). Contact details are not shared here; reply in this thread."
+    }
   }
 }

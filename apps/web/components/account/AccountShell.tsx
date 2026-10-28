@@ -29,6 +29,8 @@ export async function AccountShell({
                 { href: '/account', label: t('account.title') },
                 { href: '/account/saved', label: t('account.overviewSaved') },
                 { href: '/account/subscriptions', label: t('account.overviewSubscriptions') },
+                { href: '/account/complaints', label: t('complaints.title') },
+                { href: '/account/verify', label: t('complaints.ekyc.navLabel') },
                 { href: '/account/claims', label: t('account.overviewClaims') },
                 { href: '/account/settings', label: t('account.overviewSettings') },
               ]}

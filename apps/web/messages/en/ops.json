@@ -15,7 +15,8 @@
       "audit": "Audit log",
       "security": "Security",
       "jobs": "Jobs",
-      "backToSite": "Back to the public site"
+      "backToSite": "Back to the public site",
+      "complaints": "Citizen complaints"
     },
     "roles": {
       "sysadmin": "System administrator",

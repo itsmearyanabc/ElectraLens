@@ -303,6 +303,34 @@ export type Database = {
           },
         ];
       };
+      citizen_verifications: {
+        Row: {
+          aadhaar_last4: string;
+          is_simulated: boolean;
+          method: string;
+          user_id: string;
+          verified_at: string;
+          verified_name: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          aadhaar_last4: string;
+          is_simulated?: boolean;
+          method: string;
+          user_id: string;
+          verified_at?: string;
+          verified_name: string;
+        };
+        Update: {
+          aadhaar_last4?: string;
+          is_simulated?: boolean;
+          method?: string;
+          user_id?: string;
+          verified_at?: string;
+          verified_name?: string;
+        };
+        Relationships: [];
+      };
       claim_assessments: {
         Row: {
           assessed_by: string | null;
@@ -397,6 +425,90 @@ export type Database = {
           text?: string | null;
         };
         Relationships: [];
+      };
+      complaint_messages: {
+        Row: {
+          author_id: string | null;
+          author_role: string;
+          body: string;
+          complaint_id: string;
+          created_at: string;
+          id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id?: string | null;
+          author_role: string;
+          body: string;
+          complaint_id: string;
+          created_at?: string;
+          id?: string;
+        };
+        Update: {
+          author_id?: string | null;
+          author_role?: string;
+          body?: string;
+          complaint_id?: string;
+          created_at?: string;
+          id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'complaint_messages_complaint_id_fkey';
+            columns: ['complaint_id'];
+            isOneToOne: false;
+            referencedRelation: 'complaints';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      complaints: {
+        Row: {
+          category: string;
+          created_at: string;
+          id: string;
+          jurisdiction_id: string;
+          reference: string;
+          status: string;
+          summary: string;
+          title: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          category: string;
+          created_at?: string;
+          id?: string;
+          jurisdiction_id: string;
+          reference?: string;
+          status?: string;
+          summary: string;
+          title: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          category?: string;
+          created_at?: string;
+          id?: string;
+          jurisdiction_id?: string;
+          reference?: string;
+          status?: string;
+          summary?: string;
+          title?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'complaints_jurisdiction_id_fkey';
+            columns: ['jurisdiction_id'];
+            isOneToOne: false;
+            referencedRelation: 'jurisdictions';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       data_sources: {
         Row: {
@@ -1171,6 +1283,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      add_complaint_message: { Args: { p_body: string; p_complaint: string }; Returns: undefined };
       approve_dataset_version: { Args: { p_id: string }; Returns: undefined };
       approve_publication: {
         Args: {
@@ -1285,6 +1398,13 @@ export type Database = {
         Args: { p_error: string; p_id: string; p_worker: string };
         Returns: Database['public']['Enums']['job_status'];
       };
+      file_complaint: {
+        Args: { p_area_code: string; p_category: string; p_summary: string; p_title: string };
+        Returns: {
+          id: string;
+          reference: string;
+        }[];
+      };
       freeze_methodology: { Args: { p_version: string }; Returns: undefined };
       grant_role: {
         Args: {
@@ -1312,6 +1432,7 @@ export type Database = {
         Returns: undefined;
       };
       publish_methodology: { Args: { p_version: string }; Returns: undefined };
+      record_demo_verification: { Args: { p_last4: string; p_name: string }; Returns: undefined };
       request_audit_run: {
         Args: { p_baseline: string; p_methodology: string; p_target: string };
         Returns: string;
@@ -1326,6 +1447,10 @@ export type Database = {
         Returns: undefined;
       };
       revoke_role: { Args: { p_assignment: string; p_reason: string }; Returns: undefined };
+      set_complaint_status: {
+        Args: { p_complaint: string; p_note: string; p_status: string };
+        Returns: undefined;
+      };
       start_run: { Args: { p_engine: string; p_image: string; p_run: string }; Returns: undefined };
       submit_claim: {
         Args: {

@@ -501,6 +501,9 @@ A claim is `{area_code, metric, period, comparator, value, unit, claim_type}`. M
 - [ ] **B14.10** Short idle timeout for staff, and sign-out everywhere when a role is revoked. [T02] P1
 
 ### B15 Operations console and governance · S7 · hours 14–18
+- [x] **B14.11** Citizen complaints: verified citizens describe a problem to an AI intake assistant that drafts the complaint (category, subject, details); the citizen reviews it, picks the area and files it. It is routed by RLS to reviewers whose assignment covers that area (and the sysadmin), who reply and set its status in a shared thread (Citizen complaints in the console). Writes go through functions, so roles on messages can't be forged; five complaints a day per citizen. P2
+- [x] **B14.12** Identity check before complaints: **simulated** e-KYC (consent, Aadhaar-format number with a Verhoeff check, OTP shown on screen), labelled as a demonstration on every screen. Stores only the name, the last four digits and the date, never the number (`is_simulated` is pinned true). *Production path:* DigiLocker's Aadhaar e-KYC through a registered partner integration (MeitY onboarding), with consent taken on DigiLocker; real Aadhaar OTP authentication is not available to this project without UIDAI authorisation. P2
+
 - [ ] **B15.01** `/ops` shell with role-aware navigation. The UI uses role hints, while the API and RLS enforce access. [FR-GOV-1] P0
 - [ ] **B15.02** Steward: create a dataset version, upload, read the ingestion report, approve; booth import. [US-S1] P0
 - [ ] **B15.03** Analyst: start a run (baseline, target, methodology), watch the job, inspect findings and restricted evidence through a signed-URL viewer. [US-S2] P0
