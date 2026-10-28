@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Caprasimo, Figtree, JetBrains_Mono } from "next/font/google";
 import { LanguageProvider } from "@/context/language-context";
+import { AuthProvider } from "@/components/auth/session-provider";
 import "./globals.css";
 
 const caprasimo = Caprasimo({
@@ -43,9 +44,11 @@ export default function RootLayout({
       className={`scroll-smooth ${caprasimo.variable} ${figtree.variable} ${jetbrainsMono.variable} ${figtree.className}`}
     >
       <body className="min-h-screen bg-background text-foreground antialiased font-sans">
-        <LanguageProvider>
-          {children}
-        </LanguageProvider>
+        <AuthProvider>
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
+        </AuthProvider>
       </body>
     </html>
   );

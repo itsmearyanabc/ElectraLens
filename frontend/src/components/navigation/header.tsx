@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/language-context";
+import { UserAuthBadge } from "@/components/auth/user-auth-badge";
 
 export function Header() {
   const pathname = usePathname();
@@ -196,6 +197,9 @@ export function Header() {
               </button>
             </div>
 
+            {/* User Account / Google Sign-in */}
+            <UserAuthBadge />
+
             {/* Verify CTA Button — Exact Match to Explore the Live Data Button */}
             <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
               <Link
@@ -270,6 +274,11 @@ export function Header() {
                 })}
 
                 <div className="pt-4 mt-2 border-t border-[#E4E7EC] flex flex-col gap-3">
+                  <div className="flex items-center justify-between px-1">
+                    <span className="text-xs font-semibold text-[#475467]">Account</span>
+                    <UserAuthBadge />
+                  </div>
+
                   <Link
                     href="/verify"
                     onClick={() => setMobileOpen(false)}

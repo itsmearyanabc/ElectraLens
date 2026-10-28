@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Lock, ShieldCheck, KeyRound, AlertTriangle, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 
 export default function OpsLoginPage() {
   const router = useRouter();
@@ -42,6 +43,17 @@ export default function OpsLoginPage() {
           <p className="text-xs text-white/60 mt-1">
             Access restricted to verified data stewards, analysts, and reviewers.
           </p>
+        </div>
+
+        {/* Google SSO Authentication */}
+        <div className="mb-6">
+          <GoogleSignInButton callbackUrl="/ops" label="Sign in with Google Workspace" />
+          <div className="relative my-5 flex items-center justify-center">
+            <div className="border-t border-white/10 w-full" />
+            <span className="bg-[#252623] px-3 text-[10px] uppercase font-bold tracking-wider text-white/40 absolute">
+              Or use simulated credentials
+            </span>
+          </div>
         </div>
 
         {/* Demo Adapter Notice */}
