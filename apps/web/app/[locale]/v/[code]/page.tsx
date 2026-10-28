@@ -11,6 +11,7 @@ import { HistoryForm } from '@/components/voter/HistoryForm';
 import { areaLabels } from '@/lib/areas';
 import { getBooth, getVoterCard } from '@/lib/data/public';
 import { localName } from '@/lib/data/types';
+import { demoPollText } from '@/lib/demoElection';
 import { pageLocale } from '@/lib/locale';
 import { OFFICIAL } from '@/lib/official';
 
@@ -35,6 +36,7 @@ export default async function VoterCardPage({ params }: PageProps<'/[locale]/v/[
   if (!booth) notFound();
   const t = await getTranslations();
   const ac = (await areaLabels([booth.ac_id], locale)).get(booth.ac_id);
+  const poll = demoPollText(locale);
 
   return (
     <div className="glow min-h-dvh">
@@ -67,6 +69,20 @@ export default async function VoterCardPage({ params }: PageProps<'/[locale]/v/[
             <SyntheticBadge />
             <span className="hash text-sm">{card.card_number}</span>
           </div>
+
+          <section
+            aria-labelledby="poll-title"
+            className="mt-6 rounded-2xl border border-blue/30 bg-blue-tint p-5"
+          >
+            <h2 id="poll-title" className="mono-label !text-blue-deep">
+              {t('voterCard.pollTitle')}
+            </h2>
+            <p className="display mt-2 text-2xl text-ink">{poll.day}</p>
+            <p className="mt-1 font-semibold">
+              {t('voterCard.pollHours', { opens: poll.opens, closes: poll.closes })}
+            </p>
+            <p className="mt-2 text-xs text-muted">{t('voterCard.pollDemo')}</p>
+          </section>
 
           <h2 className="mt-8 text-xl">{t('voterCard.yourBooth')}</h2>
           <p className="display mt-2 text-2xl text-blue">{localName(booth.name, locale)}</p>

@@ -16,7 +16,8 @@
       "security": "Security",
       "jobs": "Jobs",
       "backToSite": "Back to the public site",
-      "complaints": "Citizen complaints"
+      "complaints": "Citizen complaints",
+      "voterCards": "Voter cards"
     },
     "roles": {
       "sysadmin": "System administrator",
@@ -35,7 +36,13 @@
       "submit": "Sign in",
       "failed": "Email or password is wrong.",
       "notStaff": "This account has no active staff role.",
-      "citizen": "Not staff? Sign in as a citizen"
+      "citizen": "Not staff? Sign in as a citizen",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "locked": "Too many failed attempts. Try again in {time}.",
+      "lockedButton": "Locked · {time}",
+      "notHuman": "Please complete the security check, then try again.",
+      "lockoutNote": "After failed attempts the sign-in locks: 3 tries then 30 s, 2 then 1 min, 1 then 5 min, then the wait doubles each time."
     },
     "mfa": {
       "enrollTitle": "Set up your authenticator",
@@ -58,7 +65,14 @@
         "findingsPending": "Findings to review",
         "publicationsInReview": "Publications awaiting approval",
         "claimsModeration": "Claims to moderate",
-        "jobsFailed": "Failed jobs"
+        "jobsFailed": "Failed jobs",
+        "complaintsOpen": "Open citizen complaints",
+        "voterCards": "Voter cards in your areas",
+        "staffActive": "Active staff roles",
+        "auditToday": "Audit events (24 h)",
+        "securityEvents": "Security events (24 h)",
+        "incidentsOpen": "Open incidents",
+        "publicationsPublished": "Published publications"
       }
     },
     "c": {
@@ -239,6 +253,16 @@
       "workflow_bad_decision": "That decision isn’t allowed here.",
       "methodology_frozen": "Frozen methodology can’t change.",
       "publication_manifest_frozen": "The manifest is frozen."
+    },
+    "voterCards": {
+      "title": "Voter cards",
+      "ledeAll": "All {count} demo voter cards. Scanning a card’s QR code shows the holder their polling booth and polling day.",
+      "ledeArea": "{count} demo voter cards whose polling booth is in your assigned areas.",
+      "empty": "No voter cards in your areas.",
+      "qrAlt": "QR code on {name}’s card",
+      "details": "Born {born} · part {part} · serial {serial}",
+      "missed": "Missed {missed} of {total} elections",
+      "open": "Open what a scan shows"
     }
   }
 }

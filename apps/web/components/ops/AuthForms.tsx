@@ -1,16 +1,39 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { useActionState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 
 import { staffSignIn, verifyMfa, type OpsState } from '@/app/[locale]/ops/actions';
+import { PasswordField } from '@/components/ui/PasswordField';
+import { Turnstile } from '@/components/ui/Turnstile';
 
-export function StaffLoginForm({ notStaff }: { notStaff: boolean }) {
+export function StaffLoginForm({
+  notStaff,
+  turnstileSiteKey,
+}: {
+  notStaff: boolean;
+  turnstileSiteKey: string | null;
+}) {
   const t = useTranslations('ops.login');
   const locale = useLocale();
   const [state, action, pending] = useActionState<OpsState, FormData>(staffSignIn, {
     status: 'idle',
   });
+  // Turnstile tokens are single-use; each answer gets a fresh widget and a fresh countdown.
+  const [attempt, setAttempt] = useState(0);
+  const [wait, setWait] = useState(0);
+  useEffect(() => {
+    setAttempt((n) => n + 1);
+    setWait(state.wait ?? 0);
+  }, [state]);
+  useEffect(() => {
+    if (wait <= 0) return;
+    const timer = setTimeout(() => setWait((s) => s - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [wait]);
+  const locked = wait > 0;
+  const clock = `${Math.floor(wait / 60)}:${String(wait % 60).padStart(2, '0')}`;
+
   return (
     <form action={action} className="space-y-4">
       <input type="hidden" name="locale" value={locale} />
@@ -31,23 +54,32 @@ export function StaffLoginForm({ notStaff }: { notStaff: boolean }) {
         <label htmlFor="password" className="label">
           {t('password')}
         </label>
-        <input
+        <PasswordField
           id="password"
           name="password"
-          type="password"
           autoComplete="current-password"
-          required
-          className="field"
+          showLabel={t('showPassword')}
+          hideLabel={t('hidePassword')}
         />
       </div>
-      {(state.status === 'error' || notStaff) && (
+      <Turnstile key={attempt} siteKey={turnstileSiteKey} action="staff_sign_in" locale={locale} />
+      {locked ? (
         <p role="alert" className="font-semibold text-danger">
-          {state.status === 'error' ? t('failed') : t('notStaff')}
+          {t('locked', { time: clock })}
         </p>
+      ) : (
+        (state.status === 'error' || notStaff) && (
+          <p role="alert" className="font-semibold text-danger">
+            {state.status === 'error'
+              ? t(state.message === 'notHuman' ? 'notHuman' : 'failed')
+              : t('notStaff')}
+          </p>
+        )
       )}
-      <button type="submit" className="btn btn-primary w-full" disabled={pending}>
-        {t('submit')}
+      <button type="submit" className="btn btn-primary w-full" disabled={pending || locked}>
+        {locked ? t('lockedButton', { time: clock }) : t('submit')}
       </button>
+      <p className="text-xs text-muted">{t('lockoutNote')}</p>
     </form>
   );
 }

@@ -877,6 +877,31 @@ export type Database = {
           },
         ];
       };
+      login_throttle: {
+        Row: {
+          failures: number;
+          key: string;
+          locked_until: string | null;
+          stage: number;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          failures?: number;
+          key: string;
+          locked_until?: string | null;
+          stage?: number;
+          updated_at?: string;
+        };
+        Update: {
+          failures?: number;
+          key?: string;
+          locked_until?: string | null;
+          stage?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       methodology_versions: {
         Row: {
           created_at: string;
@@ -1414,6 +1439,9 @@ export type Database = {
         };
         Returns: string;
       };
+      login_throttle_clear: { Args: Record<PropertyKey, never>; Returns: undefined };
+      login_throttle_fail: { Args: { p_key: string }; Returns: number };
+      login_throttle_wait: { Args: { p_key: string }; Returns: number };
       mark_dataset_uploaded: { Args: { p_id: string; p_original_path: string }; Returns: string };
       mark_published: {
         Args: {
@@ -1450,6 +1478,23 @@ export type Database = {
       set_complaint_status: {
         Args: { p_complaint: string; p_note: string; p_status: string };
         Returns: undefined;
+      };
+      staff_voter_cards: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          ac_id: string;
+          birth_year: number;
+          booth_code: string;
+          booth_name: Json;
+          card_code: string;
+          card_number: string;
+          elections: number;
+          gender: string;
+          holder_name: string;
+          missed: number;
+          part_number: number;
+          serial_number: number;
+        }[];
       };
       start_run: { Args: { p_engine: string; p_image: string; p_run: string }; Returns: undefined };
       submit_claim: {

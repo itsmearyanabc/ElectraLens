@@ -52,6 +52,61 @@ export default async function OpsDashboard({ params }: PageProps<'/[locale]/ops'
       () => count(db.from('claim_submissions').select('id', head).eq('status', 'in_moderation')),
     ],
     [
+      'complaintsOpen',
+      '/ops/complaints',
+      ['reviewer', 'sysadmin'],
+      () =>
+        count(db.from('complaints').select('id', head).in('status', ['submitted', 'in_review'])),
+    ],
+    [
+      'voterCards',
+      '/ops/voter-cards',
+      ['sysadmin', 'data_steward', 'analyst', 'reviewer', 'publisher', 'security_auditor'],
+      async () => ((await db.rpc('staff_voter_cards')).data ?? []).length,
+    ],
+    [
+      'staffActive',
+      '/ops/staff',
+      ['sysadmin'],
+      () => count(db.from('staff_assignments').select('id', head).is('revoked_at', null)),
+    ],
+    [
+      'auditToday',
+      '/ops/audit',
+      ['sysadmin', 'security_auditor'],
+      () =>
+        count(
+          db
+            .from('audit_log')
+            .select('id', head)
+            .gte('at', new Date(Date.now() - 86_400_000).toISOString()),
+        ),
+    ],
+    [
+      'securityEvents',
+      '/ops/security',
+      ['sysadmin', 'security_auditor'],
+      () =>
+        count(
+          db
+            .from('security_events')
+            .select('id', head)
+            .gte('at', new Date(Date.now() - 86_400_000).toISOString()),
+        ),
+    ],
+    [
+      'incidentsOpen',
+      '/ops/security',
+      ['sysadmin', 'security_auditor'],
+      () => count(db.from('incident_records').select('id', head).neq('status', 'resolved')),
+    ],
+    [
+      'publicationsPublished',
+      '/ops/publications',
+      ['sysadmin', 'publisher', 'reviewer'],
+      () => count(db.from('publications').select('id', head).eq('status', 'published')),
+    ],
+    [
       'jobsFailed',
       '/ops/jobs',
       ['sysadmin', 'analyst', 'data_steward'],

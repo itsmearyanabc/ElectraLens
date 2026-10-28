@@ -1,5 +1,7 @@
 'use server';
 
+import { createHash } from 'node:crypto';
+
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -7,8 +9,15 @@ import { isLocale } from '@/i18n/routing';
 import type { Enums, Json } from '@/lib/data/types';
 import { callApi, type ApiResult } from '@/lib/api';
 import { sessionDb } from '@/lib/supabase/server';
+import { turnstileOk } from '@/lib/turnstile';
 
-export type OpsState = { status: 'idle' | 'ok' | 'error'; message?: string; id?: string };
+export type OpsState = {
+  status: 'idle' | 'ok' | 'error';
+  message?: string;
+  id?: string;
+  /** Seconds until the next sign-in attempt is allowed. */
+  wait?: number;
+};
 
 const localeOf = (form: FormData) => {
   const value = form.get('locale');
@@ -32,13 +41,29 @@ function errorKey(message: string | undefined): string {
   return code ? code.replace('.', '_') : 'generic';
 }
 
+/**
+ * Staff password sign-in behind Turnstile and an escalating lockout kept in the database (3 tries
+ * then 30 s, 2 then 1 min, 1 then 5 min, then 1 at a time with the wait doubling). The lock is
+ * checked before the password is tried, so a locked account gives nothing away.
+ */
 export async function staffSignIn(_previous: OpsState, form: FormData): Promise<OpsState> {
+  const email = text(form, 'email', 254).toLowerCase();
+  const key = createHash('sha256').update(email).digest('hex');
   const db = await sessionDb();
+  const { data: waiting } = await db.rpc('login_throttle_wait', { p_key: key });
+  if (waiting && waiting > 0) return { status: 'error', message: 'locked', wait: waiting };
+  if (!(await turnstileOk(form, 'staff_sign_in'))) return { status: 'error', message: 'notHuman' };
   const { error } = await db.auth.signInWithPassword({
-    email: text(form, 'email', 254),
+    email,
     password: String(form.get('password') ?? ''),
   });
-  if (error) return { status: 'error', message: 'failed' };
+  if (error) {
+    const { data: locked } = await db.rpc('login_throttle_fail', { p_key: key });
+    return locked && locked > 0
+      ? { status: 'error', message: 'locked', wait: locked }
+      : { status: 'error', message: 'failed' };
+  }
+  await db.rpc('login_throttle_clear');
   redirect(`/${localeOf(form)}/ops/mfa`);
 }
 

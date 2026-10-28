@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 
 import { AuthCard } from '@/components/ops/AuthCard';
 import { StaffLoginForm } from '@/components/ops/AuthForms';
+import { env } from '@/lib/env';
 import { Link } from '@/i18n/navigation';
 import { pageLocale } from '@/lib/locale';
 import { one } from '@/lib/params';
@@ -25,7 +26,7 @@ export default async function StaffLoginPage({
   const notStaff = one(await searchParams, 'error') === 'not_staff';
   return (
     <AuthCard eyebrow={t('consoleTitle')} title={t('login.title')} lede={t('login.lede')}>
-      <StaffLoginForm notStaff={notStaff} />
+      <StaffLoginForm notStaff={notStaff} turnstileSiteKey={env.turnstileSiteKey()} />
       <p className="mt-6 text-center text-sm">
         <Link href="/account/sign-in">{t('login.citizen')}</Link>
       </p>

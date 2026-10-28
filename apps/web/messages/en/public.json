@@ -772,6 +772,9 @@
     "summary": "You missed {missed} of {total} elections",
     "allVoted": "You voted in every election. Thank you!",
     "synthetic": "Synthetic demonstration record. ElectraLens holds no real voting records: the electoral roll does not record who voted.",
-    "notOfficial": "This is a demonstration card for a fictional person, not an official EPIC. For your real polling station use the official electoral search or call 1950."
+    "notOfficial": "This is a demonstration card for a fictional person, not an official EPIC. For your real polling station use the official electoral search or call 1950.",
+    "pollTitle": "Polling day",
+    "pollHours": "Polls open {opens} to {closes}",
+    "pollDemo": "Demonstration schedule. Check the official date for your constituency on voters.eci.gov.in or call 1950."
   }
 }
