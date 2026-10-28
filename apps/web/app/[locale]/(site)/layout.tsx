@@ -30,6 +30,17 @@ export default async function SiteLayout({ children, params }: LayoutProps<'/[lo
           refused: t('refused'),
           invalid: t('invalid'),
           suggestions: t.raw('suggestions') as string[],
+          talk: t('talk'),
+          stopTalk: t('stopTalk'),
+          mic: t('mic'),
+          listening: t('listening'),
+          speaking: t('speaking'),
+          stopSpeaking: t('stopSpeaking'),
+          replay: t('replay'),
+          voiceNote: t('voiceNote'),
+          voiceDenied: t('voiceDenied'),
+          voiceNoSpeech: t('voiceNoSpeech'),
+          voiceFailed: t('voiceFailed'),
         }}
       />
     </>

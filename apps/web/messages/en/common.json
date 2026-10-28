@@ -215,6 +215,17 @@
       "Which areas had unusual deletions?",
       "How can I verify a publication is genuine?",
       "How do I check my own name on the roll?"
-    ]
+    ],
+    "talk": "Talk",
+    "stopTalk": "Stop talking",
+    "mic": "Speak your question",
+    "listening": "Listening… speak now",
+    "speaking": "Speaking…",
+    "stopSpeaking": "Stop",
+    "replay": "Listen",
+    "voiceNote": "Tip: press Talk to have a spoken conversation, or the microphone to ask one question by voice.",
+    "voiceDenied": "Microphone access was blocked. Allow it in your browser’s address bar to talk.",
+    "voiceNoSpeech": "I didn’t hear anything. Please try speaking again.",
+    "voiceFailed": "Voice input stopped. You can type instead, or press Talk again."
   }
 }
