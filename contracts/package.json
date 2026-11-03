@@ -14,7 +14,7 @@
     "deploy:hoodi": "hardhat ignition deploy ignition/modules/Registry.ts --network hoodi --parameters ignition/parameters/hoodi.json"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-ethers": "4.2.1",
+    "@nomicfoundation/hardhat-ethers": "4.2.2",
     "@nomicfoundation/hardhat-ethers-chai-matchers": "3.0.13",
     "@nomicfoundation/hardhat-ignition": "3.1.9",
     "@nomicfoundation/hardhat-ignition-ethers": "3.1.6",
